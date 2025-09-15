@@ -35,6 +35,20 @@ struct ContentView: View {
                     Text("History")
                 }
                 .tag(3)
+            
+            AnalyticsView()
+                .tabItem {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                    Text("Analytics")
+                }
+                .tag(4)
+            
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
+                .tag(5)
         }
         .environmentObject(timeTracker)
         .accentColor(.blue)
