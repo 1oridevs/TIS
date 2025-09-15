@@ -396,7 +396,6 @@ struct ShareSheet: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
-}
 
 struct ExportOptionButton: View {
     let title: String

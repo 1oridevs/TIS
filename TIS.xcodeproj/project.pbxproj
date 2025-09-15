@@ -37,6 +37,7 @@
 		1A0000072A00000000000001 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A0000092A00000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodeld; sourceTree = "<group>"; };
+		1A0000412A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 		1A00000D2A00000000000001 /* TimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTracker.swift; sourceTree = "<group>"; };
 		1A00000F2A00000000000001 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		1A0000112A00000000000001 /* TimeTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingView.swift; sourceTree = "<group>"; };
@@ -365,9 +366,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -392,6 +391,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
+				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -420,6 +420,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
+				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -467,13 +468,13 @@
 		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1A0000412A00000000000001 /* TISModel.xcdatamodel */,
 			);
 			currentVersion = 1A0000412A00000000000001 /* TISModel.xcdatamodel */;
 			path = TISModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
-		1A0000412A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 /* End XCVersionGroup section */
 	};
 	rootObject = 1A00003B2A00000000000001 /* Project object */;
