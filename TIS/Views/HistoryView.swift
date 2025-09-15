@@ -57,6 +57,21 @@ struct HistoryView: View {
         }
     }
     
+    // MARK: - Helper Functions
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0
+        return baseEarnings + bonusAmount
+    }
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -436,21 +451,6 @@ struct ExportOptionButton: View {
             .background(Color(.systemGray6))
             .cornerRadius(12)
         }
-    }
-    
-    // MARK: - Helper Functions
-    
-    private func calculateDurationInHours(for shift: Shift) -> Double {
-        guard let startTime = shift.startTime else { return 0 }
-        let endTime = shift.endTime ?? Date()
-        return endTime.timeIntervalSince(startTime) / 3600
-    }
-    
-    private func calculateTotalEarnings(for shift: Shift) -> Double {
-        let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0)
-        let bonusAmount = shift.bonusAmount ?? 0
-        return baseEarnings + bonusAmount
     }
 }
 
