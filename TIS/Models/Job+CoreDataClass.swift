@@ -4,6 +4,14 @@ import CoreData
 @objc(Job)
 public class Job: NSManagedObject {
     
+    // MARK: - Core Data Properties
+    @NSManaged public var id: UUID?
+    @NSManaged public var name: String?
+    @NSManaged public var hourlyRate: Double
+    @NSManaged public var createdAt: Date?
+    @NSManaged public var shifts: NSSet?
+    @NSManaged public var bonuses: NSSet?
+    
     // MARK: - Computed Properties
     
     var totalEarnings: Double {

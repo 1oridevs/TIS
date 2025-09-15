@@ -4,6 +4,18 @@ import CoreData
 @objc(Shift)
 public class Shift: NSManagedObject {
     
+    // MARK: - Core Data Properties
+    @NSManaged public var id: UUID?
+    @NSManaged public var startTime: Date?
+    @NSManaged public var endTime: Date?
+    @NSManaged public var isActive: Bool
+    @NSManaged public var shiftType: String?
+    @NSManaged public var notes: String?
+    @NSManaged public var bonusAmount: Double
+    @NSManaged public var totalEarnings: Double
+    @NSManaged public var job: Job?
+    @NSManaged public var bonuses: NSSet?
+    
     // MARK: - Computed Properties
     
     var duration: TimeInterval {
