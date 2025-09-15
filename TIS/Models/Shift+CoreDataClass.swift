@@ -12,7 +12,6 @@ public class Shift: NSManagedObject {
     @NSManaged public var shiftType: String?
     @NSManaged public var notes: String?
     @NSManaged public var bonusAmount: Double
-    @NSManaged public var totalEarnings: Double
     @NSManaged public var job: Job?
     @NSManaged public var bonuses: NSSet?
     
@@ -55,10 +54,12 @@ public class Shift: NSManagedObject {
     }
     
     func addBonus(_ bonus: Bonus) {
-        addToBonuses(bonus)
+        let mutableBonuses = self.mutableSetValue(forKey: "bonuses")
+        mutableBonuses.add(bonus)
     }
     
     func removeBonus(_ bonus: Bonus) {
-        removeFromBonuses(bonus)
+        let mutableBonuses = self.mutableSetValue(forKey: "bonuses")
+        mutableBonuses.remove(bonus)
     }
 }

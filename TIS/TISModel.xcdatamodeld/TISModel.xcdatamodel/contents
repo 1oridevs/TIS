@@ -16,7 +16,6 @@
         <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="shiftType" optional="YES" attributeType="String"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="totalEarnings" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="bonuses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bonus" inverseName="shifts" inverseEntity="Bonus"/>
         <relationship name="job" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Job" inverseName="shifts" inverseEntity="Job"/>
     </entity>
