@@ -77,6 +77,58 @@ struct AnalyticsView: View {
         }
     }
     
+    // MARK: - Helper Functions
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateEarningsBreakdown(for shift: Shift) -> (regular: Double, overtime: Double, special: Double, bonus: Double) {
+        guard let job = shift.job else { return (0, 0, 0, 0) }
+        
+        let duration = calculateDurationInHours(for: shift)
+        let regularHours = min(duration, 8.0)
+        let overtimeHours = max(duration - 8.0, 0.0)
+        let bonusAmount = shift.bonusAmount
+        
+        let baseRate = job.hourlyRate
+        let overtimeRate = baseRate * 1.5
+        let specialEventRate = baseRate * 1.25
+        
+        switch shift.shiftType {
+        case "Overtime":
+            return (
+                regular: regularHours * baseRate,
+                overtime: overtimeHours * overtimeRate,
+                special: 0,
+                bonus: bonusAmount
+            )
+        case "Special Event":
+            return (
+                regular: 0,
+                overtime: 0,
+                special: duration * specialEventRate,
+                bonus: bonusAmount
+            )
+        default: // Regular
+            return (
+                regular: duration * baseRate,
+                overtime: 0,
+                special: 0,
+                bonus: bonusAmount
+            )
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -357,58 +409,6 @@ struct EarningsBreakdownRow: View {
             Text(String(format: "$%.2f", amount))
                 .font(.subheadline)
                 .fontWeight(.semibold)
-        }
-    }
-    
-    // MARK: - Helper Functions
-    
-    private func calculateTotalEarnings(for shift: Shift) -> Double {
-        let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
-        let bonusAmount = shift.bonusAmount ?? 0.0
-        return baseEarnings + bonusAmount
-    }
-    
-    private func calculateDurationInHours(for shift: Shift) -> Double {
-        guard let startTime = shift.startTime else { return 0 }
-        let endTime = shift.endTime ?? Date()
-        return endTime.timeIntervalSince(startTime) / 3600
-    }
-    
-    private func calculateEarningsBreakdown(for shift: Shift) -> (regular: Double, overtime: Double, special: Double, bonus: Double) {
-        guard let job = shift.job else { return (0, 0, 0, 0) }
-        
-        let duration = calculateDurationInHours(for: shift)
-        let regularHours = min(duration, 8.0)
-        let overtimeHours = max(duration - 8.0, 0.0)
-        let bonusAmount = shift.bonusAmount ?? 0.0
-        
-        let baseRate = job.hourlyRate ?? 0.0
-        let overtimeRate = baseRate * 1.5
-        let specialEventRate = baseRate * 1.25
-        
-        switch shift.shiftType {
-        case "Overtime":
-            return (
-                regular: regularHours * baseRate,
-                overtime: overtimeHours * overtimeRate,
-                special: 0,
-                bonus: bonusAmount
-            )
-        case "Special Event":
-            return (
-                regular: 0,
-                overtime: 0,
-                special: duration * specialEventRate,
-                bonus: bonusAmount
-            )
-        default: // Regular
-            return (
-                regular: duration * baseRate,
-                overtime: 0,
-                special: 0,
-                bonus: bonusAmount
-            )
         }
     }
 }
