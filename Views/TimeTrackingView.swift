@@ -1,0 +1,263 @@
+import SwiftUI
+import CoreData
+
+struct TimeTrackingView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject private var timeTracker: TimeTracker
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Job.name, ascending: true)],
+        animation: .default)
+    private var jobs: FetchedResults<Job>
+    
+    @State private var selectedJob: Job?
+    @State private var showingJobSelection = false
+    @State private var shiftNotes = ""
+    @State private var selectedShiftType = "Regular"
+    
+    let shiftTypes = ["Regular", "Overtime", "Special Event", "Flexible"]
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 30) {
+                // Time Display
+                TimeDisplayView()
+                
+                // Job Selection
+                JobSelectionView()
+                
+                // Shift Type Selection
+                ShiftTypeSelectionView()
+                
+                // Notes Section
+                NotesSectionView()
+                
+                // Control Buttons
+                ControlButtonsView()
+                
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Time Tracking")
+            .navigationBarTitleDisplayMode(.large)
+        }
+        .onAppear {
+            timeTracker.setContext(viewContext)
+        }
+    }
+    
+    @ViewBuilder
+    private func TimeDisplayView() -> some View {
+        VStack(spacing: 16) {
+            if timeTracker.isTracking {
+                Text(formatTime(timeTracker.elapsedTime))
+                    .font(.system(size: 48, weight: .bold, design: .monospaced))
+                    .foregroundColor(.primary)
+                
+                Text("Currently tracking: \(timeTracker.currentShift?.job?.name ?? "Unknown")")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            } else {
+                Text("00:00:00")
+                    .font(.system(size: 48, weight: .bold, design: .monospaced))
+                    .foregroundColor(.gray)
+                
+                Text("Select a job to start tracking")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(16)
+    }
+    
+    @ViewBuilder
+    private func JobSelectionView() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Job")
+                .font(.headline)
+            
+            if timeTracker.isTracking {
+                HStack {
+                    Image(systemName: "briefcase.fill")
+                        .foregroundColor(.blue)
+                    Text(timeTracker.currentShift?.job?.name ?? "Unknown Job")
+                        .font(.subheadline)
+                    Spacer()
+                    Text("$\(timeTracker.currentShift?.job?.hourlyRate ?? 0, specifier: "%.2f")/hour")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+            } else {
+                Button(action: { showingJobSelection = true }) {
+                    HStack {
+                        Image(systemName: "briefcase")
+                        Text(selectedJob?.name ?? "Select Job")
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                }
+                .foregroundColor(.primary)
+            }
+        }
+        .sheet(isPresented: $showingJobSelection) {
+            JobSelectionSheet(selectedJob: $selectedJob)
+        }
+    }
+    
+    @ViewBuilder
+    private func ShiftTypeSelectionView() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Shift Type")
+                .font(.headline)
+            
+            Picker("Shift Type", selection: $selectedShiftType) {
+                ForEach(shiftTypes, id: \.self) { type in
+                    Text(type).tag(type)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .disabled(timeTracker.isTracking)
+        }
+    }
+    
+    @ViewBuilder
+    private func NotesSectionView() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Notes (Optional)")
+                .font(.headline)
+            
+            TextField("Add notes about this shift...", text: $shiftNotes, axis: .vertical)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .lineLimit(3...6)
+        }
+    }
+    
+    @ViewBuilder
+    private func ControlButtonsView() -> some View {
+        VStack(spacing: 16) {
+            if timeTracker.isTracking {
+                Button(action: endShift) {
+                    HStack {
+                        Image(systemName: "stop.fill")
+                        Text("End Shift")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                }
+            } else {
+                Button(action: startShift) {
+                    HStack {
+                        Image(systemName: "play.fill")
+                        Text("Start Shift")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(selectedJob != nil ? Color.green : Color.gray)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                }
+                .disabled(selectedJob == nil)
+            }
+        }
+    }
+    
+    private func startShift() {
+        guard let job = selectedJob else { return }
+        
+        timeTracker.startTracking(for: job)
+        
+        // Set shift type and notes
+        if let currentShift = timeTracker.currentShift {
+            currentShift.shiftType = selectedShiftType
+            currentShift.notes = shiftNotes
+        }
+        
+        try? viewContext.save()
+    }
+    
+    private func endShift() {
+        if let currentShift = timeTracker.currentShift {
+            currentShift.notes = shiftNotes
+        }
+        
+        timeTracker.endTracking()
+        shiftNotes = ""
+        selectedJob = nil
+    }
+    
+    private func formatTime(_ timeInterval: TimeInterval) -> String {
+        let hours = Int(timeInterval) / 3600
+        let minutes = Int(timeInterval % 3600) / 60
+        let seconds = Int(timeInterval) % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+}
+
+struct JobSelectionSheet: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Job.name, ascending: true)],
+        animation: .default)
+    private var jobs: FetchedResults<Job>
+    
+    @Binding var selectedJob: Job?
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(jobs, id: \.id) { job in
+                    Button(action: {
+                        selectedJob = job
+                        dismiss()
+                    }) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(job.name ?? "Unknown Job")
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                                
+                                Text("$\(job.hourlyRate, specifier: "%.2f")/hour")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            if selectedJob?.id == job.id {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+            }
+            .navigationTitle("Select Job")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    TimeTrackingView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(TimeTracker())
+}
