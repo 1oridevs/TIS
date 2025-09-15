@@ -85,7 +85,7 @@ struct JobDetailRowView: View {
                 
                 StatisticView(
                     title: "Total Earnings",
-                    value: String(format: "$%.2f", job.totalEarnings)
+                    value: String(format: "$%.2f", calculateTotalEarnings(for: job))
                 )
                 
                 StatisticView(
@@ -121,7 +121,29 @@ struct JobDetailRowView: View {
     
     private func calculateTotalHours(for job: Job) -> Double {
         guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
-        return shifts.reduce(0) { $0 + $1.durationInHours }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateDurationInHours(for: shift)
+        }
+    }
+    
+    private func calculateTotalEarnings(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateShiftEarnings(for: shift, job: job)
+        }
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateShiftEarnings(for shift: Shift, job: Job) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (job.hourlyRate ?? 0)
+        let bonusAmount = shift.bonusAmount ?? 0
+        return baseEarnings + bonusAmount
     }
 }
 

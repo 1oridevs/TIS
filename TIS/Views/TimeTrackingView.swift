@@ -140,7 +140,7 @@ struct TimeTrackingView: View {
     private var currentShiftType: String {
         if timeTracker.isTracking, let shift = timeTracker.currentShift {
             // Simple shift type detection based on duration
-            let duration = shift.durationInHours
+            let duration = calculateDurationInHours(for: shift)
             if duration > 8 {
                 return "Overtime"
             } else if duration > 12 {
@@ -149,6 +149,12 @@ struct TimeTrackingView: View {
             return "Regular"
         }
         return "Regular"
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
     }
     
     private var shiftTypeIcon: String {
