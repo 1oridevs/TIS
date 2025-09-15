@@ -139,7 +139,14 @@ struct TimeTrackingView: View {
     
     private var currentShiftType: String {
         if timeTracker.isTracking, let shift = timeTracker.currentShift {
-            return shift.automaticShiftType
+            // Simple shift type detection based on duration
+            let duration = shift.durationInHours
+            if duration > 8 {
+                return "Overtime"
+            } else if duration > 12 {
+                return "Special Event"
+            }
+            return "Regular"
         }
         return "Regular"
     }

@@ -80,7 +80,7 @@ struct JobDetailRowView: View {
             HStack(spacing: 20) {
                 StatisticView(
                     title: "Total Hours",
-                    value: String(format: "%.1fh", job.totalHoursWorked)
+                    value: String(format: "%.1fh", calculateTotalHours(for: job))
                 )
                 
                 StatisticView(
@@ -117,6 +117,11 @@ struct JobDetailRowView: View {
             }
         }
         .padding(.vertical, 8)
+    }
+    
+    private func calculateTotalHours(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0) { $0 + $1.durationInHours }
     }
 }
 
