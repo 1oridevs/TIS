@@ -196,9 +196,15 @@ struct ShiftDetailRowView: View {
                     Text(shift.job?.name ?? "Unknown Job")
                         .font(.headline)
                     
-                    Text(shift.shiftType ?? "Regular")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                    HStack(spacing: 4) {
+                        Image(systemName: shiftTypeIcon(for: shift.shiftType ?? "Regular"))
+                            .font(.caption)
+                            .foregroundColor(shiftTypeColor(for: shift.shiftType ?? "Regular"))
+                        
+                        Text(shift.shiftType ?? "Regular")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
                 }
                 
                 Spacer()
@@ -267,6 +273,28 @@ struct ShiftDetailRowView: View {
             }
         }
         .padding(.vertical, 4)
+    }
+    
+    private func shiftTypeIcon(for shiftType: String) -> String {
+        switch shiftType {
+        case "Overtime":
+            return "clock.badge.exclamationmark"
+        case "Special Event":
+            return "star.fill"
+        default:
+            return "clock"
+        }
+    }
+    
+    private func shiftTypeColor(for shiftType: String) -> Color {
+        switch shiftType {
+        case "Overtime":
+            return .orange
+        case "Special Event":
+            return .purple
+        default:
+            return .blue
+        }
     }
 }
 

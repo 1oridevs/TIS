@@ -14,8 +14,6 @@ struct TimeTrackingView: View {
     @State private var shiftNotes = ""
     @State private var selectedShiftType = "Regular"
     
-    let shiftTypes = ["Regular", "Overtime", "Special Event", "Flexible"]
-    
     var body: some View {
         NavigationView {
             VStack(spacing: 30) {
@@ -25,8 +23,8 @@ struct TimeTrackingView: View {
                 // Job Selection
                 JobSelectionView()
                 
-                // Shift Type Selection
-                ShiftTypeSelectionView()
+                // Shift Type Display
+                ShiftTypeDisplayView()
                 
                 // Notes Section
                 NotesSectionView()
@@ -112,18 +110,59 @@ struct TimeTrackingView: View {
     }
     
     @ViewBuilder
-    private func ShiftTypeSelectionView() -> some View {
+    private func ShiftTypeDisplayView() -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Shift Type")
                 .font(.headline)
             
-            Picker("Shift Type", selection: $selectedShiftType) {
-                ForEach(shiftTypes, id: \.self) { type in
-                    Text(type).tag(type)
+            HStack {
+                Image(systemName: shiftTypeIcon)
+                    .foregroundColor(shiftTypeColor)
+                
+                Text(currentShiftType)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                
+                Spacer()
+                
+                if timeTracker.isTracking {
+                    Text("Auto-detected")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .disabled(timeTracker.isTracking)
+            .padding()
+            .background(shiftTypeColor.opacity(0.1))
+            .cornerRadius(8)
+        }
+    }
+    
+    private var currentShiftType: String {
+        if timeTracker.isTracking, let shift = timeTracker.currentShift {
+            return shift.automaticShiftType
+        }
+        return "Regular"
+    }
+    
+    private var shiftTypeIcon: String {
+        switch currentShiftType {
+        case "Overtime":
+            return "clock.badge.exclamationmark"
+        case "Special Event":
+            return "star.fill"
+        default:
+            return "clock"
+        }
+    }
+    
+    private var shiftTypeColor: Color {
+        switch currentShiftType {
+        case "Overtime":
+            return .orange
+        case "Special Event":
+            return .purple
+        default:
+            return .blue
         }
     }
     
@@ -176,9 +215,8 @@ struct TimeTrackingView: View {
         
         timeTracker.startTracking(for: job)
         
-        // Set shift type and notes
+        // Set notes (shift type will be set automatically when ending)
         if let currentShift = timeTracker.currentShift {
-            currentShift.shiftType = selectedShiftType
             currentShift.notes = shiftNotes
         }
         

@@ -41,6 +41,32 @@ public class Shift: NSManagedObject, Identifiable {
         return endTime != nil && !isActive
     }
     
+    var automaticShiftType: String {
+        guard let startTime = startTime else { return "Regular" }
+        
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: startTime)
+        let duration = durationInHours
+        
+        // Special Event: Work outside normal hours (before 6 AM or after 10 PM) or very long shifts
+        if hour < 6 || hour > 22 || duration > 12 {
+            return "Special Event"
+        }
+        
+        // Overtime: More than 8 hours in a single shift
+        if duration > 8 {
+            return "Overtime"
+        }
+        
+        // Weekend work is considered Special Event
+        if calendar.isDateInWeekend(startTime) {
+            return "Special Event"
+        }
+        
+        // Regular: Normal business hours (6 AM - 10 PM) and reasonable duration
+        return "Regular"
+    }
+    
     // MARK: - Helper Methods
     
     func start() {
@@ -51,6 +77,8 @@ public class Shift: NSManagedObject, Identifiable {
     func end() {
         endTime = Date()
         isActive = false
+        // Automatically set shift type based on hours and time
+        shiftType = automaticShiftType
     }
     
     func addBonus(_ bonus: Bonus) {
