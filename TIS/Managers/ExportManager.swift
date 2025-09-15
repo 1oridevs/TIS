@@ -105,8 +105,8 @@ class ExportManager: ObservableObject {
     
     private func calculateTotalEarnings(for shift: Shift) -> Double {
         let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
-        let bonusAmount = shift.bonusAmount ?? 0.0
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
         return baseEarnings + bonusAmount
     }
     
@@ -116,9 +116,9 @@ class ExportManager: ObservableObject {
         let duration = calculateDurationInHours(for: shift)
         let regularHours = min(duration, 8.0)
         let overtimeHours = max(duration - 8.0, 0.0)
-        let bonusAmount = shift.bonusAmount ?? 0.0
+        let bonusAmount = shift.bonusAmount 
         
-        let baseRate = job.hourlyRate ?? 0.0 
+        let baseRate = job.hourlyRate  
         let overtimeRate = baseRate * 1.5
         let specialEventRate = baseRate * 1.25
         
