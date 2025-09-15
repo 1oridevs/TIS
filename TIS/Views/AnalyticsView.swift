@@ -49,11 +49,15 @@ struct AnalyticsView: View {
     }
     
     var totalEarnings: Double {
-        filteredShifts.reduce(0) { $0 + $1.totalEarnings }
+        filteredShifts.reduce(0.0) { total, shift in
+            total + calculateTotalEarnings(for: shift)
+        }
     }
     
     var totalHours: Double {
-        filteredShifts.reduce(0) { $0 + $1.durationInHours }
+        filteredShifts.reduce(0.0) { total, shift in
+            total + calculateDurationInHours(for: shift)
+        }
     }
     
     var averageHourlyRate: Double {
@@ -62,8 +66,8 @@ struct AnalyticsView: View {
     }
     
     var earningsByType: (regular: Double, overtime: Double, special: Double, bonus: Double) {
-        return filteredShifts.reduce((0, 0, 0, 0)) { total, shift in
-            let breakdown = shift.earningsBreakdown
+        return filteredShifts.reduce((0.0, 0.0, 0.0, 0.0)) { total, shift in
+            let breakdown = calculateEarningsBreakdown(for: shift)
             return (
                 regular: total.0 + breakdown.regular,
                 overtime: total.1 + breakdown.overtime,
@@ -213,7 +217,7 @@ struct AnalyticsView: View {
             
             // Simple bar chart representation
             VStack(spacing: 8) {
-                ForEach(Array(earningsByType.enumerated()), id: \.offset) { index, earnings in
+                ForEach(Array([earningsByType.regular, earningsByType.overtime, earningsByType.special, earningsByType.bonus].enumerated()), id: \.offset) { index, earnings in
                     let titles = ["Regular", "Overtime", "Special", "Bonus"]
                     let colors: [Color] = [.blue, .orange, .purple, .green]
                     let maxEarnings = max(earningsByType.regular, earningsByType.overtime, earningsByType.special, earningsByType.bonus)
@@ -353,6 +357,58 @@ struct EarningsBreakdownRow: View {
             Text(String(format: "$%.2f", amount))
                 .font(.subheadline)
                 .fontWeight(.semibold)
+        }
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateEarningsBreakdown(for shift: Shift) -> (regular: Double, overtime: Double, special: Double, bonus: Double) {
+        guard let job = shift.job else { return (0, 0, 0, 0) }
+        
+        let duration = calculateDurationInHours(for: shift)
+        let regularHours = min(duration, 8.0)
+        let overtimeHours = max(duration - 8.0, 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0
+        
+        let baseRate = job.hourlyRate ?? 0.0
+        let overtimeRate = baseRate * 1.5
+        let specialEventRate = baseRate * 1.25
+        
+        switch shift.shiftType {
+        case "Overtime":
+            return (
+                regular: regularHours * baseRate,
+                overtime: overtimeHours * overtimeRate,
+                special: 0,
+                bonus: bonusAmount
+            )
+        case "Special Event":
+            return (
+                regular: 0,
+                overtime: 0,
+                special: duration * specialEventRate,
+                bonus: bonusAmount
+            )
+        default: // Regular
+            return (
+                regular: duration * baseRate,
+                overtime: 0,
+                special: 0,
+                bonus: bonusAmount
+            )
         }
     }
 }

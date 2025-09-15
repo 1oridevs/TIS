@@ -118,7 +118,7 @@ class ExportManager: ObservableObject {
         let overtimeHours = max(duration - 8.0, 0.0)
         let bonusAmount = shift.bonusAmount ?? 0.0
         
-        let baseRate = job.hourlyRate ?? 0.0   
+        let baseRate = job.hourlyRate   
         let overtimeRate = baseRate * 1.5
         let specialEventRate = baseRate * 1.25
         

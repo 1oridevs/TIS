@@ -266,7 +266,7 @@ struct JobRowView: View {
                     .font(.subheadline)
                     .fontWeight(.medium)
                 
-                Text(String(format: "$%.2f/hour", job.hourlyRate ?? 0.0))
+                Text(String(format: "$%.2f/hour", job.hourlyRate))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
