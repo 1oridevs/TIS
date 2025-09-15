@@ -29,12 +29,64 @@ public class Shift: NSManagedObject, Identifiable {
     
     var baseEarnings: Double {
         guard let job = job else { return 0 }
-        return durationInHours * job.hourlyRate
+        
+        let regularHours = min(durationInHours, 8.0)
+        let overtimeHours = max(durationInHours - 8.0, 0.0)
+        
+        // Different rates based on shift type
+        let baseRate = job.hourlyRate
+        let overtimeRate = baseRate * 1.5 // 1.5x for overtime
+        let specialEventRate = baseRate * 1.25 // 1.25x for special events
+        
+        switch shiftType {
+        case "Overtime":
+            return (regularHours * baseRate) + (overtimeHours * overtimeRate)
+        case "Special Event":
+            return durationInHours * specialEventRate
+        default:
+            return durationInHours * baseRate
+        }
     }
     
     var totalEarnings: Double {
         let bonusTotal = bonuses?.allObjects.compactMap { $0 as? Bonus }.reduce(0) { $0 + $1.amount } ?? 0
         return baseEarnings + bonusTotal
+    }
+    
+    var earningsBreakdown: (regular: Double, overtime: Double, special: Double, bonus: Double) {
+        guard let job = job else { return (0, 0, 0, 0) }
+        
+        let regularHours = min(durationInHours, 8.0)
+        let overtimeHours = max(durationInHours - 8.0, 0.0)
+        let bonusTotal = bonuses?.allObjects.compactMap { $0 as? Bonus }.reduce(0) { $0 + $1.amount } ?? 0
+        
+        let baseRate = job.hourlyRate
+        let overtimeRate = baseRate * 1.5
+        let specialEventRate = baseRate * 1.25
+        
+        switch shiftType {
+        case "Overtime":
+            return (
+                regular: regularHours * baseRate,
+                overtime: overtimeHours * overtimeRate,
+                special: 0,
+                bonus: bonusTotal
+            )
+        case "Special Event":
+            return (
+                regular: 0,
+                overtime: 0,
+                special: durationInHours * specialEventRate,
+                bonus: bonusTotal
+            )
+        default:
+            return (
+                regular: durationInHours * baseRate,
+                overtime: 0,
+                special: 0,
+                bonus: bonusTotal
+            )
+        }
     }
     
     var isCompleted: Bool {
