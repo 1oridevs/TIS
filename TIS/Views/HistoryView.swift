@@ -301,6 +301,11 @@ struct ShiftDetailRowView: View {
 struct ExportOptionsView: View {
     let shifts: [Shift]
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var exportManager = ExportManager.shared
+    @State private var showingShareSheet = false
+    @State private var fileToShare: URL?
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
     
     var body: some View {
         NavigationView {
@@ -347,17 +352,50 @@ struct ExportOptionsView: View {
                 }
             }
         }
+        .sheet(isPresented: $showingShareSheet) {
+            if let fileURL = fileToShare {
+                ShareSheet(items: [fileURL])
+            }
+        }
+        .alert("Export", isPresented: $showingAlert) {
+            Button("OK") { }
+        } message: {
+            Text(alertMessage)
+        }
     }
     
     private func exportAsCSV() {
-        // TODO: Implement CSV export
-        dismiss()
+        guard let fileURL = exportManager.exportShiftsAsCSV(shifts) else {
+            alertMessage = "Failed to export CSV file"
+            showingAlert = true
+            return
+        }
+        
+        fileToShare = fileURL
+        showingShareSheet = true
     }
     
     private func exportAsPDF() {
-        // TODO: Implement PDF export
-        dismiss()
+        guard let fileURL = exportManager.exportShiftsAsPDF(shifts) else {
+            alertMessage = "Failed to export PDF file"
+            showingAlert = true
+            return
+        }
+        
+        fileToShare = fileURL
+        showingShareSheet = true
     }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
 }
 
 struct ExportOptionButton: View {
