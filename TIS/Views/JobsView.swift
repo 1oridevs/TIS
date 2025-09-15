@@ -63,7 +63,7 @@ struct JobDetailRowView: View {
                     Text(job.name ?? "Unknown Job")
                         .font(.headline)
                     
-                    Text("$\(job.hourlyRate, specifier: "%.2f")/hour")
+                    Text(String(format: "$%.2f/hour", job.hourlyRate))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -80,12 +80,12 @@ struct JobDetailRowView: View {
             HStack(spacing: 20) {
                 StatisticView(
                     title: "Total Hours",
-                    value: "\(job.totalHoursWorked, specifier: "%.1f")h"
+                    value: String(format: "%.1fh", job.totalHoursWorked)
                 )
                 
                 StatisticView(
                     title: "Total Earnings",
-                    value: "$\(job.totalEarnings, specifier: "%.2f")"
+                    value: String(format: "$%.2f", job.totalEarnings)
                 )
                 
                 StatisticView(
@@ -107,7 +107,7 @@ struct JobDetailRowView: View {
                             Text(bonus.name ?? "Unknown Bonus")
                                 .font(.caption)
                             Spacer()
-                            Text("$\(bonus.amount, specifier: "%.2f")")
+                            Text(String(format: "$%.2f", bonus.amount))
                                 .font(.caption)
                                 .fontWeight(.medium)
                         }

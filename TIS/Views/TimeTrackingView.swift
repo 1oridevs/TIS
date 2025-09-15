@@ -84,7 +84,7 @@ struct TimeTrackingView: View {
                     Text(timeTracker.currentShift?.job?.name ?? "Unknown Job")
                         .font(.subheadline)
                     Spacer()
-                    Text("$\(timeTracker.currentShift?.job?.hourlyRate ?? 0, specifier: "%.2f")/hour")
+                    Text(String(format: "$%.2f/hour", timeTracker.currentShift?.job?.hourlyRate ?? 0))
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -197,8 +197,8 @@ struct TimeTrackingView: View {
     
     private func formatTime(_ timeInterval: TimeInterval) -> String {
         let hours = Int(timeInterval) / 3600
-        let minutes = Int(timeInterval % 3600) / 60
-        let seconds = Int(timeInterval) % 60
+        let minutes = Int(timeInterval.truncatingRemainder(dividingBy: 3600)) / 60
+        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 }
@@ -227,7 +227,7 @@ struct JobSelectionSheet: View {
                                     .font(.headline)
                                     .foregroundColor(.primary)
                                 
-                                Text("$\(job.hourlyRate, specifier: "%.2f")/hour")
+                                Text(String(format: "$%.2f/hour", job.hourlyRate))
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }

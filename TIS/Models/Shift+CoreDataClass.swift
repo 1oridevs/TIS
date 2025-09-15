@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 @objc(Shift)
-public class Shift: NSManagedObject {
+public class Shift: NSManagedObject, Identifiable {
     
     // MARK: - Core Data Properties
     @NSManaged public var id: UUID?

@@ -85,14 +85,14 @@ struct HistoryView: View {
         HStack(spacing: 16) {
             SummaryCard(
                 title: "Total Earnings",
-                value: "$\(totalEarnings, specifier: "%.2f")",
+                value: String(format: "$%.2f", totalEarnings),
                 icon: "dollarsign.circle.fill",
                 color: .green
             )
             
             SummaryCard(
                 title: "Total Hours",
-                value: "\(totalHours, specifier: "%.1f")h",
+                value: String(format: "%.1fh", totalHours),
                 icon: "clock.fill",
                 color: .blue
             )
@@ -204,12 +204,12 @@ struct ShiftDetailRowView: View {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text("$\(shift.totalEarnings, specifier: "%.2f")")
+                    Text(String(format: "$%.2f", shift.totalEarnings))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(.green)
                     
-                    Text("\(shift.durationInHours, specifier: "%.1f")h")
+                    Text(String(format: "%.1fh", shift.durationInHours))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -257,7 +257,7 @@ struct ShiftDetailRowView: View {
                             Text(bonus.name ?? "Unknown Bonus")
                                 .font(.caption)
                             Spacer()
-                            Text("$\(bonus.amount, specifier: "%.2f")")
+                            Text(String(format: "$%.2f", bonus.amount))
                                 .font(.caption)
                                 .fontWeight(.medium)
                         }

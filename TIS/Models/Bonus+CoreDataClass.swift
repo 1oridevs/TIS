@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 @objc(Bonus)
-public class Bonus: NSManagedObject {
+public class Bonus: NSManagedObject, Identifiable {
     
     // MARK: - Core Data Properties
     @NSManaged public var id: UUID?
