@@ -339,12 +339,12 @@ struct AnalyticsView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.secondary)
                         
-                        Text(jobEarning.element.0?.name ?? "Unknown Job")
+                        Text(jobEarning.1.0?.name ?? "Unknown Job")
                             .font(.subheadline)
                         
                         Spacer()
                         
-                        Text(String(format: "$%.2f", jobEarning.element.1))
+                        Text(String(format: "$%.2f", jobEarning.1.1))
                             .font(.subheadline)
                             .fontWeight(.semibold)
                     }
