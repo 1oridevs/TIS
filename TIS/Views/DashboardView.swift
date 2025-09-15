@@ -232,6 +232,28 @@ struct JobsOverviewCard: View {
             }
         }
     }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateTotalEarnings(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateTotalEarnings(for: shift)
+        }
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
 }
 
 struct JobRowView: View {
@@ -263,6 +285,21 @@ struct JobRowView: View {
         }
         .padding(.vertical, 4)
     }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
 }
 
 struct RecentActivityCard: View {
@@ -293,6 +330,21 @@ struct RecentActivityCard: View {
         .padding()
         .background(Color(.systemGray6))
         .cornerRadius(12)
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
     }
 }
 
