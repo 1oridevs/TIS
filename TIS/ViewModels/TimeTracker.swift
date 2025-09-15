@@ -18,7 +18,7 @@ class TimeTracker: ObservableObject {
         guard let context = context else { return }
         
         // End any existing active shift
-        if let activeShift = currentShift {
+        if currentShift != nil {
             endTracking()
         }
         

@@ -17,14 +17,14 @@ class ExportManager: ObservableObject {
             let date = shift.startTime?.formatted(.dateTime.year().month().day()) ?? "N/A"
             let startTime = shift.startTime?.formatted(.dateTime.hour().minute()) ?? "N/A"
             let endTime = shift.endTime?.formatted(.dateTime.hour().minute()) ?? "N/A"
-            let duration = String(format: "%.2f", shift.durationInHours)
+            let duration = String(format: "%.2f", calculateDurationInHours(for: shift))
             let shiftType = shift.shiftType ?? "Regular"
-            let breakdown = shift.earningsBreakdown
+            let breakdown = calculateEarningsBreakdown(for: shift)
             let regularPay = String(format: "%.2f", breakdown.regular)
             let overtimePay = String(format: "%.2f", breakdown.overtime)
             let specialPay = String(format: "%.2f", breakdown.special)
             let bonus = String(format: "%.2f", breakdown.bonus)
-            let totalEarnings = String(format: "%.2f", shift.totalEarnings)
+            let totalEarnings = String(format: "%.2f", calculateTotalEarnings(for: shift))
             let notes = (shift.notes ?? "").replacingOccurrences(of: ",", with: ";")
             
             csvContent += "\(date),\(shift.job?.name ?? "Unknown"),\(startTime),\(endTime),\(duration),\(shiftType),\(regularPay),\(overtimePay),\(specialPay),\(bonus),\(totalEarnings),\(notes)\n"
@@ -50,8 +50,12 @@ class ExportManager: ObservableObject {
         reportContent += "Generated: \(Date().formatted(.dateTime.year().month().day().hour().minute()))\n"
         reportContent += "=" * 50 + "\n\n"
         
-        let totalEarnings = shifts.reduce(0) { $0 + $1.totalEarnings }
-        let totalHours = shifts.reduce(0) { $0 + $1.durationInHours }
+        let totalEarnings = shifts.reduce(0.0) { total, shift in
+            total + calculateTotalEarnings(for: shift)
+        }
+        let totalHours = shifts.reduce(0.0) { total, shift in
+            total + calculateDurationInHours(for: shift)
+        }
         
         reportContent += "SUMMARY\n"
         reportContent += "Total Shifts: \(shifts.count)\n"
@@ -66,9 +70,9 @@ class ExportManager: ObservableObject {
             let date = shift.startTime?.formatted(.dateTime.year().month().day()) ?? "N/A"
             let startTime = shift.startTime?.formatted(.dateTime.hour().minute()) ?? "N/A"
             let endTime = shift.endTime?.formatted(.dateTime.hour().minute()) ?? "N/A"
-            let duration = String(format: "%.2f", shift.durationInHours)
+            let duration = String(format: "%.2f", calculateDurationInHours(for: shift))
             let shiftType = shift.shiftType ?? "Regular"
-            let totalEarnings = String(format: "%.2f", shift.totalEarnings)
+            let totalEarnings = String(format: "%.2f", calculateTotalEarnings(for: shift))
             
             reportContent += "Date: \(date)\n"
             reportContent += "Job: \(shift.job?.name ?? "Unknown")\n"
@@ -88,6 +92,58 @@ class ExportManager: ObservableObject {
         } catch {
             print("Error writing PDF file: \(error)")
             return nil
+        }
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0)
+        let bonusAmount = shift.bonusAmount ?? 0
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateEarningsBreakdown(for shift: Shift) -> (regular: Double, overtime: Double, special: Double, bonus: Double) {
+        guard let job = shift.job else { return (0, 0, 0, 0) }
+        
+        let duration = calculateDurationInHours(for: shift)
+        let regularHours = min(duration, 8.0)
+        let overtimeHours = max(duration - 8.0, 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0
+        
+        let baseRate = job.hourlyRate ?? 0
+        let overtimeRate = baseRate * 1.5
+        let specialEventRate = baseRate * 1.25
+        
+        switch shift.shiftType {
+        case "Overtime":
+            return (
+                regular: regularHours * baseRate,
+                overtime: overtimeHours * overtimeRate,
+                special: 0,
+                bonus: bonusAmount
+            )
+        case "Special Event":
+            return (
+                regular: 0,
+                overtime: 0,
+                special: duration * specialEventRate,
+                bonus: bonusAmount
+            )
+        default:
+            return (
+                regular: duration * baseRate,
+                overtime: 0,
+                special: 0,
+                bonus: bonusAmount
+            )
         }
     }
 }
