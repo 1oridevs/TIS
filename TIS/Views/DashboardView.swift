@@ -14,7 +14,7 @@ struct DashboardView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 24) {
                     // Current Status Card
                     CurrentStatusCard()
                     
@@ -27,14 +27,18 @@ struct DashboardView: View {
                     // Recent Activity
                     RecentActivityCard()
                 }
-                .padding()
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
             }
-            .navigationTitle("TIS Dashboard")
+            .background(TISColors.background)
+            .navigationTitle("Dashboard")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showingAddJob = true }) {
-                        Image(systemName: "plus")
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(TISColors.primary)
                     }
                 }
             }
@@ -49,35 +53,61 @@ struct CurrentStatusCard: View {
     @EnvironmentObject private var timeTracker: TimeTracker
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: timeTracker.isTracking ? "clock.fill" : "clock")
-                    .foregroundColor(timeTracker.isTracking ? .green : .gray)
-                Text(timeTracker.isTracking ? "Currently Working" : "Not Working")
-                    .font(.headline)
-                Spacer()
-            }
-            
-            if timeTracker.isTracking {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Job: \(timeTracker.currentShift?.job?.name ?? "Unknown")")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Text("Time: \(formatTime(timeTracker.elapsedTime))")
+        TISCard(shadow: TISShadows.medium) {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Image(systemName: timeTracker.isTracking ? "clock.fill" : "clock")
                         .font(.title2)
+                        .foregroundColor(timeTracker.isTracking ? TISColors.success : TISColors.secondaryText)
+                    
+                    Text(timeTracker.isTracking ? "Currently Working" : "Ready to Work")
+                        .font(.headline)
                         .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                        .foregroundColor(TISColors.primaryText)
+                    
+                    Spacer()
+                    
+                    if timeTracker.isTracking {
+                        Circle()
+                            .fill(TISColors.success)
+                            .frame(width: 8, height: 8)
+                            .scaleEffect(timeTracker.isTracking ? 1.2 : 1.0)
+                            .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                    }
                 }
-            } else {
-                Text("Start tracking your time to see earnings")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                
+                if timeTracker.isTracking {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("Job:")
+                                .font(.subheadline)
+                                .foregroundColor(TISColors.secondaryText)
+                            Text(timeTracker.currentShift?.job?.name ?? "Unknown")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(TISColors.primaryText)
+                        }
+                        
+                        HStack {
+                            Text("Time:")
+                                .font(.subheadline)
+                                .foregroundColor(TISColors.secondaryText)
+                            Text(formatTime(timeTracker.elapsedTime))
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(TISColors.primary)
+                                .monospacedDigit()
+                        }
+                    }
+                } else {
+                    Text("Start tracking your time to see earnings")
+                        .font(.subheadline)
+                        .foregroundColor(TISColors.secondaryText)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
     }
     
     private func formatTime(_ timeInterval: TimeInterval) -> String {
@@ -97,49 +127,62 @@ struct QuickActionsCard: View {
     private var jobs: FetchedResults<Job>
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Quick Actions")
-                .font(.headline)
-            
-            if timeTracker.isTracking {
-                Button(action: { timeTracker.endTracking() }) {
-                    HStack {
-                        Image(systemName: "stop.fill")
-                        Text("End Shift")
+        TISCard {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Quick Actions")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(TISColors.primaryText)
+                
+                if timeTracker.isTracking {
+                    TISButton("End Shift", icon: "stop.fill", color: TISColors.error) {
+                        timeTracker.endTracking()
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
-            } else {
-                if jobs.isEmpty {
-                    Text("Add a job to start tracking time")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
                 } else {
-                    ForEach(jobs, id: \.id) { job in
-                        Button(action: { timeTracker.startTracking(for: job) }) {
-                            HStack {
-                                Image(systemName: "play.fill")
-                                Text("Start \(job.name ?? "Job")")
+                    if jobs.isEmpty {
+                        VStack(spacing: 12) {
+                            Image(systemName: "briefcase.badge.plus")
+                                .font(.title)
+                                .foregroundColor(TISColors.secondaryText)
+                            
+                            Text("Add a job to start tracking time")
+                                .font(.subheadline)
+                                .foregroundColor(TISColors.secondaryText)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 20)
+                    } else {
+                        LazyVGrid(columns: [
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ], spacing: 12) {
+                            ForEach(jobs.prefix(4), id: \.id) { job in
+                                Button(action: { timeTracker.startTracking(for: job) }) {
+                                    VStack(spacing: 8) {
+                                        Image(systemName: "play.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(.white)
+                                        
+                                        Text(job.name ?? "Job")
+                                            .font(.caption)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.white)
+                                            .lineLimit(1)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 16)
+                                    .background(TISColors.success)
+                                    .cornerRadius(12)
+                                    .tisShadow(TISShadows.small)
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
                         }
                     }
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
     }
 }
 
@@ -151,25 +194,43 @@ struct JobsOverviewCard: View {
     private var jobs: FetchedResults<Job>
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Jobs Overview")
-                .font(.headline)
-            
-            if jobs.isEmpty {
-                Text("No jobs added yet")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding()
-            } else {
-                ForEach(jobs, id: \.id) { job in
-                    JobRowView(job: job)
+        TISCard {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Jobs Overview")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(TISColors.primaryText)
+                
+                if jobs.isEmpty {
+                    VStack(spacing: 12) {
+                        Image(systemName: "briefcase")
+                            .font(.title)
+                            .foregroundColor(TISColors.secondaryText)
+                        
+                        Text("No jobs added yet")
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 20)
+                } else {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 12) {
+                        ForEach(jobs.prefix(4), id: \.id) { job in
+                            TISStatCard(
+                                title: job.name ?? "Unknown",
+                                value: String(format: "$%.0f", job.totalEarnings),
+                                icon: "briefcase.fill",
+                                color: TISColors.primary
+                            )
+                        }
+                    }
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
     }
 }
 
