@@ -222,7 +222,7 @@ struct JobsOverviewCard: View {
                         ForEach(jobs.prefix(4), id: \.id) { job in
                             TISStatCard(
                                 title: job.name ?? "Unknown",
-                                value: String(format: "$%.0f", job.totalEarnings),
+                                value: String(format: "$%.0f", calculateTotalEarnings(for: job)),
                                 icon: "briefcase.fill",
                                 color: TISColors.primary
                             )
@@ -252,11 +252,11 @@ struct JobRowView: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 4) {
-                Text(String(format: "$%.2f", job.totalEarnings))
+                Text(String(format: "$%.2f", calculateTotalEarnings(for: job)))
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 
-                Text(String(format: "%.1fh", job.totalHoursWorked))
+                Text(String(format: "%.1fh", calculateTotalHours(for: job)))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -316,16 +316,45 @@ struct ShiftRowView: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 4) {
-                Text(String(format: "$%.2f", shift.totalEarnings))
+                Text(String(format: "$%.2f", calculateTotalEarnings(for: shift)))
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 
-                Text(String(format: "%.1fh", shift.durationInHours))
+                Text(String(format: "%.1fh", calculateDurationInHours(for: shift)))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
         }
         .padding(.vertical, 4)
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateTotalEarnings(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateTotalEarnings(for: shift)
+        }
+    }
+    
+    private func calculateTotalHours(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateDurationInHours(for: shift)
+        }
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
+        return baseEarnings + bonusAmount
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
     }
 }
 

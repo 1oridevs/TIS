@@ -67,8 +67,8 @@ struct HistoryView: View {
     
     private func calculateTotalEarnings(for shift: Shift) -> Double {
         let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
-        let bonusAmount = shift.bonusAmount ?? 0.0
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
         return baseEarnings + bonusAmount
     }
     
@@ -314,6 +314,19 @@ struct ShiftDetailRowView: View {
         default:
             return .blue
         }
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate )
+        let bonusAmount = shift.bonusAmount 
+        return baseEarnings + bonusAmount
     }
 }
 

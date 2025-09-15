@@ -32,7 +32,7 @@ struct SettingsView: View {
                     }
                     
                     Toggle("Daily Reminders", isOn: $enableDailyReminder)
-                        .onChange(of: enableDailyReminder) { enabled in
+                        .onChange(of: enableDailyReminder) { _, enabled in
                             if enabled {
                                 scheduleDailyReminder()
                             } else {
@@ -42,7 +42,7 @@ struct SettingsView: View {
                     
                     if enableDailyReminder {
                         DatePicker("Reminder Time", selection: $dailyReminderTime, displayedComponents: .hourAndMinute)
-                            .onChange(of: dailyReminderTime) { _ in
+                            .onChange(of: dailyReminderTime) { _, _ in
                                 scheduleDailyReminder()
                             }
                     }
