@@ -244,8 +244,8 @@ struct JobsOverviewCard: View {
     
     private func calculateTotalEarnings(for shift: Shift) -> Double {
         let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate )
-        let bonusAmount = shift.bonusAmount 
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0 
         return baseEarnings + bonusAmount
     }
     
@@ -266,7 +266,7 @@ struct JobRowView: View {
                     .font(.subheadline)
                     .fontWeight(.medium)
                 
-                Text(String(format: "$%.2f/hour", job.hourlyRate))
+                Text(String(format: "$%.2f/hour", job.hourlyRate ?? 0.0))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -288,10 +288,24 @@ struct JobRowView: View {
     
     // MARK: - Helper Functions
     
+    private func calculateTotalEarnings(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateTotalEarnings(for: shift)
+        }
+    }
+    
+    private func calculateTotalHours(for job: Job) -> Double {
+        guard let shifts = job.shifts?.allObjects as? [Shift] else { return 0 }
+        return shifts.reduce(0.0) { total, shift in
+            total + calculateDurationInHours(for: shift)
+        }
+    }
+    
     private func calculateTotalEarnings(for shift: Shift) -> Double {
         let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate )
-        let bonusAmount = shift.bonusAmount 
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0 
         return baseEarnings + bonusAmount
     }
     
@@ -336,8 +350,8 @@ struct RecentActivityCard: View {
     
     private func calculateTotalEarnings(for shift: Shift) -> Double {
         let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate )
-        let bonusAmount = shift.bonusAmount 
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0 
         return baseEarnings + bonusAmount
     }
     
@@ -398,8 +412,8 @@ struct ShiftRowView: View {
     
     private func calculateTotalEarnings(for shift: Shift) -> Double {
         let duration = calculateDurationInHours(for: shift)
-        let baseEarnings = duration * (shift.job?.hourlyRate )
-        let bonusAmount = shift.bonusAmount 
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0.0)
+        let bonusAmount = shift.bonusAmount ?? 0.0 
         return baseEarnings + bonusAmount
     }
     
