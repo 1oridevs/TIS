@@ -46,11 +46,15 @@ struct HistoryView: View {
     }
     
     var totalEarnings: Double {
-        filteredShifts.reduce(0) { $0 + $1.totalEarnings }
+        filteredShifts.reduce(0.0) { total, shift in
+            total + calculateTotalEarnings(for: shift)
+        }
     }
     
     var totalHours: Double {
-        filteredShifts.reduce(0) { $0 + $1.durationInHours }
+        filteredShifts.reduce(0.0) { total, shift in
+            total + calculateDurationInHours(for: shift)
+        }
     }
     
     var body: some View {
@@ -210,12 +214,12 @@ struct ShiftDetailRowView: View {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text(String(format: "$%.2f", shift.totalEarnings))
+                    Text(String(format: "$%.2f", calculateTotalEarnings(for: shift)))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(.green)
                     
-                    Text(String(format: "%.1fh", shift.durationInHours))
+                    Text(String(format: "%.1fh", calculateDurationInHours(for: shift)))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -432,6 +436,21 @@ struct ExportOptionButton: View {
             .background(Color(.systemGray6))
             .cornerRadius(12)
         }
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime else { return 0 }
+        let endTime = shift.endTime ?? Date()
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let duration = calculateDurationInHours(for: shift)
+        let baseEarnings = duration * (shift.job?.hourlyRate ?? 0)
+        let bonusAmount = shift.bonusAmount ?? 0
+        return baseEarnings + bonusAmount
     }
 }
 
