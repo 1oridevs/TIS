@@ -27,7 +27,8 @@ class TimeTracker: ObservableObject {
         shift.id = UUID()
         shift.job = job
         shift.shiftType = "Regular"
-        shift.start()
+        shift.startTime = Date()
+        shift.isActive = true
         
         currentShift = shift
         isTracking = true
@@ -44,7 +45,8 @@ class TimeTracker: ObservableObject {
     func endTracking() {
         guard let shift = currentShift else { return }
         
-        shift.end()
+        shift.endTime = Date()
+        shift.isActive = false
         isTracking = false
         currentShift = nil
         elapsedTime = 0
