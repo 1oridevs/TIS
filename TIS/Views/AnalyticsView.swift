@@ -129,6 +129,19 @@ struct AnalyticsView: View {
         }
     }
     
+    private func calculateTopJobs() -> [(Job?, Double)] {
+        let jobEarnings = Dictionary(grouping: filteredShifts) { $0.job }
+            .mapValues { shifts in
+                shifts.reduce(0.0) { total, shift in
+                    total + calculateTotalEarnings(for: shift)
+                }
+            }
+            .sorted { $0.value > $1.value }
+            .prefix(5)
+        
+        return Array(jobEarnings)
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -310,12 +323,7 @@ struct AnalyticsView: View {
             Text("Top Earning Jobs")
                 .font(.headline)
             
-            let jobEarnings = Dictionary(grouping: filteredShifts) { $0.job }
-                .mapValues { shifts in
-                    shifts.reduce(0) { $0 + $1.totalEarnings }
-                }
-                .sorted { $0.value > $1.value }
-                .prefix(5)
+            let jobEarnings = calculateTopJobs()
             
             if jobEarnings.isEmpty {
                 Text("No data available")
@@ -331,12 +339,12 @@ struct AnalyticsView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.secondary)
                         
-                        Text(jobEarning.key?.name ?? "Unknown Job")
+                        Text(jobEarning.element.0?.name ?? "Unknown Job")
                             .font(.subheadline)
                         
                         Spacer()
                         
-                        Text(String(format: "$%.2f", jobEarning.value))
+                        Text(String(format: "$%.2f", jobEarning.element.1))
                             .font(.subheadline)
                             .fontWeight(.semibold)
                     }
