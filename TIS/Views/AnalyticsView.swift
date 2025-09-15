@@ -333,18 +333,19 @@ struct AnalyticsView: View {
                     .padding()
             } else {
                 ForEach(Array(jobEarnings.enumerated()), id: \.offset) { index, jobEarning in
+                    let (job, earnings) = jobEarning.element
                     HStack {
                         Text("\(index + 1).")
                             .font(.subheadline)
                             .fontWeight(.bold)
                             .foregroundColor(.secondary)
                         
-                        Text(jobEarning.1.0?.name ?? "Unknown Job")
+                        Text(job?.name ?? "Unknown Job")
                             .font(.subheadline)
                         
                         Spacer()
                         
-                        Text(String(format: "$%.2f", jobEarning.1.1))
+                        Text(String(format: "$%.2f", earnings))
                             .font(.subheadline)
                             .fontWeight(.semibold)
                     }
