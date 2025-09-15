@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 90;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,8 +17,8 @@
 		1A0000102A00000000000001 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00000F2A00000000000001 /* DashboardView.swift */; };
 		1A0000122A00000000000001 /* TimeTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000112A00000000000001 /* TimeTrackingView.swift */; };
 		1A0000142A00000000000001 /* JobsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000132A00000000000001 /* JobsView.swift */; };
-		1A0000162A00000000000001 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000152A00000000000001 /* HistoryView.swift */; };
-		1A0000182A00000000000001 /* AddJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000172A00000000000001 /* AddJobView.swift */; };
+		1A0000162A00000000000001 /* AddJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000152A00000000000001 /* AddJobView.swift */; };
+		1A0000182A00000000000001 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000172A00000000000001 /* HistoryView.swift */; };
 		1A00001A2A00000000000001 /* Job+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000192A00000000000001 /* Job+CoreDataClass.swift */; };
 		1A00001C2A00000000000001 /* Shift+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001B2A00000000000001 /* Shift+CoreDataClass.swift */; };
 		1A00001E2A00000000000001 /* Bonus+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001D2A00000000000001 /* Bonus+CoreDataClass.swift */; };
@@ -26,6 +26,8 @@
 		1A0000222A00000000000001 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000212A00000000000001 /* AnalyticsView.swift */; };
 		1A0000242A00000000000001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000232A00000000000001 /* SettingsView.swift */; };
 		1A0000262A00000000000001 /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000252A00000000000001 /* ExportManager.swift */; };
+		1A0000292A00000000000001 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000282A00000000000001 /* ColorScheme.swift */; };
+		1A00002B2A00000000000001 /* TISCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002A2A00000000000001 /* TISCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,13 +36,13 @@
 		1A0000042A00000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A0000072A00000000000001 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A0000092A00000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		1A00000B2A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
+		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodeld; sourceTree = "<group>"; };
 		1A00000D2A00000000000001 /* TimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTracker.swift; sourceTree = "<group>"; };
 		1A00000F2A00000000000001 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		1A0000112A00000000000001 /* TimeTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingView.swift; sourceTree = "<group>"; };
 		1A0000132A00000000000001 /* JobsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsView.swift; sourceTree = "<group>"; };
-		1A0000152A00000000000001 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		1A0000172A00000000000001 /* AddJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJobView.swift; sourceTree = "<group>"; };
+		1A0000152A00000000000001 /* AddJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJobView.swift; sourceTree = "<group>"; };
+		1A0000172A00000000000001 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		1A0000192A00000000000001 /* Job+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Job+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1A00001B2A00000000000001 /* Shift+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shift+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1A00001D2A00000000000001 /* Bonus+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bonus+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -48,70 +50,72 @@
 		1A0000212A00000000000001 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		1A0000232A00000000000001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1A0000252A00000000000001 /* ExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportManager.swift; sourceTree = "<group>"; };
-		1A0000292A00000000000001 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
-		1A00002B2A00000000000001 /* TISCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISCard.swift; sourceTree = "<group>"; };
 		1A0000272A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000282A00000000000001 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
+		1A00002A2A00000000000001 /* TISCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1A0000202A00000000000001 /* Frameworks */ = {
+		1A00002C2A00000000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A0000212A00000000000001 = {
+		1A00002D2A00000000000001 = {
 			isa = PBXGroup;
 			children = (
-				1A0000222A00000000000001 /* TIS */,
-				1A0000232A00000000000001 /* Products */,
+				1A00002E2A00000000000001 /* TIS */,
+				1A00002F2A00000000000001 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		1A0000222A00000000000001 /* TIS */ = {
+		1A00002E2A00000000000001 /* TIS */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000002A00000000000001 /* TISApp.swift */,
 				1A0000022A00000000000001 /* ContentView.swift */,
-				1A0000242A00000000000001 /* Views */,
-				1A0000252A00000000000001 /* ViewModels */,
-				1A0000262A00000000000001 /* Models */,
-				1A0000282A00000000000001 /* Managers */,
-				1A00002A2A00000000000001 /* Design */,
-				1A00002C2A00000000000001 /* Components */,
+				1A0000302A00000000000001 /* Views */,
+				1A0000312A00000000000001 /* ViewModels */,
+				1A0000322A00000000000001 /* Models */,
+				1A0000332A00000000000001 /* Managers */,
+				1A0000342A00000000000001 /* Design */,
+				1A0000352A00000000000001 /* Components */,
 				1A0000092A00000000000001 /* PersistenceController.swift */,
 				1A00000B2A00000000000001 /* TISModel.xcdatamodeld */,
 				1A0000042A00000000000001 /* Assets.xcassets */,
-				1A0000272A00000000000001 /* Preview Content */,
+				1A0000362A00000000000001 /* Preview Content */,
 			);
 			path = TIS;
 			sourceTree = "<group>";
 		};
-		1A0000232A00000000000001 /* Products */ = {
+		1A00002F2A00000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1A00001F2A00000000000001 /* TIS.app */,
+				1A0000272A00000000000001 /* TIS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1A0000242A00000000000001 /* Views */ = {
+		1A0000302A00000000000001 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1A00000F2A00000000000001 /* DashboardView.swift */,
 				1A0000112A00000000000001 /* TimeTrackingView.swift */,
 				1A0000132A00000000000001 /* JobsView.swift */,
-				1A0000152A00000000000001 /* HistoryView.swift */,
-				1A0000172A00000000000001 /* AddJobView.swift */,
+				1A0000152A00000000000001 /* AddJobView.swift */,
+				1A0000172A00000000000001 /* HistoryView.swift */,
 				1A0000212A00000000000001 /* AnalyticsView.swift */,
 				1A0000232A00000000000001 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1A0000252A00000000000001 /* ViewModels */ = {
+		1A0000312A00000000000001 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				1A00000D2A00000000000001 /* TimeTracker.swift */,
@@ -119,7 +123,7 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		1A0000262A00000000000001 /* Models */ = {
+		1A0000322A00000000000001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000192A00000000000001 /* Job+CoreDataClass.swift */,
@@ -129,7 +133,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1A0000282A00000000000001 /* Managers */ = {
+		1A0000332A00000000000001 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				1A00001F2A00000000000001 /* NotificationManager.swift */,
@@ -138,23 +142,23 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		1A00002A2A00000000000001 /* Design */ = {
+		1A0000342A00000000000001 /* Design */ = {
 			isa = PBXGroup;
 			children = (
-				1A0000292A00000000000001 /* ColorScheme.swift */,
+				1A0000282A00000000000001 /* ColorScheme.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
 		};
-		1A00002C2A00000000000001 /* Components */ = {
+		1A0000352A00000000000001 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				1A00002B2A00000000000001 /* TISCard.swift */,
+				1A00002A2A00000000000001 /* TISCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		1A0000272A00000000000001 /* Preview Content */ = {
+		1A0000362A00000000000001 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000072A00000000000001 /* Preview Assets.xcassets */,
@@ -165,75 +169,80 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1A0000282A00000000000001 /* TIS */ = {
+		1A0000372A00000000000001 /* TIS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1A0000292A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */;
+			buildConfigurationList = 1A00003A2A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */;
 			buildPhases = (
-				1A00002A2A00000000000001 /* Sources */,
-				1A0000202A00000000000001 /* Frameworks */,
-				1A00002B2A00000000000001 /* Resources */,
+				1A0000382A00000000000001 /* Sources */,
+				1A00002C2A00000000000001 /* Frameworks */,
+				1A0000392A00000000000001 /* Resources */,
 			);
 			buildRules = (
 			);
+			dependencies = (
+			);
 			name = TIS;
 			productName = TIS;
-			productReference = 1A00001F2A00000000000001 /* TIS.app */;
+			productReference = 1A0000272A00000000000001 /* TIS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1A00002C2A00000000000001 /* Project object */ = {
+		1A00003B2A00000000000001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					1A0000282A00000000000001 = {
+					1A0000372A00000000000001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = 1A00002D2A00000000000001 /* Build configuration list for PBXProject "TIS" */;
+			buildConfigurationList = 1A00003C2A00000000000001 /* Build configuration list for PBXProject "TIS" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 1A0000212A00000000000001;
-			preferredProjectObjectVersion = 90;
-			productRefGroup = 1A0000232A00000000000001 /* Products */;
+			mainGroup = 1A00002D2A00000000000001;
+			productRefGroup = 1A00002F2A00000000000001 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1A0000282A00000000000001 /* TIS */,
+				1A0000372A00000000000001 /* TIS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1A00002B2A00000000000001 /* Resources */ = {
+		1A0000392A00000000000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 				1A0000082A00000000000001 /* Preview Assets.xcassets in Resources */,
 				1A0000052A00000000000001 /* Assets.xcassets in Resources */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1A00002A2A00000000000001 /* Sources */ = {
+		1A0000382A00000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 				1A00000C2A00000000000001 /* TISModel.xcdatamodeld in Sources */,
 				1A00000E2A00000000000001 /* TimeTracker.swift in Sources */,
 				1A0000102A00000000000001 /* DashboardView.swift in Sources */,
 				1A0000122A00000000000001 /* TimeTrackingView.swift in Sources */,
 				1A0000142A00000000000001 /* JobsView.swift in Sources */,
-				1A0000162A00000000000001 /* HistoryView.swift in Sources */,
-				1A0000182A00000000000001 /* AddJobView.swift in Sources */,
+				1A0000162A00000000000001 /* AddJobView.swift in Sources */,
+				1A0000182A00000000000001 /* HistoryView.swift in Sources */,
 				1A00001A2A00000000000001 /* Job+CoreDataClass.swift in Sources */,
 				1A00001C2A00000000000001 /* Shift+CoreDataClass.swift in Sources */,
 				1A00001E2A00000000000001 /* Bonus+CoreDataClass.swift in Sources */,
@@ -247,11 +256,12 @@
 				1A0000012A00000000000001 /* TISApp.swift in Sources */,
 				1A00000A2A00000000000001 /* PersistenceController.swift in Sources */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1A00002E2A00000000000001 /* Debug configuration for PBXProject "TIS" */ = {
+		1A00003D2A00000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -303,7 +313,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -314,7 +324,7 @@
 			};
 			name = Debug;
 		};
-		1A00002F2A00000000000001 /* Release configuration for PBXProject "TIS" */ = {
+		1A00003E2A00000000000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -354,13 +364,17 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -370,7 +384,7 @@
 			};
 			name = Release;
 		};
-		1A0000302A00000000000001 /* Debug configuration for PBXNativeTarget "TIS" */ = {
+		1A00003F2A00000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -378,7 +392,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
-				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -386,7 +399,6 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -400,7 +412,7 @@
 			};
 			name = Debug;
 		};
-		1A0000312A00000000000001 /* Release configuration for PBXNativeTarget "TIS" */ = {
+		1A0000402A00000000000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -408,7 +420,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
-				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -416,7 +427,6 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -433,20 +443,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1A0000292A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */ = {
+		1A00003A2A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A0000302A00000000000001 /* Debug configuration for PBXNativeTarget "TIS" */,
-				1A0000312A00000000000001 /* Release configuration for PBXNativeTarget "TIS" */,
+				1A00003F2A00000000000001 /* Debug */,
+				1A0000402A00000000000001 /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1A00002D2A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
+		1A00003C2A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A00002E2A00000000000001 /* Debug configuration for PBXProject "TIS" */,
-				1A00002F2A00000000000001 /* Release configuration for PBXProject "TIS" */,
+				1A00003D2A00000000000001 /* Debug */,
+				1A00003E2A00000000000001 /* Release */,
 			);
+			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
@@ -455,14 +467,14 @@
 		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				1A00000B2A00000000000001 /* TISModel.xcdatamodel */,
 			);
-			currentVersion = 1A00000B2A00000000000001 /* TISModel.xcdatamodel */;
+			currentVersion = 1A0000412A00000000000001 /* TISModel.xcdatamodel */;
 			path = TISModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
+		1A0000412A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 /* End XCVersionGroup section */
 	};
-	rootObject = 1A00002C2A00000000000001 /* Project object */;
+	rootObject = 1A00003B2A00000000000001 /* Project object */;
 }
