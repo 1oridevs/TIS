@@ -508,7 +508,7 @@ struct TimeTrackingView: View {
                     .padding(20)
                     .background(
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(selectedJob == nil ? TISColors.secondaryText : TISColors.successGradient)
+                            .fill(selectedJob == nil ? LinearGradient(colors: [TISColors.secondaryText, TISColors.secondaryText], startPoint: .topLeading, endPoint: .bottomTrailing) : TISColors.successGradient)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 20)
                                     .stroke(.white.opacity(0.3), lineWidth: 1)
