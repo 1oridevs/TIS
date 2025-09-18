@@ -121,7 +121,6 @@ struct CurrentStatusCard: View {
                         .frame(maxWidth: .infinity)
                 }
             }
-            }
         }
     }
     
