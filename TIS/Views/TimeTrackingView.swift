@@ -17,25 +17,30 @@ struct TimeTrackingView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                // Time Display
-                TimeDisplayView()
-                
-                // Job Selection
-                JobSelectionView()
-                
-                // Shift Type Display
-                ShiftTypeDisplayView()
-                
-                // Notes Section
-                NotesSectionView()
-                
-                // Control Buttons
-                ControlButtonsView()
-                
-                Spacer()
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Time Display
+                    TimeDisplayView()
+                    
+                    // Job Selection
+                    JobSelectionView()
+                    
+                    // Shift Type Display
+                    ShiftTypeDisplayView()
+                    
+                    // Notes Section
+                    NotesSectionView()
+                    
+                    // Control Buttons
+                    ControlButtonsView()
+                    
+                    // Bottom padding to prevent interference with tab bar
+                    Color.clear
+                        .frame(height: 100)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
             }
-            .padding()
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -123,52 +128,106 @@ struct TimeTrackingView: View {
     
     @ViewBuilder
     private func TimeDisplayView() -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 24) {
+            // Main Timer Circle with Enhanced Design
             ZStack {
+                // Outer glow ring
+                Circle()
+                    .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.primaryGradient)
+                    .frame(width: 220, height: 220)
+                    .blur(radius: 8)
+                    .opacity(0.3)
+                
+                // Main circle
                 Circle()
                     .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
                     .frame(width: 200, height: 200)
                     .scaleEffect(timeTracker.isTracking ? 1.05 : 1.0)
                     .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
                 
-                VStack(spacing: 8) {
+                // Inner content
+                VStack(spacing: 12) {
+                    // Status icon
+                    Image(systemName: timeTracker.isTracking ? "play.circle.fill" : "pause.circle.fill")
+                        .font(.system(size: 32))
+                        .foregroundColor(.white.opacity(0.8))
+                        .scaleEffect(timeTracker.isTracking ? 1.1 : 1.0)
+                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                    
+                    // Time display
                     if timeTracker.isTracking {
                         Text(formatTime(timeTracker.elapsedTime))
-                            .font(.system(size: 36, weight: .bold, design: .monospaced))
+                            .font(.system(size: 32, weight: .bold, design: .monospaced))
                             .foregroundColor(.white)
                             .animation(.easeInOut(duration: 0.5), value: timeTracker.elapsedTime)
-                        
-                        Text("TRACKING")
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white.opacity(0.8))
-                            .tracking(2)
                     } else {
                         Text("00:00:00")
-                            .font(.system(size: 36, weight: .bold, design: .monospaced))
+                            .font(.system(size: 32, weight: .bold, design: .monospaced))
                             .foregroundColor(.white.opacity(0.7))
-                        
-                        Text("READY")
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white.opacity(0.6))
-                            .tracking(2)
                     }
+                    
+                    // Status text
+                    Text(timeTracker.isTracking ? "TRACKING" : "READY")
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white.opacity(0.8))
+                        .tracking(3)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .background(
+                            Capsule()
+                                .fill(.white.opacity(0.2))
+                        )
                 }
             }
             
-            VStack(spacing: 8) {
+            // Job info with enhanced design
+            VStack(spacing: 12) {
                 if timeTracker.isTracking {
-                    Text("Currently tracking: \(timeTracker.currentShift?.job?.name ?? "Unknown")")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(TISColors.primaryText)
-                        .multilineTextAlignment(.center)
+                    HStack {
+                        Image(systemName: "briefcase.fill")
+                            .foregroundColor(TISColors.success)
+                            .font(.title3)
+                        
+                        Text("Currently tracking:")
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
+                        
+                        Text(timeTracker.currentShift?.job?.name ?? "Unknown")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(TISColors.primaryText)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(TISColors.success.opacity(0.1))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(TISColors.success.opacity(0.3), lineWidth: 1)
+                            )
+                    )
                 } else {
-                    Text("Select a job to start tracking")
-                        .font(.subheadline)
-                        .foregroundColor(TISColors.secondaryText)
-                        .multilineTextAlignment(.center)
+                    HStack {
+                        Image(systemName: "hand.tap.fill")
+                            .foregroundColor(TISColors.primary)
+                            .font(.title3)
+                        
+                        Text("Select a job to start tracking")
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(TISColors.primary.opacity(0.1))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(TISColors.primary.opacity(0.3), lineWidth: 1)
+                            )
+                    )
                 }
             }
         }
@@ -186,37 +245,103 @@ struct TimeTrackingView: View {
     
     @ViewBuilder
     private func JobSelectionView() -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Job")
-                .font(.headline)
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "briefcase.fill")
+                    .foregroundColor(TISColors.primary)
+                    .font(.title3)
+                
+                Text("Job Selection")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(TISColors.primaryText)
+                
+                Spacer()
+            }
             
             if timeTracker.isTracking {
-                HStack {
-                    Image(systemName: "briefcase.fill")
-                        .foregroundColor(.blue)
-                    Text(timeTracker.currentShift?.job?.name ?? "Unknown Job")
-                        .font(.subheadline)
+                HStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(TISColors.success.opacity(0.2))
+                            .frame(width: 40, height: 40)
+                        
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(TISColors.success)
+                            .font(.title3)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(timeTracker.currentShift?.job?.name ?? "Unknown Job")
+                            .font(.headline)
+                            .foregroundColor(TISColors.primaryText)
+                        
+                        Text(String(format: "$%.2f/hour", timeTracker.currentShift?.job?.hourlyRate ?? 0))
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.success)
+                    }
+                    
                     Spacer()
-                    Text(String(format: "$%.2f/hour", timeTracker.currentShift?.job?.hourlyRate ?? 0))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    
+                    Image(systemName: "clock.fill")
+                        .foregroundColor(TISColors.success)
+                        .font(.title3)
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
+                .padding(16)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(TISColors.success.opacity(0.1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(TISColors.success.opacity(0.3), lineWidth: 2)
+                        )
+                )
             } else {
                 Button(action: { showingJobSelection = true }) {
-                    HStack {
-                        Image(systemName: "briefcase")
-                        Text(selectedJob?.name ?? "Select Job")
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(TISColors.primary.opacity(0.2))
+                                .frame(width: 40, height: 40)
+                            
+                            Image(systemName: "plus")
+                                .foregroundColor(TISColors.primary)
+                                .font(.title3)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(selectedJob?.name ?? "Select Job")
+                                .font(.headline)
+                                .foregroundColor(selectedJob == nil ? TISColors.secondaryText : TISColors.primaryText)
+                            
+                            if let job = selectedJob {
+                                Text(String(format: "$%.2f/hour", job.hourlyRate))
+                                    .font(.subheadline)
+                                    .foregroundColor(TISColors.success)
+                            } else {
+                                Text("Choose your work position")
+                                    .font(.subheadline)
+                                    .foregroundColor(TISColors.secondaryText)
+                            }
+                        }
+                        
                         Spacer()
-                        Image(systemName: "chevron.down")
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(TISColors.secondaryText)
+                            .font(.caption)
                     }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(TISColors.cardBackground)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(selectedJob == nil ? TISColors.cardBorder.opacity(0.5) : TISColors.primary.opacity(0.3), lineWidth: 2)
+                            )
+                    )
                 }
-                .foregroundColor(.primary)
+                .buttonStyle(PlainButtonStyle())
             }
         }
         .sheet(isPresented: $showingJobSelection) {
@@ -308,30 +433,88 @@ struct TimeTrackingView: View {
     
     @ViewBuilder
     private func ControlButtonsView() -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             if timeTracker.isTracking {
+                // End Shift Button with Enhanced Design
                 Button(action: endShift) {
-                    HStack {
-                        Image(systemName: "stop.fill")
-                        Text("End Shift")
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(.white.opacity(0.2))
+                                .frame(width: 40, height: 40)
+                            
+                            Image(systemName: "stop.fill")
+                                .font(.title3)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("End Shift")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            
+                            Text("Stop tracking time")
+                                .font(.caption)
+                                .opacity(0.8)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title2)
                     }
                     .foregroundColor(.white)
-                    .padding()
-                    .background(TISColors.warning)
-                    .cornerRadius(16)
+                    .padding(20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(TISColors.warningGradient)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(.white.opacity(0.3), lineWidth: 1)
+                            )
+                    )
+                    .tisShadow(TISShadows.medium)
                 }
                 .scaleEffect(1.0)
                 .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
             } else {
+                // Start Shift Button with Enhanced Design
                 Button(action: startShift) {
-                    HStack {
-                        Image(systemName: "play.fill")
-                        Text("Start Shift")
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(.white.opacity(0.2))
+                                .frame(width: 40, height: 40)
+                            
+                            Image(systemName: "play.fill")
+                                .font(.title3)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Start Shift")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            
+                            Text(selectedJob == nil ? "Select a job first" : "Begin tracking time")
+                                .font(.caption)
+                                .opacity(0.8)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title2)
                     }
                     .foregroundColor(.white)
-                    .padding()
-                    .background(selectedJob == nil ? Color.gray : TISColors.success)
-                    .cornerRadius(16)
+                    .padding(20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(selectedJob == nil ? TISColors.secondaryText : TISColors.successGradient)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(.white.opacity(0.3), lineWidth: 1)
+                            )
+                    )
+                    .tisShadow(TISShadows.medium)
                 }
                 .disabled(selectedJob == nil)
                 .opacity(selectedJob == nil ? 0.6 : 1.0)
@@ -339,23 +522,51 @@ struct TimeTrackingView: View {
                 .animation(.easeInOut(duration: 0.3), value: selectedJob == nil)
             }
             
+            // Manual Shift Button (only when not tracking and job selected)
             if !timeTracker.isTracking && selectedJob != nil {
                 Button(action: {
                     showingAddShift = true
                 }) {
-                    HStack {
-                        Image(systemName: "plus.circle")
-                        Text("Add Manual Shift")
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(TISColors.primary.opacity(0.2))
+                                .frame(width: 40, height: 40)
+                            
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title3)
+                                .foregroundColor(TISColors.primary)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Add Manual Shift")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(TISColors.primary)
+                            
+                            Text("Add past work hours")
+                                .font(.caption)
+                                .foregroundColor(TISColors.secondaryText)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "arrow.right.circle")
+                            .font(.title2)
+                            .foregroundColor(TISColors.primary)
                     }
-                    .foregroundColor(TISColors.primary)
-                    .padding()
-                    .background(TISColors.cardBackground)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(TISColors.primary, lineWidth: 2)
+                    .padding(20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(TISColors.cardBackground)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(TISColors.primary.opacity(0.3), lineWidth: 2)
+                            )
                     )
-                    .cornerRadius(16)
+                    .tisShadow(TISShadows.small)
                 }
+                .buttonStyle(PlainButtonStyle())
             }
         }
     }
