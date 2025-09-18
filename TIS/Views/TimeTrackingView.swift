@@ -51,31 +51,7 @@ struct TimeTrackingView: View {
             timeTracker.setContext(viewContext)
         }
         .sheet(isPresented: $showingAddShift) {
-            NavigationView {
-                VStack {
-                    Text("Add Manual Shift")
-                        .font(.title)
-                        .padding()
-                    
-                    Text("This feature will be available soon!")
-                        .foregroundColor(.secondary)
-                        .padding()
-                    
-                    Button("Close") {
-                        showingAddShift = false
-                    }
-                    .padding()
-                }
-                .navigationTitle("Add Shift")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            showingAddShift = false
-                        }
-                    }
-                }
-            }
+            SimpleAddShiftView(jobs: jobs)
         }
     }
     
