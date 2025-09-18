@@ -38,7 +38,7 @@ struct TimeTrackingView: View {
             .padding()
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
+            .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingAddShift = true
@@ -47,7 +47,7 @@ struct TimeTrackingView: View {
                             .font(.title2)
                     }
                 }
-            }
+            })
         }
         .onAppear {
             timeTracker.setContext(viewContext)
