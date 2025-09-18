@@ -38,7 +38,7 @@ struct TimeTrackingView: View {
             .padding()
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar(content: {
+            .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingAddShift = true
@@ -47,7 +47,7 @@ struct TimeTrackingView: View {
                             .font(.title2)
                     }
                 }
-            })
+            }
         }
         .onAppear {
             timeTracker.setContext(viewContext)
@@ -246,14 +246,28 @@ struct TimeTrackingView: View {
     private func ControlButtonsView() -> some View {
         VStack(spacing: 20) {
             if timeTracker.isTracking {
-                TISButton("End Shift", icon: "stop.fill", gradient: TISColors.warningGradient) {
-                    endShift()
+                Button(action: endShift) {
+                    HStack {
+                        Image(systemName: "stop.fill")
+                        Text("End Shift")
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(TISColors.warning)
+                    .cornerRadius(16)
                 }
                 .scaleEffect(1.0)
                 .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
             } else {
-                TISButton("Start Shift", icon: "play.fill", gradient: TISColors.successGradient) {
-                    startShift()
+                Button(action: startShift) {
+                    HStack {
+                        Image(systemName: "play.fill")
+                        Text("Start Shift")
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(selectedJob == nil ? Color.gray : TISColors.success)
+                    .cornerRadius(16)
                 }
                 .disabled(selectedJob == nil)
                 .opacity(selectedJob == nil ? 0.6 : 1.0)
@@ -262,8 +276,21 @@ struct TimeTrackingView: View {
             }
             
             if !timeTracker.isTracking && selectedJob != nil {
-                TISSecondaryButton("Add Manual Shift", icon: "plus.circle") {
+                Button(action: {
                     showingAddShift = true
+                }) {
+                    HStack {
+                        Image(systemName: "plus.circle")
+                        Text("Add Manual Shift")
+                    }
+                    .foregroundColor(TISColors.primary)
+                    .padding()
+                    .background(TISColors.cardBackground)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(TISColors.primary, lineWidth: 2)
+                    )
+                    .cornerRadius(16)
                 }
             }
         }
