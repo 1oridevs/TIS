@@ -230,18 +230,48 @@ struct JobsOverviewCard: View {
                     .foregroundColor(TISColors.primaryText)
                 
                 if jobs.isEmpty {
-                    VStack(spacing: 12) {
-                        Image(systemName: "briefcase")
-                            .font(.title)
-                            .foregroundColor(TISColors.secondaryText)
+                    VStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(TISColors.primary.opacity(0.1))
+                                .frame(width: 60, height: 60)
+                            
+                            Image(systemName: "briefcase.fill")
+                                .font(.title2)
+                                .foregroundColor(TISColors.primary)
+                        }
                         
-                        Text("No jobs added yet")
+                        VStack(spacing: 8) {
+                            Text("No jobs added yet")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(TISColors.primaryText)
+                            
+                            Text("Add your first job to start tracking time and earnings")
+                                .font(.subheadline)
+                                .foregroundColor(TISColors.secondaryText)
+                                .multilineTextAlignment(.center)
+                        }
+                        
+                        Button(action: {
+                            // This will be handled by the parent view
+                        }) {
+                            HStack {
+                                Image(systemName: "plus.circle.fill")
+                                Text("Add Your First Job")
+                            }
                             .font(.subheadline)
-                            .foregroundColor(TISColors.secondaryText)
-                            .multilineTextAlignment(.center)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(TISColors.primaryGradient)
+                            .cornerRadius(20)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
+                    .padding(.vertical, 24)
                 } else {
                     LazyVGrid(columns: [
                         GridItem(.flexible()),

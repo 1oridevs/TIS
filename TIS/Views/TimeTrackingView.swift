@@ -58,71 +58,7 @@ struct TimeTrackingView: View {
             timeTracker.setContext(viewContext)
         }
         .sheet(isPresented: $showingAddShift) {
-            NavigationView {
-                VStack(spacing: 20) {
-                    Text("Add Manual Shift")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Text("This feature allows you to add past shifts manually.")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                    
-                    VStack(spacing: 16) {
-                        HStack {
-                            Text("Job:")
-                            Spacer()
-                            Text("Select from your jobs")
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        HStack {
-                            Text("Start Time:")
-                            Spacer()
-                            Text("Date & Time picker")
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        HStack {
-                            Text("End Time:")
-                            Spacer()
-                            Text("Date & Time picker")
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        HStack {
-                            Text("Notes:")
-                            Spacer()
-                            Text("Optional")
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(12)
-                    .padding(.horizontal)
-                    
-                    Spacer()
-                    
-                    Button("Close") {
-                        showingAddShift = false
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .padding()
-                }
-                .padding()
-                .navigationTitle("Add Shift")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") {
-                            showingAddShift = false
-                        }
-                    }
-                }
-            }
+            AddManualShiftView(jobs: jobs)
         }
     }
     
@@ -476,6 +412,8 @@ struct TimeTrackingView: View {
                 }
                 .scaleEffect(1.0)
                 .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
+                .accessibilityLabel("End shift button")
+                .accessibilityHint("Stop tracking current shift and save to history")
             } else {
                 // Start Shift Button with Enhanced Design
                 Button(action: startShift) {
@@ -516,10 +454,12 @@ struct TimeTrackingView: View {
                     )
                     .tisShadow(TISShadows.medium)
                 }
-                .disabled(selectedJob == nil)
-                .opacity(selectedJob == nil ? 0.6 : 1.0)
-                .scaleEffect(selectedJob == nil ? 0.95 : 1.0)
+                .disabled(selectedJob == nil || timeTracker.isTracking)
+                .opacity((selectedJob == nil || timeTracker.isTracking) ? 0.6 : 1.0)
+                .scaleEffect((selectedJob == nil || timeTracker.isTracking) ? 0.95 : 1.0)
                 .animation(.easeInOut(duration: 0.3), value: selectedJob == nil)
+                .accessibilityLabel("Start shift button")
+                .accessibilityHint(selectedJob == nil ? "Select a job first" : "Begin tracking time for selected job")
             }
             
             // Manual Shift Button (only when not tracking and job selected)
@@ -572,7 +512,16 @@ struct TimeTrackingView: View {
     }
     
     private func startShift() {
-        guard let job = selectedJob else { return }
+        guard let job = selectedJob else { 
+            // Show error or feedback
+            return 
+        }
+        
+        // Check if already tracking
+        if timeTracker.isTracking {
+            // Show alert or feedback
+            return
+        }
         
         timeTracker.startTracking(for: job)
         
@@ -581,12 +530,28 @@ struct TimeTrackingView: View {
             currentShift.notes = shiftNotes
         }
         
-        try? viewContext.save()
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error saving shift start: \(error)")
+        }
     }
     
     private func endShift() {
+        // Check if actually tracking
+        guard timeTracker.isTracking else {
+            print("Not currently tracking a shift")
+            return
+        }
+        
         if let currentShift = timeTracker.currentShift {
             currentShift.notes = shiftNotes
+        }
+        
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error saving shift end: \(error)")
         }
         
         timeTracker.endTracking()
