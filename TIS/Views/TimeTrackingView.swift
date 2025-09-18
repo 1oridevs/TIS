@@ -13,6 +13,7 @@ struct TimeTrackingView: View {
     @State private var showingJobSelection = false
     @State private var shiftNotes = ""
     @State private var selectedShiftType = "Regular"
+    @State private var showingAddShift = false
     
     var body: some View {
         NavigationView {
@@ -37,9 +38,22 @@ struct TimeTrackingView: View {
             .padding()
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingAddShift = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title2)
+                    }
+                }
+            }
         }
         .onAppear {
             timeTracker.setContext(viewContext)
+        }
+        .sheet(isPresented: $showingAddShift) {
+            AddShiftView(jobs: jobs)
         }
     }
     

@@ -54,27 +54,41 @@ struct CurrentStatusCard: View {
     
     var body: some View {
         TISCard(shadow: TISShadows.medium) {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
+            VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
+                        .frame(width: 50, height: 50)
+                    
                     Image(systemName: timeTracker.isTracking ? "clock.fill" : "clock")
                         .font(.title2)
-                        .foregroundColor(timeTracker.isTracking ? TISColors.success : TISColors.secondaryText)
-                    
+                        .foregroundColor(timeTracker.isTracking ? .white : TISColors.secondaryText)
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
                     Text(timeTracker.isTracking ? "Currently Working" : "Ready to Work")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
                     
-                    Spacer()
-                    
                     if timeTracker.isTracking {
-                        Circle()
-                            .fill(TISColors.success)
-                            .frame(width: 8, height: 8)
-                            .scaleEffect(timeTracker.isTracking ? 1.2 : 1.0)
-                            .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                        Text("Tap to view details")
+                            .font(.caption)
+                            .foregroundColor(TISColors.secondaryText)
                     }
                 }
+                
+                Spacer()
+                
+                if timeTracker.isTracking {
+                    Circle()
+                        .fill(TISColors.success)
+                        .frame(width: 12, height: 12)
+                        .scaleEffect(timeTracker.isTracking ? 1.3 : 1.0)
+                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                }
+            }
                 
                 if timeTracker.isTracking {
                     VStack(alignment: .leading, spacing: 8) {
@@ -107,6 +121,7 @@ struct CurrentStatusCard: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+            }
         }
     }
     
@@ -127,12 +142,26 @@ struct QuickActionsCard: View {
     private var jobs: FetchedResults<Job>
     
     var body: some View {
-        TISCard {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Quick Actions")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(TISColors.primaryText)
+        TISCard(shadow: TISShadows.medium) {
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
+                    ZStack {
+                        Circle()
+                            .fill(TISColors.primaryGradient)
+                            .frame(width: 40, height: 40)
+                        
+                        Image(systemName: "bolt.fill")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                    }
+                    
+                    Text("Quick Actions")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(TISColors.primaryText)
+                    
+                    Spacer()
+                }
                 
                 if timeTracker.isTracking {
                     TISButton("End Shift", icon: "stop.fill", color: TISColors.error) {
