@@ -59,28 +59,65 @@ struct TimeTrackingView: View {
     
     @ViewBuilder
     private func TimeDisplayView() -> some View {
-        VStack(spacing: 16) {
-            if timeTracker.isTracking {
-                Text(formatTime(timeTracker.elapsedTime))
-                    .font(.system(size: 48, weight: .bold, design: .monospaced))
-                    .foregroundColor(.primary)
+        VStack(spacing: 20) {
+            ZStack {
+                Circle()
+                    .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
+                    .frame(width: 200, height: 200)
+                    .scaleEffect(timeTracker.isTracking ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
                 
-                Text("Currently tracking: \(timeTracker.currentShift?.job?.name ?? "Unknown")")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            } else {
-                Text("00:00:00")
-                    .font(.system(size: 48, weight: .bold, design: .monospaced))
-                    .foregroundColor(.gray)
-                
-                Text("Select a job to start tracking")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                VStack(spacing: 8) {
+                    if timeTracker.isTracking {
+                        Text(formatTime(timeTracker.elapsedTime))
+                            .font(.system(size: 36, weight: .bold, design: .monospaced))
+                            .foregroundColor(.white)
+                            .animation(.easeInOut(duration: 0.5), value: timeTracker.elapsedTime)
+                        
+                        Text("TRACKING")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white.opacity(0.8))
+                            .tracking(2)
+                    } else {
+                        Text("00:00:00")
+                            .font(.system(size: 36, weight: .bold, design: .monospaced))
+                            .foregroundColor(.white.opacity(0.7))
+                        
+                        Text("READY")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white.opacity(0.6))
+                            .tracking(2)
+                    }
+                }
+            }
+            
+            VStack(spacing: 8) {
+                if timeTracker.isTracking {
+                    Text("Currently tracking: \(timeTracker.currentShift?.job?.name ?? "Unknown")")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(TISColors.primaryText)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text("Select a job to start tracking")
+                        .font(.subheadline)
+                        .foregroundColor(TISColors.secondaryText)
+                        .multilineTextAlignment(.center)
+                }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(16)
+        .padding(24)
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .fill(TISColors.cardGradient)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
+                )
+        )
+        .tisShadow(TISShadows.large)
     }
     
     @ViewBuilder
@@ -207,32 +244,27 @@ struct TimeTrackingView: View {
     
     @ViewBuilder
     private func ControlButtonsView() -> some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             if timeTracker.isTracking {
-                Button(action: endShift) {
-                    HStack {
-                        Image(systemName: "stop.fill")
-                        Text("End Shift")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                TISButton("End Shift", icon: "stop.fill", gradient: TISColors.warningGradient) {
+                    endShift()
                 }
+                .scaleEffect(1.0)
+                .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
             } else {
-                Button(action: startShift) {
-                    HStack {
-                        Image(systemName: "play.fill")
-                        Text("Start Shift")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(selectedJob != nil ? Color.green : Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                TISButton("Start Shift", icon: "play.fill", gradient: TISColors.successGradient) {
+                    startShift()
                 }
                 .disabled(selectedJob == nil)
+                .opacity(selectedJob == nil ? 0.6 : 1.0)
+                .scaleEffect(selectedJob == nil ? 0.95 : 1.0)
+                .animation(.easeInOut(duration: 0.3), value: selectedJob == nil)
+            }
+            
+            if !timeTracker.isTracking && selectedJob != nil {
+                TISSecondaryButton("Add Manual Shift", icon: "plus.circle") {
+                    showingAddShift = true
+                }
             }
         }
     }
