@@ -38,12 +38,14 @@ struct TimeTrackingView: View {
             .padding()
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
-            .navigationBarTrailing {
-                Button(action: {
-                    showingAddShift = true
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title2)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingAddShift = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title2)
+                    }
                 }
             }
         }
@@ -51,7 +53,71 @@ struct TimeTrackingView: View {
             timeTracker.setContext(viewContext)
         }
         .sheet(isPresented: $showingAddShift) {
-            SimpleAddShiftView(jobs: jobs)
+            NavigationView {
+                VStack(spacing: 20) {
+                    Text("Add Manual Shift")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Text("This feature allows you to add past shifts manually.")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                    
+                    VStack(spacing: 16) {
+                        HStack {
+                            Text("Job:")
+                            Spacer()
+                            Text("Select from your jobs")
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        HStack {
+                            Text("Start Time:")
+                            Spacer()
+                            Text("Date & Time picker")
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        HStack {
+                            Text("End Time:")
+                            Spacer()
+                            Text("Date & Time picker")
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        HStack {
+                            Text("Notes:")
+                            Spacer()
+                            Text("Optional")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    Button("Close") {
+                        showingAddShift = false
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                }
+                .padding()
+                .navigationTitle("Add Shift")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            showingAddShift = false
+                        }
+                    }
+                }
+            }
         }
     }
     
