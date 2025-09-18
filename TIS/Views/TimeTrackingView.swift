@@ -38,14 +38,12 @@ struct TimeTrackingView: View {
             .padding()
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingAddShift = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
-                    }
+            .navigationBarTrailing {
+                Button(action: {
+                    showingAddShift = true
+                }) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title2)
                 }
             }
         }
@@ -53,7 +51,31 @@ struct TimeTrackingView: View {
             timeTracker.setContext(viewContext)
         }
         .sheet(isPresented: $showingAddShift) {
-            AddShiftView(jobs: jobs)
+            NavigationView {
+                VStack {
+                    Text("Add Manual Shift")
+                        .font(.title)
+                        .padding()
+                    
+                    Text("This feature will be available soon!")
+                        .foregroundColor(.secondary)
+                        .padding()
+                    
+                    Button("Close") {
+                        showingAddShift = false
+                    }
+                    .padding()
+                }
+                .navigationTitle("Add Shift")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            showingAddShift = false
+                        }
+                    }
+                }
+            }
         }
     }
     
