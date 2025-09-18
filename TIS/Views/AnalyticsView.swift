@@ -332,9 +332,9 @@ struct AnalyticsView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding()
             } else {
-                ForEach(Array(jobEarnings.enumerated()), id: \.offset) { index, jobEarning in
-                    let job = jobEarning.1.0
-                    let earnings = jobEarning.1.1
+                ForEach(Array(jobEarnings.indices), id: \.self) { index in
+                    let jobEarning = jobEarnings[index]
+                    let (job, earnings) = jobEarning
                     HStack {
                         Text("\(index + 1).")
                             .font(.subheadline)
