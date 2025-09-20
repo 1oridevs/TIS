@@ -82,80 +82,14 @@ struct TimeTrackingView: View {
         VStack(spacing: 24) {
             // Main Timer Circle with Enhanced Design
             ZStack {
-                // Multiple glow rings for depth
-                ForEach(0..<3, id: \.self) { index in
-                    Circle()
-                        .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.primaryGradient)
-                        .frame(width: 220 + CGFloat(index * 20), height: 220 + CGFloat(index * 20))
-                        .blur(radius: 8 + CGFloat(index * 4))
-                        .opacity(0.1 - CGFloat(index * 0.03))
-                        .scaleEffect(timeTracker.isTracking ? 1.0 + CGFloat(index * 0.1) : 1.0)
-                        .animation(.easeInOut(duration: 2.0 + Double(index) * 0.5).repeatForever(autoreverses: true), value: timeTracker.isTracking)
-                }
+                // Glow rings
+                GlowRingsView(isTracking: timeTracker.isTracking)
                 
-                // Main circle with enhanced styling
-                Circle()
-                    .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
-                    .frame(width: 200, height: 200)
-                    .scaleEffect(timeTracker.isTracking ? 1.05 : 1.0)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: timeTracker.isTracking)
-                    .overlay(
-                        Circle()
-                            .stroke(
-                                LinearGradient(
-                                    colors: [.white.opacity(0.3), .clear],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ),
-                                lineWidth: 2
-                            )
-                    )
+                // Main circle
+                MainCircleView(isTracking: timeTracker.isTracking)
                 
-                // Inner content with enhanced animations
-                VStack(spacing: 16) {
-                    // Status icon with pulsing effect
-                    ZStack {
-                        Circle()
-                            .fill(.white.opacity(0.2))
-                            .frame(width: 60, height: 60)
-                            .scaleEffect(timeTracker.isTracking ? 1.2 : 1.0)
-                            .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: timeTracker.isTracking)
-                        
-                        Image(systemName: timeTracker.isTracking ? "play.circle.fill" : "pause.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundColor(.white)
-                            .scaleEffect(timeTracker.isTracking ? 1.1 : 1.0)
-                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: timeTracker.isTracking)
-                    }
-                    
-                    // Time display with enhanced typography
-                    VStack(spacing: 4) {
-                        if timeTracker.isTracking {
-                            Text(formatTime(timeTracker.elapsedTime))
-                                .font(.system(size: 36, weight: .bold, design: .monospaced))
-                                .foregroundColor(.white)
-                                .animation(.easeInOut(duration: 0.3), value: timeTracker.elapsedTime)
-                                .contentTransition(.numericText())
-                        } else {
-                            Text("00:00:00")
-                                .font(.system(size: 36, weight: .bold, design: .monospaced))
-                                .foregroundColor(.white.opacity(0.7))
-                        }
-                        
-                        // Status text with enhanced styling
-                        Text(timeTracker.isTracking ? "TRACKING" : "READY")
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white.opacity(0.9))
-                            .tracking(3)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 4)
-                            .background(
-                                Capsule()
-                                    .fill(.white.opacity(0.2))
-                            )
-                    }
-                }
+                // Inner content
+                InnerContentView(isTracking: timeTracker.isTracking, elapsedTime: timeTracker.elapsedTime, formatTime: formatTime)
             }
             .shadow(color: timeTracker.isTracking ? TISColors.success.opacity(0.4) : TISColors.primary.opacity(0.4), radius: 25, x: 0, y: 15)
             
@@ -693,6 +627,98 @@ struct JobSelectionSheet: View {
                         dismiss()
                     }
                 }
+            }
+        }
+    }
+}
+
+struct GlowRingsView: View {
+    let isTracking: Bool
+    
+    var body: some View {
+        ForEach(0..<3, id: \.self) { index in
+            Circle()
+                .fill(isTracking ? TISColors.successGradient : TISColors.primaryGradient)
+                .frame(width: 220 + CGFloat(index * 20), height: 220 + CGFloat(index * 20))
+                .blur(radius: 8 + CGFloat(index * 4))
+                .opacity(0.1 - CGFloat(index * 0.03))
+                .scaleEffect(isTracking ? 1.0 + CGFloat(index * 0.1) : 1.0)
+                .animation(.easeInOut(duration: 2.0 + Double(index) * 0.5).repeatForever(autoreverses: true), value: isTracking)
+        }
+    }
+}
+
+struct MainCircleView: View {
+    let isTracking: Bool
+    
+    var body: some View {
+        Circle()
+            .fill(isTracking ? TISColors.successGradient : TISColors.cardGradient)
+            .frame(width: 200, height: 200)
+            .scaleEffect(isTracking ? 1.05 : 1.0)
+            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: isTracking)
+            .overlay(
+                Circle()
+                    .stroke(
+                        LinearGradient(
+                            colors: [.white.opacity(0.3), .clear],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 2
+                    )
+            )
+    }
+}
+
+struct InnerContentView: View {
+    let isTracking: Bool
+    let elapsedTime: TimeInterval
+    let formatTime: (TimeInterval) -> String
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Status icon with pulsing effect
+            ZStack {
+                Circle()
+                    .fill(.white.opacity(0.2))
+                    .frame(width: 60, height: 60)
+                    .scaleEffect(isTracking ? 1.2 : 1.0)
+                    .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: isTracking)
+                
+                Image(systemName: isTracking ? "play.circle.fill" : "pause.circle.fill")
+                    .font(.system(size: 32))
+                    .foregroundColor(.white)
+                    .scaleEffect(isTracking ? 1.1 : 1.0)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: isTracking)
+            }
+            
+            // Time display with enhanced typography
+            VStack(spacing: 4) {
+                if isTracking {
+                    Text(formatTime(elapsedTime))
+                        .font(.system(size: 36, weight: .bold, design: .monospaced))
+                        .foregroundColor(.white)
+                        .animation(.easeInOut(duration: 0.3), value: elapsedTime)
+                        .contentTransition(.numericText())
+                } else {
+                    Text("00:00:00")
+                        .font(.system(size: 36, weight: .bold, design: .monospaced))
+                        .foregroundColor(.white.opacity(0.7))
+                }
+                
+                // Status text with enhanced styling
+                Text(isTracking ? "TRACKING" : "READY")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white.opacity(0.9))
+                    .tracking(3)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(.white.opacity(0.2))
+                    )
             }
         }
     }
