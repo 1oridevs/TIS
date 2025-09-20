@@ -206,13 +206,13 @@ struct EditJobView: View {
     }
     
     private func addBonus() {
-        _ = withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             bonuses.append(BonusInput(name: "", amount: ""))
         }
     }
     
     private func removeBonus(at index: Int) {
-        _ = withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             bonuses.remove(at: index)
         }
     }
