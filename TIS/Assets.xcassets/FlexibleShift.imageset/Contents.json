@@ -1,19 +1,9 @@
 {
   "images" : [
     {
-      "filename" : "flexible-shift.png",
+      "filename" : "flexible-shift-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
-    },
-    {
-      "filename" : "flexible-shift@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "flexible-shift@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {

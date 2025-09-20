@@ -1,19 +1,9 @@
 {
   "images" : [
     {
-      "filename" : "welcome-illustration.png",
+      "filename" : "welcome-illustration-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
-    },
-    {
-      "filename" : "welcome-illustration@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "welcome-illustration@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {

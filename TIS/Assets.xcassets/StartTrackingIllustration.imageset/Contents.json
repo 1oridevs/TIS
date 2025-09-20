@@ -1,19 +1,9 @@
 {
   "images" : [
     {
-      "filename" : "start-tracking-illustration.png",
+      "filename" : "start-tracking-illustration-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
-    },
-    {
-      "filename" : "start-tracking-illustration@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "start-tracking-illustration@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {

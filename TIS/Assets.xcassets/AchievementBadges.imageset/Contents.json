@@ -1,79 +1,29 @@
 {
   "images" : [
     {
-      "filename" : "first-shift-badge.png",
+      "filename" : "first-shift-badge-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "first-shift-badge@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "first-shift-badge@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "10-hours-badge.png",
+      "filename" : "10-hours-badge-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "10-hours-badge@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "10-hours-badge@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "week-complete-badge.png",
+      "filename" : "week-complete-badge-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "week-complete-badge@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "week-complete-badge@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "month-complete-badge.png",
+      "filename" : "month-complete-badge-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "month-complete-badge@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "month-complete-badge@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "overtime-badge.png",
+      "filename" : "overtime-badge-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
-    },
-    {
-      "filename" : "overtime-badge@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "overtime-badge@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {

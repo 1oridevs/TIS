@@ -1,64 +1,24 @@
 {
   "images" : [
     {
-      "filename" : "regular-shift.png",
+      "filename" : "regular-shift-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "regular-shift@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "regular-shift@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "overtime-shift.png",
+      "filename" : "overtime-shift-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "overtime-shift@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "overtime-shift@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "special-event-shift.png",
+      "filename" : "special-event-shift-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "special-event-shift@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "special-event-shift@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "flexible-shift.png",
+      "filename" : "flexible-shift-1024.png",
       "idiom" : "universal",
       "scale" : "1x"
-    },
-    {
-      "filename" : "flexible-shift@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "flexible-shift@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {
