@@ -37,6 +37,7 @@ struct TISColors {
     // Card Colors
     static let cardBackground = Color(.systemGray6)
     static let cardBorder = Color(.systemGray4)
+    static let border = Color(.systemGray4)
     
     // Gradient Colors - Modern and Vibrant
     static let primaryGradient = LinearGradient(

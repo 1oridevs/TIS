@@ -79,7 +79,7 @@ struct EditJobView: View {
                                     
                                     TextField("Enter job name", text: $jobName)
                                         .textFieldStyle(TISTextFieldStyle())
-                                        .onChange(of: jobName) { _ in
+                                        .onChange(of: jobName) { oldValue, newValue in
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                                 isAnimating = true
                                             }
@@ -206,13 +206,13 @@ struct EditJobView: View {
     }
     
     private func addBonus() {
-        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+        _ = withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             bonuses.append(BonusInput(name: "", amount: ""))
         }
     }
     
     private func removeBonus(at index: Int) {
-        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+        _ = withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             bonuses.remove(at: index)
         }
     }

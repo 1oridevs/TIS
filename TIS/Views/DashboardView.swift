@@ -252,7 +252,7 @@ struct CurrentStatusCard: View {
                 pulseAnimation = true
             }
         }
-        .onChange(of: timeTracker.isTracking) { isTracking in
+        .onChange(of: timeTracker.isTracking) { oldValue, isTracking in
             if isTracking {
                 pulseAnimation = true
             } else {
