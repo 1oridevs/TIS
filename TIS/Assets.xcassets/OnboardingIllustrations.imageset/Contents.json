@@ -6,12 +6,42 @@
       "scale" : "1x"
     },
     {
-      "filename" : "add-job-illustration.png",
+      "filename" : "welcome-illustration@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "welcome-illustration@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "filename" : "add-job-illustration.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "add-job-illustration@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "add-job-illustration@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
       "filename" : "start-tracking-illustration.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "start-tracking-illustration@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "start-tracking-illustration@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -21,9 +51,29 @@
       "scale" : "1x"
     },
     {
-      "filename" : "analytics-illustration.png",
+      "filename" : "view-history-illustration@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
+    },
+    {
+      "filename" : "view-history-illustration@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "filename" : "analytics-illustration.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "analytics-illustration@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "analytics-illustration@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

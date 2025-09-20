@@ -6,12 +6,42 @@
       "scale" : "1x"
     },
     {
-      "filename" : "dots-pattern.png",
+      "filename" : "geometric-pattern@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "geometric-pattern@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "filename" : "dots-pattern.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "dots-pattern@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "dots-pattern@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
       "filename" : "lines-pattern.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "lines-pattern@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "lines-pattern@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
