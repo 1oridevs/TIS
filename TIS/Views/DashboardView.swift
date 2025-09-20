@@ -10,6 +10,7 @@ struct DashboardView: View {
     private var jobs: FetchedResults<Job>
     
     @State private var showingAddJob = false
+    @State private var showingEarningsGoals = false
     
     var body: some View {
         NavigationView {
@@ -30,6 +31,12 @@ struct DashboardView: View {
                     // Jobs Overview
                     JobsOverviewCard()
                         .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                    
+                    // Earnings Goals
+                    EarningsGoalsCard {
+                        showingEarningsGoals = true
+                    }
+                    .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                     
                     // Recent Activity
                     RecentActivityCard()
@@ -66,6 +73,9 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $showingAddJob) {
             AddJobView()
+        }
+        .sheet(isPresented: $showingEarningsGoals) {
+            EarningsGoalsView()
         }
     }
 }
@@ -670,6 +680,193 @@ struct ShiftRowView: View {
         guard let startTime = shift.startTime else { return 0 }
         let endTime = shift.endTime ?? Date()
         return endTime.timeIntervalSince(startTime) / 3600
+    }
+}
+
+struct EarningsGoalsCard: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @State private var dailyEarnings: Double = 0.0
+    @State private var weeklyEarnings: Double = 0.0
+    @State private var monthlyEarnings: Double = 0.0
+    @State private var dailyGoal: Double = 200.0
+    @State private var weeklyGoal: Double = 1000.0
+    @State private var monthlyGoal: Double = 4000.0
+    
+    let onTap: () -> Void
+    
+    var body: some View {
+        TISCard {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    ZStack {
+                        Circle()
+                            .fill(TISColors.primaryGradient)
+                            .frame(width: 40, height: 40)
+                        
+                        Image(systemName: "target")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                    }
+                    
+                    Text("Earnings Goals")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(TISColors.primaryText)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        // This will be handled by the parent view
+                    }) {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title3)
+                            .foregroundColor(TISColors.primary)
+                    }
+                }
+                
+                VStack(spacing: 12) {
+                    // Daily Goal
+                    GoalProgressRow(
+                        title: "Today",
+                        current: dailyEarnings,
+                        goal: dailyGoal,
+                        color: TISColors.success
+                    )
+                    
+                    Divider()
+                    
+                    // Weekly Goal
+                    GoalProgressRow(
+                        title: "This Week",
+                        current: weeklyEarnings,
+                        goal: weeklyGoal,
+                        color: TISColors.primary
+                    )
+                    
+                    Divider()
+                    
+                    // Monthly Goal
+                    GoalProgressRow(
+                        title: "This Month",
+                        current: monthlyEarnings,
+                        goal: monthlyGoal,
+                        color: TISColors.purple
+                    )
+                }
+                
+                HStack {
+                    Text("Tap to set goals and track progress")
+                        .font(.caption)
+                        .foregroundColor(TISColors.secondaryText)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundColor(TISColors.secondaryText)
+                }
+            }
+        }
+        .onTapGesture {
+            onTap()
+        }
+        .onAppear {
+            loadEarningsData()
+        }
+    }
+    
+    private func loadEarningsData() {
+        // Calculate current earnings
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // Get all shifts
+        let request: NSFetchRequest<Shift> = Shift.fetchRequest()
+        request.predicate = NSPredicate(format: "isActive == NO")
+        
+        do {
+            let shifts = try viewContext.fetch(request)
+            
+            // Calculate daily earnings (today)
+            let startOfDay = calendar.startOfDay(for: now)
+            let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+            let dailyShifts = shifts.filter { shift in
+                guard let startTime = shift.startTime else { return false }
+                return startTime >= startOfDay && startTime < endOfDay
+            }
+            dailyEarnings = calculateTotalEarnings(for: dailyShifts)
+            
+            // Calculate weekly earnings (this week)
+            let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: now)?.start ?? now
+            let endOfWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: startOfWeek)!
+            let weeklyShifts = shifts.filter { shift in
+                guard let startTime = shift.startTime else { return false }
+                return startTime >= startOfWeek && startTime < endOfWeek
+            }
+            weeklyEarnings = calculateTotalEarnings(for: weeklyShifts)
+            
+            // Calculate monthly earnings (this month)
+            let startOfMonth = calendar.dateInterval(of: .month, for: now)?.start ?? now
+            let endOfMonth = calendar.date(byAdding: .month, value: 1, to: startOfMonth)!
+            let monthlyShifts = shifts.filter { shift in
+                guard let startTime = shift.startTime else { return false }
+                return startTime >= startOfMonth && startTime < endOfMonth
+            }
+            monthlyEarnings = calculateTotalEarnings(for: monthlyShifts)
+            
+        } catch {
+            print("Error fetching shifts: \(error)")
+        }
+    }
+    
+    private func calculateTotalEarnings(for shifts: [Shift]) -> Double {
+        return shifts.reduce(0) { total, shift in
+            let duration = calculateDurationInHours(for: shift)
+            let hourlyRate = shift.job?.hourlyRate ?? 0
+            let baseEarnings = duration * hourlyRate
+            let bonusAmount = shift.bonusAmount
+            return total + baseEarnings + bonusAmount
+        }
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime,
+              let endTime = shift.endTime else { return 0 }
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+}
+
+struct GoalProgressRow: View {
+    let title: String
+    let current: Double
+    let goal: Double
+    let color: Color
+    
+    private var progress: Double {
+        guard goal > 0 else { return 0 }
+        return min(current / goal, 1.0)
+    }
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(TISColors.primaryText)
+                
+                Spacer()
+                
+                Text("$\(String(format: "%.2f", current)) / $\(String(format: "%.2f", goal))")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(TISColors.secondaryText)
+            }
+            
+            ProgressView(value: progress)
+                .progressViewStyle(LinearProgressViewStyle(tint: color))
+                .scaleEffect(y: 1.5)
+        }
     }
 }
 
