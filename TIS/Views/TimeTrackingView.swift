@@ -636,15 +636,46 @@ struct GlowRingsView: View {
     let isTracking: Bool
     
     var body: some View {
-        ForEach(0..<3, id: \.self) { index in
-            Circle()
-                .fill(isTracking ? TISColors.successGradient : TISColors.primaryGradient)
-                .frame(width: 220 + CGFloat(index * 20), height: 220 + CGFloat(index * 20))
-                .blur(radius: 8 + CGFloat(index * 4))
-                .opacity(0.1 - CGFloat(index * 0.03))
-                .scaleEffect(isTracking ? 1.0 + CGFloat(index * 0.1) : 1.0)
-                .animation(.easeInOut(duration: 2.0 + Double(index) * 0.5).repeatForever(autoreverses: true), value: isTracking)
+        ZStack {
+            ForEach(0..<3, id: \.self) { index in
+                GlowRingView(index: index, isTracking: isTracking)
+            }
         }
+    }
+}
+
+struct GlowRingView: View {
+    let index: Int
+    let isTracking: Bool
+    
+    private var ringSize: CGFloat {
+        220 + CGFloat(index * 20)
+    }
+    
+    private var blurRadius: CGFloat {
+        8 + CGFloat(index * 4)
+    }
+    
+    private var opacity: Double {
+        0.1 - CGFloat(index * 0.03)
+    }
+    
+    private var scaleEffect: CGFloat {
+        isTracking ? 1.0 + CGFloat(index * 0.1) : 1.0
+    }
+    
+    private var animationDuration: Double {
+        2.0 + Double(index) * 0.5
+    }
+    
+    var body: some View {
+        Circle()
+            .fill(isTracking ? TISColors.successGradient : TISColors.primaryGradient)
+            .frame(width: ringSize, height: ringSize)
+            .blur(radius: blurRadius)
+            .opacity(opacity)
+            .scaleEffect(scaleEffect)
+            .animation(.easeInOut(duration: animationDuration).repeatForever(autoreverses: true), value: isTracking)
     }
 }
 
