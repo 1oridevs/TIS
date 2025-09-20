@@ -8,6 +8,7 @@ struct SettingsView: View {
     @State private var enableDailyReminder = false
     @State private var enableShiftReminders = true
     @State private var showingExportOptions = false
+    @State private var showingShiftReminders = false
     
     var body: some View {
         NavigationView {
@@ -48,6 +49,18 @@ struct SettingsView: View {
                     }
                     
                     Toggle("Shift Reminders", isOn: $enableShiftReminders)
+                    
+                    Button(action: { showingShiftReminders = true }) {
+                        HStack {
+                            Image(systemName: "clock.badge.checkmark")
+                                .foregroundColor(.blue)
+                            Text("Manage Shift Reminders")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                                .font(.caption)
+                        }
+                    }
                 }
                 
                 // Data Management Section
@@ -108,6 +121,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showingExportOptions) {
             ExportOptionsView(shifts: [])
+        }
+        .sheet(isPresented: $showingShiftReminders) {
+            ShiftRemindersView()
         }
     }
     

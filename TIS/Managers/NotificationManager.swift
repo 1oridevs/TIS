@@ -10,10 +10,11 @@ class NotificationManager: ObservableObject {
         checkAuthorizationStatus()
     }
     
-    func requestPermission() {
+    func requestPermission(completion: @escaping (Bool) -> Void = { _ in }) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {
                 self.isAuthorized = granted
+                completion(granted)
             }
         }
     }
@@ -79,6 +80,109 @@ class NotificationManager: ObservableObject {
     }
     
     func cancelNotification(withIdentifier identifier: String) {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+    }
+    
+    // MARK: - New Reminder Features
+    
+    func scheduleDailyReminder(at time: Date) {
+        guard isAuthorized else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "TIS - Daily Reminder"
+        content.body = "Don't forget to start tracking your work today! 💼"
+        content.sound = .default
+        content.badge = 1
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: time)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        let request = UNNotificationRequest(identifier: "daily-reminder", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func scheduleWeeklySummary(on weekday: Int) {
+        guard isAuthorized else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "TIS - Weekly Summary"
+        content.body = "Check out your earnings and hours for this week! 📊"
+        content.sound = .default
+        content.badge = 1
+        
+        var components = DateComponents()
+        components.weekday = weekday
+        components.hour = 9
+        components.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        let request = UNNotificationRequest(identifier: "weekly-summary", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func scheduleShiftStartReminder(at time: Date) {
+        guard isAuthorized else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "TIS - Time to Work!"
+        content.body = "It's time to start your shift. Don't forget to track your time! ⏰"
+        content.sound = .default
+        content.badge = 1
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: time)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        let request = UNNotificationRequest(identifier: "shift-start-reminder", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func scheduleShiftEndReminder(at time: Date) {
+        guard isAuthorized else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "TIS - End of Shift"
+        content.body = "Time to wrap up! Don't forget to end your shift. 🏁"
+        content.sound = .default
+        content.badge = 1
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: time)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        let request = UNNotificationRequest(identifier: "shift-end-reminder", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func sendTestNotification(completion: @escaping (Bool) -> Void) {
+        guard isAuthorized else {
+            completion(false)
+            return
+        }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "TIS - Test Notification"
+        content.body = "Great! Your notifications are working perfectly. 🎉"
+        content.sound = .default
+        content.badge = 1
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "test-notification-\(UUID().uuidString)", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            DispatchQueue.main.async {
+                completion(error == nil)
+            }
+        }
+    }
+    
+    func cancelAllReminders() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    func cancelReminder(withIdentifier identifier: String) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
     }
 }

@@ -31,6 +31,7 @@
 		1A00002E2A00000000000001 /* EditJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002D2A00000000000001 /* EditJobView.swift */; };
 		1A0000302A00000000000001 /* ShiftTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002F2A00000000000001 /* ShiftTemplatesView.swift */; };
 		1A0000322A00000000000001 /* EarningsGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000312A00000000000001 /* EarningsGoalsView.swift */; };
+		1A0000342A00000000000001 /* ShiftRemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000332A00000000000001 /* ShiftRemindersView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		1A00002D2A00000000000001 /* EditJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditJobView.swift; sourceTree = "<group>"; };
 		1A00002F2A00000000000001 /* ShiftTemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTemplatesView.swift; sourceTree = "<group>"; };
 		1A0000312A00000000000001 /* EarningsGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarningsGoalsView.swift; sourceTree = "<group>"; };
+		1A0000332A00000000000001 /* ShiftRemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftRemindersView.swift; sourceTree = "<group>"; };
 		1A00002F2A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -125,6 +127,7 @@
 				1A00002D2A00000000000001 /* EditJobView.swift */,
 				1A00002F2A00000000000001 /* ShiftTemplatesView.swift */,
 				1A0000312A00000000000001 /* EarningsGoalsView.swift */,
+				1A0000332A00000000000001 /* ShiftRemindersView.swift */,
 				1A0000172A00000000000001 /* HistoryView.swift */,
 				1A00001B2A00000000000001 /* AnalyticsView.swift */,
 				1A00001D2A00000000000001 /* SettingsView.swift */,
@@ -254,6 +257,7 @@
 				1A00002E2A00000000000001 /* EditJobView.swift in Sources */,
 				1A0000302A00000000000001 /* ShiftTemplatesView.swift in Sources */,
 				1A0000322A00000000000001 /* EarningsGoalsView.swift in Sources */,
+				1A0000342A00000000000001 /* ShiftRemindersView.swift in Sources */,
 				1A00001C2A00000000000001 /* AnalyticsView.swift in Sources */,
 				1A00001E2A00000000000001 /* SettingsView.swift in Sources */,
 				1A0000202A00000000000001 /* NotificationManager.swift in Sources */,
