@@ -657,11 +657,11 @@ struct GlowRingView: View {
     }
     
     private var opacity: Double {
-        0.1 - CGFloat(index * 0.03)
+        0.1 - Double(index) * 0.03
     }
     
     private var scaleEffect: CGFloat {
-        isTracking ? 1.0 + CGFloat(index * 0.1) : 1.0
+        isTracking ? 1.0 + CGFloat(index) * 0.1 : 1.0
     }
     
     private var animationDuration: Double {
