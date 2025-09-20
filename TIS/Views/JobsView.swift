@@ -35,7 +35,7 @@ struct JobsView: View {
             AddJobView()
         }
         .sheet(item: $jobToEdit) { job in
-            AddJobView()
+            EditJobView(job: job)
         }
     }
     

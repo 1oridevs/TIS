@@ -20,6 +20,7 @@
 		1A0000162A00000000000001 /* AddJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000152A00000000000001 /* AddJobView.swift */; };
 		1A0000182A00000000000001 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000172A00000000000001 /* HistoryView.swift */; };
 		1A00001A2A00000000000001 /* AddManualShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000192A00000000000001 /* AddManualShiftView.swift */; };
+		1A00002E2A00000000000001 /* EditJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002D2A00000000000001 /* EditJobView.swift */; };
 		1A00001C2A00000000000001 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001B2A00000000000001 /* AnalyticsView.swift */; };
 		1A00001E2A00000000000001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001D2A00000000000001 /* SettingsView.swift */; };
 		1A0000202A00000000000001 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001F2A00000000000001 /* NotificationManager.swift */; };
@@ -43,6 +44,7 @@
 		1A0000152A00000000000001 /* AddJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJobView.swift; sourceTree = "<group>"; };
 		1A0000172A00000000000001 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		1A0000192A00000000000001 /* AddManualShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddManualShiftView.swift; sourceTree = "<group>"; };
+		1A00002D2A00000000000001 /* EditJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditJobView.swift; sourceTree = "<group>"; };
 		1A00001B2A00000000000001 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		1A00001D2A00000000000001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1A00001F2A00000000000001 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				1A0000152A00000000000001 /* AddJobView.swift */,
 				1A0000172A00000000000001 /* HistoryView.swift */,
 				1A0000192A00000000000001 /* AddManualShiftView.swift */,
+				1A00002D2A00000000000001 /* EditJobView.swift */,
 				1A00001B2A00000000000001 /* AnalyticsView.swift */,
 				1A00001D2A00000000000001 /* SettingsView.swift */,
 			);
@@ -229,6 +232,7 @@
 				1A0000162A00000000000001 /* AddJobView.swift in Sources */,
 				1A0000182A00000000000001 /* HistoryView.swift in Sources */,
 				1A00001A2A00000000000001 /* AddManualShiftView.swift in Sources */,
+				1A00002E2A00000000000001 /* EditJobView.swift in Sources */,
 				1A00001C2A00000000000001 /* AnalyticsView.swift in Sources */,
 				1A00001E2A00000000000001 /* SettingsView.swift in Sources */,
 				1A0000202A00000000000001 /* NotificationManager.swift in Sources */,

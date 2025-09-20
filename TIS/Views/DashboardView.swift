@@ -14,31 +14,52 @@ struct DashboardView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(spacing: 24) {
+                LazyVStack(spacing: 24) {
+                    // Welcome Header
+                    WelcomeHeaderCard()
+                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
+                    
                     // Current Status Card
                     CurrentStatusCard()
+                        .transition(.asymmetric(insertion: .move(edge: .top).combined(with: .opacity), removal: .opacity))
                     
                     // Quick Actions
                     QuickActionsCard()
+                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
                     
                     // Jobs Overview
                     JobsOverviewCard()
+                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
                     
                     // Recent Activity
                     RecentActivityCard()
+                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
+                .padding(.bottom, 100) // Extra padding for tab bar
             }
-            .background(TISColors.background)
+            .background(
+                LinearGradient(
+                    colors: [TISColors.background, TISColors.background.opacity(0.8)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
             .navigationTitle("Dashboard")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingAddJob = true }) {
+                    Button(action: { 
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            showingAddJob = true 
+                        }
+                    }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.title2)
                             .foregroundColor(TISColors.primary)
+                            .scaleEffect(showingAddJob ? 1.2 : 1.0)
+                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: showingAddJob)
                     }
                 }
             }
@@ -49,46 +70,150 @@ struct DashboardView: View {
     }
 }
 
-struct CurrentStatusCard: View {
-    @EnvironmentObject private var timeTracker: TimeTracker
+struct WelcomeHeaderCard: View {
+    @State private var currentTime = Date()
+    @State private var greeting = ""
+    
+    let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        TISCard(shadow: TISShadows.medium) {
-            VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                ZStack {
-                    Circle()
-                        .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
-                        .frame(width: 50, height: 50)
+        TISCard {
+            VStack(spacing: 16) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(greeting)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(TISColors.primaryText)
+                        
+                        Text("Ready to track your time?")
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
+                    }
                     
-                    Image(systemName: timeTracker.isTracking ? "clock.fill" : "clock")
-                        .font(.title2)
-                        .foregroundColor(timeTracker.isTracking ? .white : TISColors.secondaryText)
-                }
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(timeTracker.isTracking ? "Currently Working" : "Ready to Work")
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(TISColors.primaryText)
+                    Spacer()
                     
-                    if timeTracker.isTracking {
-                        Text("Tap to view details")
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text(currentTime, style: .time)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(TISColors.primary)
+                        
+                        Text(currentTime, style: .date)
                             .font(.caption)
                             .foregroundColor(TISColors.secondaryText)
                     }
                 }
                 
-                Spacer()
-                
-                if timeTracker.isTracking {
-                    Circle()
-                        .fill(TISColors.success)
-                        .frame(width: 12, height: 12)
-                        .scaleEffect(timeTracker.isTracking ? 1.3 : 1.0)
-                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                // Motivational quote or tip
+                HStack {
+                    Image(systemName: "lightbulb.fill")
+                        .foregroundColor(TISColors.warning)
+                        .font(.caption)
+                    
+                    Text("💡 Tip: Start tracking as soon as you begin work for accurate records!")
+                        .font(.caption)
+                        .foregroundColor(TISColors.secondaryText)
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer()
                 }
+                .padding(.top, 8)
             }
+        }
+        .onReceive(timer) { _ in
+            currentTime = Date()
+            updateGreeting()
+        }
+        .onAppear {
+            updateGreeting()
+        }
+    }
+    
+    private func updateGreeting() {
+        let hour = Calendar.current.component(.hour, from: currentTime)
+        
+        switch hour {
+        case 5..<12:
+            greeting = "Good Morning"
+        case 12..<17:
+            greeting = "Good Afternoon"
+        case 17..<22:
+            greeting = "Good Evening"
+        default:
+            greeting = "Good Night"
+        }
+    }
+}
+
+struct CurrentStatusCard: View {
+    @EnvironmentObject private var timeTracker: TimeTracker
+    @State private var pulseAnimation = false
+    
+    var body: some View {
+        TISCard(shadow: TISShadows.medium) {
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
+                    ZStack {
+                        // Pulsing background for active tracking
+                        if timeTracker.isTracking {
+                            Circle()
+                                .fill(TISColors.success.opacity(0.3))
+                                .frame(width: 70, height: 70)
+                                .scaleEffect(pulseAnimation ? 1.2 : 1.0)
+                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: pulseAnimation)
+                        }
+                        
+                        Circle()
+                            .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
+                            .frame(width: 50, height: 50)
+                            .scaleEffect(timeTracker.isTracking ? 1.1 : 1.0)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: timeTracker.isTracking)
+                        
+                        Image(systemName: timeTracker.isTracking ? "clock.fill" : "clock")
+                            .font(.title2)
+                            .foregroundColor(timeTracker.isTracking ? .white : TISColors.secondaryText)
+                            .scaleEffect(timeTracker.isTracking ? 1.1 : 1.0)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: timeTracker.isTracking)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(timeTracker.isTracking ? "Currently Working" : "Ready to Work")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(TISColors.primaryText)
+                            .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
+                        
+                        if timeTracker.isTracking {
+                            Text("Tap to view details")
+                                .font(.caption)
+                                .foregroundColor(TISColors.secondaryText)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                        } else {
+                            Text("Start tracking your work")
+                                .font(.caption)
+                                .foregroundColor(TISColors.secondaryText)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    if timeTracker.isTracking {
+                        VStack(spacing: 4) {
+                            Circle()
+                                .fill(TISColors.success)
+                                .frame(width: 12, height: 12)
+                                .scaleEffect(pulseAnimation ? 1.3 : 1.0)
+                                .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: pulseAnimation)
+                            
+                            Text("LIVE")
+                                .font(.caption2)
+                                .fontWeight(.bold)
+                                .foregroundColor(TISColors.success)
+                        }
+                    }
+                }
                 
                 if timeTracker.isTracking {
                     VStack(alignment: .leading, spacing: 8) {
@@ -122,6 +247,18 @@ struct CurrentStatusCard: View {
                 }
             }
         }
+        .onAppear {
+            if timeTracker.isTracking {
+                pulseAnimation = true
+            }
+        }
+        .onChange(of: timeTracker.isTracking) { isTracking in
+            if isTracking {
+                pulseAnimation = true
+            } else {
+                pulseAnimation = false
+            }
+        }
     }
     
     private func formatTime(_ timeInterval: TimeInterval) -> String {
@@ -140,6 +277,9 @@ struct QuickActionsCard: View {
         animation: .default)
     private var jobs: FetchedResults<Job>
     
+    @State private var buttonScale: CGFloat = 1.0
+    @State private var showJobSelection = false
+    
     var body: some View {
         TISCard(shadow: TISShadows.medium) {
             VStack(alignment: .leading, spacing: 20) {
@@ -148,6 +288,8 @@ struct QuickActionsCard: View {
                         Circle()
                             .fill(TISColors.primaryGradient)
                             .frame(width: 40, height: 40)
+                            .scaleEffect(buttonScale)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: buttonScale)
                         
                         Image(systemName: "bolt.fill")
                             .font(.title3)
@@ -160,26 +302,75 @@ struct QuickActionsCard: View {
                         .foregroundColor(TISColors.primaryText)
                     
                     Spacer()
+                    
+                    if !jobs.isEmpty {
+                        Text("\(jobs.count) job\(jobs.count == 1 ? "" : "s")")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(TISColors.primary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(TISColors.primary.opacity(0.1))
+                            .cornerRadius(8)
+                    }
                 }
                 
                 if timeTracker.isTracking {
-                    TISButton("End Shift", icon: "stop.fill", color: TISColors.error) {
-                        timeTracker.endTracking()
+                    VStack(spacing: 12) {
+                        TISButton("End Shift", icon: "stop.fill", color: TISColors.error) {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                timeTracker.endTracking()
+                            }
+                        }
+                        .scaleEffect(buttonScale)
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                buttonScale = 0.95
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                    buttonScale = 1.0
+                                }
+                            }
+                        }
+                        
+                        Text("Tap to stop tracking and save your work")
+                            .font(.caption)
+                            .foregroundColor(TISColors.secondaryText)
+                            .multilineTextAlignment(.center)
                     }
                 } else {
                     if jobs.isEmpty {
-                        VStack(spacing: 12) {
+                        VStack(spacing: 16) {
                             Image(systemName: "briefcase.badge.plus")
-                                .font(.title)
-                                .foregroundColor(TISColors.secondaryText)
+                                .font(.system(size: 40))
+                                .foregroundColor(TISColors.primary)
+                                .scaleEffect(buttonScale)
+                                .animation(.spring(response: 0.6, dampingFraction: 0.8), value: buttonScale)
                             
                             Text("Add a job to start tracking time")
                                 .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(TISColors.primaryText)
+                                .multilineTextAlignment(.center)
+                            
+                            Text("Create your first job to begin tracking your work hours and earnings")
+                                .font(.caption)
                                 .foregroundColor(TISColors.secondaryText)
                                 .multilineTextAlignment(.center)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 20)
+                        .onAppear {
+                            withAnimation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2)) {
+                                buttonScale = 1.1
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+                                    buttonScale = 1.0
+                                }
+                            }
+                        }
                     } else {
                         LazyVGrid(columns: [
                             GridItem(.flexible()),
