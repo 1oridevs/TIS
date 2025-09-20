@@ -126,9 +126,15 @@ struct TISIconButton: View {
         }
         
         HStack {
-            TISIconButton(icon: "play.fill", color: TISColors.success)
-            TISIconButton(icon: "stop.fill", color: TISColors.error)
-            TISIconButton(icon: "plus", color: TISColors.primary)
+            TISIconButton(icon: "play.fill", color: TISColors.success) {
+                print("Play action")
+            }
+            TISIconButton(icon: "stop.fill", color: TISColors.error) {
+                print("Stop action")
+            }
+            TISIconButton(icon: "plus", color: TISColors.primary) {
+                print("Add action")
+            }
         }
     }
     .padding()

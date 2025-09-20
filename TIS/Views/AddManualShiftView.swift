@@ -479,9 +479,15 @@ struct JobPickerView: View {
 
 #Preview {
     let context = PersistenceController.preview.container.viewContext
-    let request = Job.fetchRequest()
-    let jobs = try! context.fetch(request)
     
-    AddManualShiftView(jobs: FetchedResults(fetchRequest: request, managedObjectContext: context))
-        .environment(\.managedObjectContext, context)
+    // Create a mock preview using a simple view
+    VStack {
+        Text("Add Manual Shift Preview")
+            .font(.title)
+        Text("This view requires a FetchedResults<Job> parameter")
+            .font(.caption)
+            .foregroundColor(.secondary)
+    }
+    .padding()
+    .environment(\.managedObjectContext, context)
 }
