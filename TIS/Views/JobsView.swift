@@ -23,19 +23,19 @@ struct JobsView: View {
             }
             .navigationTitle("Jobs")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
+            .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showingAddJob = true }) {
                         Image(systemName: "plus")
                     }
                 }
-            }
+            })
         }
         .sheet(isPresented: $showingAddJob) {
             AddJobView()
         }
         .sheet(item: $jobToEdit) { job in
-            EditJobView(job: job)
+            AddJobView()
         }
     }
     
