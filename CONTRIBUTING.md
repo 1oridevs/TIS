@@ -12,7 +12,7 @@ Thank you for your interest in contributing to TIS! This document provides guide
 
 ### Development Setup
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/TIS.git`
+2. Clone your fork: `git clone https://github.com/1oridevs/TIS.git`
 3. Open `TIS.xcodeproj` in Xcode
 4. Create a new branch: `git checkout -b feature/your-feature-name`
 
