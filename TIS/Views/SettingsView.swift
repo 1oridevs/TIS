@@ -9,6 +9,7 @@ struct SettingsView: View {
     @State private var enableShiftReminders = true
     @State private var showingExportOptions = false
     @State private var showingShiftReminders = false
+    @State private var showingLocalizationSettings = false
     
     var body: some View {
         NavigationView {
@@ -55,6 +56,21 @@ struct SettingsView: View {
                             Image(systemName: "clock.badge.checkmark")
                                 .foregroundColor(.blue)
                             Text("Manage Shift Reminders")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                                .font(.caption)
+                        }
+                    }
+                }
+                
+                // Localization Section
+                Section("Localization") {
+                    Button(action: { showingLocalizationSettings = true }) {
+                        HStack {
+                            Image(systemName: "globe")
+                                .foregroundColor(.blue)
+                            Text("Language & Currency")
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.gray)
@@ -124,6 +140,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showingShiftReminders) {
             ShiftRemindersView()
+        }
+        .sheet(isPresented: $showingLocalizationSettings) {
+            LocalizationSettingsView()
         }
     }
     
