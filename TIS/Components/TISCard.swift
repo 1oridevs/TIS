@@ -27,44 +27,6 @@ struct TISCard<Content: View>: View {
     }
 }
 
-struct TISButton: View {
-    let title: String
-    let icon: String?
-    let color: Color
-    let action: () -> Void
-    
-    init(
-        _ title: String,
-        icon: String? = nil,
-        color: Color = TISColors.primary,
-        action: @escaping () -> Void
-    ) {
-        self.title = title
-        self.icon = icon
-        self.color = color
-        self.action = action
-    }
-    
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 8) {
-                if let icon = icon {
-                    Image(systemName: icon)
-                        .font(.system(size: 16, weight: .medium))
-                }
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-            }
-            .foregroundColor(.white)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(color)
-            .cornerRadius(12)
-            .tisShadow(TISShadows.small)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-}
 
 struct TISStatCard: View {
     let title: String

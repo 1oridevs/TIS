@@ -482,6 +482,6 @@ struct JobPickerView: View {
     let request = Job.fetchRequest()
     let jobs = try! context.fetch(request)
     
-    return AddManualShiftView(jobs: FetchedResults(fetchRequest: request, managedObjectContext: context))
+    AddManualShiftView(jobs: FetchedResults(fetchRequest: request, managedObjectContext: context))
         .environment(\.managedObjectContext, context)
 }
