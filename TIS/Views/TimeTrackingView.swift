@@ -14,6 +14,7 @@ struct TimeTrackingView: View {
     @State private var shiftNotes = ""
     @State private var selectedShiftType = "Regular"
     @State private var showingAddShift = false
+    @State private var showingTemplates = false
     
     var body: some View {
         NavigationView {
@@ -45,11 +46,22 @@ struct TimeTrackingView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingAddShift = true
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
+                    HStack(spacing: 16) {
+                        Button(action: {
+                            showingTemplates = true
+                        }) {
+                            Image(systemName: "clock.badge.checkmark")
+                                .font(.title2)
+                                .foregroundColor(TISColors.primary)
+                        }
+                        
+                        Button(action: {
+                            showingAddShift = true
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(TISColors.primary)
+                        }
                     }
                 }
             }
@@ -60,6 +72,9 @@ struct TimeTrackingView: View {
         .sheet(isPresented: $showingAddShift) {
             AddManualShiftView(jobs: jobs)
         }
+        .sheet(isPresented: $showingTemplates) {
+            ShiftTemplatesView()
+        }
     }
     
     @ViewBuilder
@@ -67,55 +82,82 @@ struct TimeTrackingView: View {
         VStack(spacing: 24) {
             // Main Timer Circle with Enhanced Design
             ZStack {
-                // Outer glow ring
-                Circle()
-                    .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.primaryGradient)
-                    .frame(width: 220, height: 220)
-                    .blur(radius: 8)
-                    .opacity(0.3)
+                // Multiple glow rings for depth
+                ForEach(0..<3, id: \.self) { index in
+                    Circle()
+                        .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.primaryGradient)
+                        .frame(width: 220 + CGFloat(index * 20), height: 220 + CGFloat(index * 20))
+                        .blur(radius: 8 + CGFloat(index * 4))
+                        .opacity(0.1 - CGFloat(index * 0.03))
+                        .scaleEffect(timeTracker.isTracking ? 1.0 + CGFloat(index * 0.1) : 1.0)
+                        .animation(.easeInOut(duration: 2.0 + Double(index) * 0.5).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                }
                 
-                // Main circle
+                // Main circle with enhanced styling
                 Circle()
                     .fill(timeTracker.isTracking ? TISColors.successGradient : TISColors.cardGradient)
                     .frame(width: 200, height: 200)
                     .scaleEffect(timeTracker.isTracking ? 1.05 : 1.0)
-                    .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: timeTracker.isTracking)
+                    .overlay(
+                        Circle()
+                            .stroke(
+                                LinearGradient(
+                                    colors: [.white.opacity(0.3), .clear],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 2
+                            )
+                    )
                 
-                // Inner content
-                VStack(spacing: 12) {
-                    // Status icon
-                    Image(systemName: timeTracker.isTracking ? "play.circle.fill" : "pause.circle.fill")
-                        .font(.system(size: 32))
-                        .foregroundColor(.white.opacity(0.8))
-                        .scaleEffect(timeTracker.isTracking ? 1.1 : 1.0)
-                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: timeTracker.isTracking)
-                    
-                    // Time display
-                    if timeTracker.isTracking {
-                        Text(formatTime(timeTracker.elapsedTime))
-                            .font(.system(size: 32, weight: .bold, design: .monospaced))
+                // Inner content with enhanced animations
+                VStack(spacing: 16) {
+                    // Status icon with pulsing effect
+                    ZStack {
+                        Circle()
+                            .fill(.white.opacity(0.2))
+                            .frame(width: 60, height: 60)
+                            .scaleEffect(timeTracker.isTracking ? 1.2 : 1.0)
+                            .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: timeTracker.isTracking)
+                        
+                        Image(systemName: timeTracker.isTracking ? "play.circle.fill" : "pause.circle.fill")
+                            .font(.system(size: 32))
                             .foregroundColor(.white)
-                            .animation(.easeInOut(duration: 0.5), value: timeTracker.elapsedTime)
-                    } else {
-                        Text("00:00:00")
-                            .font(.system(size: 32, weight: .bold, design: .monospaced))
-                            .foregroundColor(.white.opacity(0.7))
+                            .scaleEffect(timeTracker.isTracking ? 1.1 : 1.0)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: timeTracker.isTracking)
                     }
                     
-                    // Status text
-                    Text(timeTracker.isTracking ? "TRACKING" : "READY")
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white.opacity(0.8))
-                        .tracking(3)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 4)
-                        .background(
-                            Capsule()
-                                .fill(.white.opacity(0.2))
-                        )
+                    // Time display with enhanced typography
+                    VStack(spacing: 4) {
+                        if timeTracker.isTracking {
+                            Text(formatTime(timeTracker.elapsedTime))
+                                .font(.system(size: 36, weight: .bold, design: .monospaced))
+                                .foregroundColor(.white)
+                                .animation(.easeInOut(duration: 0.3), value: timeTracker.elapsedTime)
+                                .contentTransition(.numericText())
+                        } else {
+                            Text("00:00:00")
+                                .font(.system(size: 36, weight: .bold, design: .monospaced))
+                                .foregroundColor(.white.opacity(0.7))
+                        }
+                        
+                        // Status text with enhanced styling
+                        Text(timeTracker.isTracking ? "TRACKING" : "READY")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white.opacity(0.9))
+                            .tracking(3)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(.white.opacity(0.2))
+                            )
+                    }
                 }
             }
+            .shadow(color: timeTracker.isTracking ? TISColors.success.opacity(0.4) : TISColors.primary.opacity(0.4), radius: 25, x: 0, y: 15)
             
             // Job info with enhanced design
             VStack(spacing: 12) {
@@ -357,14 +399,50 @@ struct TimeTrackingView: View {
     
     @ViewBuilder
     private func NotesSectionView() -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Notes (Optional)")
-                .font(.headline)
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("Notes")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                
+                Spacer()
+                
+                if !shiftNotes.isEmpty {
+                    Text("\(shiftNotes.count) characters")
+                        .font(.caption)
+                        .foregroundColor(TISColors.secondaryText)
+                }
+            }
             
-            TextField("Add notes about this shift...", text: $shiftNotes, axis: .vertical)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .lineLimit(3...6)
+            VStack(alignment: .leading, spacing: 8) {
+                TextField("Add notes about this shift...", text: $shiftNotes, axis: .vertical)
+                    .textFieldStyle(TISTextFieldStyle())
+                    .lineLimit(3...6)
+                    .onChange(of: shiftNotes) { oldValue, newValue in
+                        // Add haptic feedback when typing
+                        if newValue.count > oldValue.count {
+                            let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+                            impactFeedback.impactOccurred()
+                        }
+                    }
+                
+                if !shiftNotes.isEmpty {
+                    HStack {
+                        Image(systemName: "text.badge.plus")
+                            .font(.caption)
+                            .foregroundColor(TISColors.primary)
+                        
+                        Text("Notes will be saved with your shift")
+                            .font(.caption)
+                            .foregroundColor(TISColors.secondaryText)
+                        
+                        Spacer()
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
         }
+        .animation(.easeInOut(duration: 0.3), value: shiftNotes.isEmpty)
     }
     
     @ViewBuilder
