@@ -8,22 +8,12 @@
     {
       "filename" : "jobmanagement.png",
       "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "analytics.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "2x"
     },
     {
       "filename" : "history.png",
       "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "settings.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "3x"
     }
   ],
   "info" : {

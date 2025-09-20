@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "overtimebadge.png",
+      "filename" : "10hoursbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "overtimebadge 1.png",
+      "filename" : "10hoursbadge 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "overtimebadge 2.png",
+      "filename" : "10hoursbadge 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

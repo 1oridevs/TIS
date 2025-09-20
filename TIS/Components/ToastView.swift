@@ -48,7 +48,7 @@ struct ToastView: View {
     }
 }
 
-enum ToastType {
+public enum ToastType {
     case success
     case error
     case warning
