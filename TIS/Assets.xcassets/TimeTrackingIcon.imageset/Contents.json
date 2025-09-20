@@ -1,9 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "time-tracking-1024.png",
+      "filename" : "timetrack.png",
       "idiom" : "universal",
       "scale" : "1x"
+    },
+    {
+      "filename" : "timetrack 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "timetrack 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

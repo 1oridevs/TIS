@@ -1,9 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "first-shift-badge-1024.png",
+      "filename" : "firstshiftbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
+    },
+    {
+      "filename" : "firstshiftbadge 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "firstshiftbadge 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

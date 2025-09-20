@@ -1,9 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "10-hours-badge-1024.png",
+      "filename" : "10hoursbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
+    },
+    {
+      "filename" : "10hoursbadge 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "10hoursbadge 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

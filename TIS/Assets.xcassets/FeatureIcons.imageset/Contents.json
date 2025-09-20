@@ -1,27 +1,27 @@
 {
   "images" : [
     {
-      "filename" : "time-tracking-1024.png",
+      "filename" : "timetrack.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "job-management-1024.png",
+      "filename" : "jobmanagement.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "analytics-1024.png",
+      "filename" : "analytics.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "history-1024.png",
+      "filename" : "history.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "settings-1024.png",
+      "filename" : "settings.png",
       "idiom" : "universal",
       "scale" : "1x"
     }

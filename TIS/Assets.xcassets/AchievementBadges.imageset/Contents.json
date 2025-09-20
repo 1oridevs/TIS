@@ -1,27 +1,27 @@
 {
   "images" : [
     {
-      "filename" : "first-shift-badge-1024.png",
+      "filename" : "firstshiftbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "10-hours-badge-1024.png",
+      "filename" : "10hoursbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "week-complete-badge-1024.png",
+      "filename" : "firstweekbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "month-complete-badge-1024.png",
+      "filename" : "fullmonthbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "overtime-badge-1024.png",
+      "filename" : "overtimebadge.png",
       "idiom" : "universal",
       "scale" : "1x"
     }

@@ -1,9 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "job-management-1024.png",
+      "filename" : "jobmanagement.png",
       "idiom" : "universal",
       "scale" : "1x"
+    },
+    {
+      "filename" : "jobmanagement 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "jobmanagement 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

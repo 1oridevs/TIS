@@ -1,9 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "week-complete-badge-1024.png",
+      "filename" : "firstweekbadge.png",
       "idiom" : "universal",
       "scale" : "1x"
+    },
+    {
+      "filename" : "firstweekbadge 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "firstweekbadge 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

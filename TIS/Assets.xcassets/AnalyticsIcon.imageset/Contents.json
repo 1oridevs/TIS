@@ -1,9 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "analytics-1024.png",
+      "filename" : "analytics.png",
       "idiom" : "universal",
       "scale" : "1x"
+    },
+    {
+      "filename" : "analytics 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "analytics 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

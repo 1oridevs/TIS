@@ -1,22 +1,22 @@
 {
   "images" : [
     {
-      "filename" : "regular-shift-1024.png",
+      "filename" : "Regular Shift.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "overtime-shift-1024.png",
+      "filename" : "overtime.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "special-event-shift-1024.png",
+      "filename" : "specialevent.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "flexible-shift-1024.png",
+      "filename" : "flexible.png",
       "idiom" : "universal",
       "scale" : "1x"
     }
