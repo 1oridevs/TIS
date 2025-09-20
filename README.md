@@ -141,7 +141,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work* - [@yourusername](https://github.com/yourusername)
+- **Ori Cohen* - *Initial work* - [@1oridevs](https://github.com/1oridevs)
 
 ## 🙏 Acknowledgments
 
@@ -154,7 +154,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you have any questions or need help, please:
 - Open an issue on GitHub
 - Check the documentation
-- Contact us at [your-email@example.com]
+- Contact us at [oridevs.offical@gmail.com]
 
 ---
 
