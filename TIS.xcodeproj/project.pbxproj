@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 90;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,7 +20,6 @@
 		1A0000162A00000000000001 /* AddJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000152A00000000000001 /* AddJobView.swift */; };
 		1A0000182A00000000000001 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000172A00000000000001 /* HistoryView.swift */; };
 		1A00001A2A00000000000001 /* AddManualShiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000192A00000000000001 /* AddManualShiftView.swift */; };
-		1A00002E2A00000000000001 /* EditJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002D2A00000000000001 /* EditJobView.swift */; };
 		1A00001C2A00000000000001 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001B2A00000000000001 /* AnalyticsView.swift */; };
 		1A00001E2A00000000000001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001D2A00000000000001 /* SettingsView.swift */; };
 		1A0000202A00000000000001 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00001F2A00000000000001 /* NotificationManager.swift */; };
@@ -29,6 +28,7 @@
 		1A0000262A00000000000001 /* TISCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000252A00000000000001 /* TISCard.swift */; };
 		1A00002A2A00000000000001 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000292A00000000000001 /* ToastView.swift */; };
 		1A00002C2A00000000000001 /* TISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002B2A00000000000001 /* TISButton.swift */; };
+		1A00002E2A00000000000001 /* EditJobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002D2A00000000000001 /* EditJobView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +37,8 @@
 		1A0000042A00000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A0000072A00000000000001 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A0000092A00000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodeld; sourceTree = "<group>"; };
+		1A00000B2A00000000000002 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 		1A00000D2A00000000000001 /* TimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTracker.swift; sourceTree = "<group>"; };
 		1A00000F2A00000000000001 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		1A0000112A00000000000001 /* TimeTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingView.swift; sourceTree = "<group>"; };
@@ -44,7 +46,6 @@
 		1A0000152A00000000000001 /* AddJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJobView.swift; sourceTree = "<group>"; };
 		1A0000172A00000000000001 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		1A0000192A00000000000001 /* AddManualShiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddManualShiftView.swift; sourceTree = "<group>"; };
-		1A00002D2A00000000000001 /* EditJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditJobView.swift; sourceTree = "<group>"; };
 		1A00001B2A00000000000001 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		1A00001D2A00000000000001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		1A00001F2A00000000000001 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -53,8 +54,8 @@
 		1A0000252A00000000000001 /* TISCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISCard.swift; sourceTree = "<group>"; };
 		1A0000292A00000000000001 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		1A00002B2A00000000000001 /* TISButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISButton.swift; sourceTree = "<group>"; };
+		1A00002D2A00000000000001 /* EditJobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditJobView.swift; sourceTree = "<group>"; };
 		1A00002F2A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A00000B2A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +178,8 @@
 			dependencies = (
 			);
 			name = TIS;
+			packageProductDependencies = (
+			);
 			productName = TIS;
 			productReference = 1A00002F2A00000000000001 /* TIS.app */;
 			productType = "com.apple.product-type.application";
@@ -384,6 +387,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
+				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -396,7 +400,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tis.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.1oridevs.tis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -412,6 +416,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
+				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -424,7 +429,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tis.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.1oridevs.tis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -435,20 +440,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1A00003F2A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1A0000402A00000000000001 /* Debug */,
-				1A0000412A00000000000001 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1A00003B2A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1A0000422A00000000000001 /* Debug */,
 				1A0000432A00000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A00003F2A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000402A00000000000001 /* Debug */,
+				1A0000412A00000000000001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -459,9 +464,9 @@
 		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				1A00000B2A00000000000001 /* TISModel.xcdatamodel */,
+				1A00000B2A00000000000002 /* TISModel.xcdatamodel */,
 			);
-			currentVersion = 1A00000B2A00000000000001 /* TISModel.xcdatamodel */;
+			currentVersion = 1A00000B2A00000000000002 /* TISModel.xcdatamodel */;
 			path = TISModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
