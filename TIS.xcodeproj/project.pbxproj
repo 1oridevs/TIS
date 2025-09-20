@@ -25,6 +25,7 @@
 		1A0000262A00000000000001 /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000252A00000000000001 /* ExportManager.swift */; };
 		1A0000292A00000000000001 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000282A00000000000001 /* ColorScheme.swift */; };
 		1A00002B2A00000000000001 /* TISCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002A2A00000000000001 /* TISCard.swift */; };
+		1A00002D2A00000000000001 /* ToastTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002C2A00000000000001 /* ToastTypes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		1A0000272A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0000282A00000000000001 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		1A00002A2A00000000000001 /* TISCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISCard.swift; sourceTree = "<group>"; };
+		1A00002C2A00000000000001 /* ToastTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastTypes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				1A00002A2A00000000000001 /* TISCard.swift */,
+				1A00002C2A00000000000001 /* ToastTypes.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				1A0000262A00000000000001 /* ExportManager.swift in Sources */,
 				1A0000292A00000000000001 /* ColorScheme.swift in Sources */,
 				1A00002B2A00000000000001 /* TISCard.swift in Sources */,
+				1A00002D2A00000000000001 /* ToastTypes.swift in Sources */,
 				1A0000032A00000000000001 /* ContentView.swift in Sources */,
 				1A0000012A00000000000001 /* TISApp.swift in Sources */,
 				1A00000A2A00000000000001 /* PersistenceController.swift in Sources */,
