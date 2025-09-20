@@ -77,7 +77,7 @@ TIS/
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/TIS.git
+   git clone https://github.com/1oridevs/TIS.git
    ```
 
 2. Open `TIS.xcodeproj` in Xcode
