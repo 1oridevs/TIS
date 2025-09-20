@@ -1,130 +1,161 @@
-# TIS - Time is Money
+# TIS (Time is Money) 💰⏰
 
-A modern iOS app for tracking work hours and calculating earnings. Built with SwiftUI and Core Data for offline-first functionality.
+A modern, user-friendly iOS app for tracking work hours and calculating earnings. Built with SwiftUI and Core Data, TIS helps you manage multiple jobs, track different shift types, and monitor your income with beautiful analytics.
 
-## Features
+## ✨ Features
 
-### ✅ Implemented
-- **Time Tracking**: Start/stop timer with job selection
-- **Job Management**: Create and manage multiple jobs with different hourly rates
-- **Earnings Calculation**: Automatic calculation based on hours worked and hourly rate
-- **Shift Types**: Support for regular, overtime, special events, and flexible shifts
-- **Bonus System**: Add named bonuses to jobs and shifts
-- **History Tracking**: View past shifts with filtering by time period
-- **Modern UI**: Clean, intuitive interface with SwiftUI
-- **Offline Support**: Full offline functionality with Core Data
+### 🕐 Time Tracking
+- **Real-time tracking** with start/stop functionality
+- **Automatic shift type detection** (Regular, Overtime, Special Event, Flexible)
+- **Background timer support** for continuous tracking
+- **Manual shift entry** for past work sessions
 
-### 🚧 In Progress
-- **Data Export**: CSV and PDF export functionality
-- **Notifications**: Reminder system for shift tracking
-- **Advanced Features**: Pause/resume functionality, idle detection
+### 💼 Job Management
+- **Multiple job support** with individual hourly rates
+- **Job-specific bonuses** and special pay rates
+- **Visual job overview** with earnings and hours worked
+- **Easy job creation** with modern UI
 
-## Screenshots
+### 📊 Analytics & Insights
+- **Earnings breakdown** by job and shift type
+- **Visual charts** and statistics
+- **Trend analysis** and performance metrics
+- **Export capabilities** (CSV and PDF)
 
-*Screenshots will be added once the app is built and running*
+### 🎨 Modern Design
+- **Beautiful UI** with custom components
+- **Dark/Light mode** support
+- **Smooth animations** and transitions
+- **Toast notifications** for user feedback
+- **Responsive design** for all iOS devices
 
-## Requirements
+### 📱 Core Features
+- **Offline-first** data storage with Core Data
+- **Data export** for record keeping
+- **Notification reminders** for shifts
+- **Settings customization**
+- **Universal iOS support** (iPhone and iPad)
 
-- iOS 15.0+
-- Xcode 14.0+
-- Swift 5.7+
+## 🏗️ Architecture
 
-## Installation
+### Tech Stack
+- **SwiftUI** - Modern declarative UI framework
+- **Core Data** - Local data persistence
+- **MVVM Pattern** - Clean architecture
+- **Combine** - Reactive programming (where applicable)
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/TIS.git
+### Project Structure
 ```
+TIS/
+├── Views/                 # Main app screens
+│   ├── DashboardView.swift
+│   ├── TimeTrackingView.swift
+│   ├── JobsView.swift
+│   ├── HistoryView.swift
+│   ├── AnalyticsView.swift
+│   └── SettingsView.swift
+├── Components/            # Reusable UI components
+│   ├── TISCard.swift
+│   ├── TISButton.swift
+│   └── ToastView.swift
+├── Managers/              # Business logic managers
+│   ├── ExportManager.swift
+│   └── NotificationManager.swift
+├── Design/                # Design system
+│   └── ColorScheme.swift
+└── Models/                # Core Data models
+    └── TISModel.xcdatamodeld
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+- iOS 17.0+
+- Xcode 15.0+
+- Swift 5.9+
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/TIS.git
+   ```
 
 2. Open `TIS.xcodeproj` in Xcode
 
-3. Build and run on your device or simulator
+3. Select your development team in "Signing & Capabilities"
 
-## Usage
+4. Build and run the project
 
-### Getting Started
-1. **Add Jobs**: Tap the "+" button in the Jobs tab to create your first job
-2. **Set Hourly Rate**: Enter your hourly rate for each job
-3. **Add Bonuses**: Configure named bonuses for special events (like your "Kuppa" game bonus)
-4. **Start Tracking**: Go to Time Tracking tab and select a job to start your shift
+### First Time Setup
+1. **Add your first job** with hourly rate and bonuses
+2. **Start tracking** your work hours
+3. **View analytics** to see your earnings
+4. **Export data** for record keeping
 
-### Time Tracking
-- **Start Shift**: Select a job and tap "Start Shift"
-- **End Shift**: Tap "End Shift" when you're done
-- **Add Notes**: Include notes about your shift
-- **Select Shift Type**: Choose between Regular, Overtime, Special Event, or Flexible
+## 📱 Screenshots
 
-### Managing Jobs
-- **Create Jobs**: Add multiple jobs with different rates
-- **Edit Jobs**: Modify job details and bonuses
-- **View Statistics**: See total hours and earnings per job
+*Screenshots will be added once the app is built and running*
 
-### Viewing History
-- **Filter by Period**: View shifts by day, week, month, or custom period
-- **Export Data**: Export your data as CSV or PDF
-- **Detailed View**: See comprehensive shift details including bonuses
+## 🎯 Current Status
 
-## Data Models
+### ✅ Completed Features
+- [x] Core Data model with Job, Shift, and Bonus entities
+- [x] Time tracking with start/stop functionality
+- [x] Job management (add, view, delete)
+- [x] Manual shift entry
+- [x] Analytics dashboard with earnings breakdown
+- [x] Data export (CSV and PDF)
+- [x] Modern UI with custom components
+- [x] Toast notification system
+- [x] Settings and preferences
+- [x] Offline data storage
 
-### Job
-- Name, hourly rate, creation date
-- Associated shifts and bonuses
-- Calculated total earnings and hours
+### 🚧 In Progress
+- [ ] Job editing functionality
+- [ ] Enhanced analytics charts
+- [ ] Push notifications for shift reminders
 
-### Shift
-- Start/end times, duration
-- Associated job and shift type
-- Notes and bonuses
-- Calculated earnings
+### 📋 Planned Features
+- [ ] Apple Watch companion app
+- [ ] iCloud sync across devices
+- [ ] Widget support for quick time tracking
+- [ ] Advanced reporting and insights
+- [ ] Team/shared job management
+- [ ] Integration with calendar apps
+- [ ] Voice commands for hands-free tracking
 
-### Bonus
-- Name and amount
-- Associated with jobs and shifts
-- Reusable across multiple shifts
+## 🤝 Contributing
 
-## Architecture
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-- **MVVM Pattern**: Clean separation of concerns
-- **Core Data**: Offline-first data persistence
-- **SwiftUI**: Modern, declarative UI framework
-- **Combine**: Reactive programming for real-time updates
+### Development Setup
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-## Contributing
+## 📄 License
 
-This is an open-source project. Feel free to contribute by:
-- Reporting bugs
-- Suggesting new features
-- Submitting pull requests
-- Improving documentation
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## License
+## 👥 Authors
 
-This project is open source and available under the [MIT License](LICENSE).
+- **Your Name** - *Initial work* - [@yourusername](https://github.com/yourusername)
 
-## Roadmap
+## 🙏 Acknowledgments
 
-### Version 1.1
-- [ ] Data export functionality
-- [ ] Push notifications
-- [ ] Widget support
+- SwiftUI community for inspiration and best practices
+- Core Data documentation and examples
+- Open source contributors who made this possible
 
-### Version 1.2
-- [ ] Apple Watch app
-- [ ] iCloud sync
-- [ ] Advanced reporting
+## 📞 Support
 
-### Version 2.0
-- [ ] Web app version
-- [ ] Multi-user support
-- [ ] Team management features
-
-## Support
-
-If you encounter any issues or have questions, please:
-1. Check the existing issues on GitHub
-2. Create a new issue with detailed information
-3. Contact the maintainers
+If you have any questions or need help, please:
+- Open an issue on GitHub
+- Check the documentation
+- Contact us at [your-email@example.com]
 
 ---
 
-**TIS - Time is Money** - Because every minute counts! 💰⏰
+**Made with ❤️ for time-conscious professionals**
