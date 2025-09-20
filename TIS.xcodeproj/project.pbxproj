@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,7 +26,6 @@
 		1A0000222A00000000000001 /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000212A00000000000001 /* ExportManager.swift */; };
 		1A0000242A00000000000001 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000232A00000000000001 /* ColorScheme.swift */; };
 		1A0000262A00000000000001 /* TISCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000252A00000000000001 /* TISCard.swift */; };
-		1A0000282A00000000000001 /* ToastTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000272A00000000000001 /* ToastTypes.swift */; };
 		1A00002A2A00000000000001 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000292A00000000000001 /* ToastView.swift */; };
 		1A00002C2A00000000000001 /* TISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00002B2A00000000000001 /* TISButton.swift */; };
 /* End PBXBuildFile section */
@@ -37,8 +36,6 @@
 		1A0000042A00000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A0000072A00000000000001 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A0000092A00000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		1A00000B2A00000000000001 /* TISModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodeld; sourceTree = "<group>"; };
-		1A0000432A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 		1A00000D2A00000000000001 /* TimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTracker.swift; sourceTree = "<group>"; };
 		1A00000F2A00000000000001 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		1A0000112A00000000000001 /* TimeTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingView.swift; sourceTree = "<group>"; };
@@ -52,19 +49,17 @@
 		1A0000212A00000000000001 /* ExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportManager.swift; sourceTree = "<group>"; };
 		1A0000232A00000000000001 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		1A0000252A00000000000001 /* TISCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISCard.swift; sourceTree = "<group>"; };
-		1A0000272A00000000000001 /* ToastTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastTypes.swift; sourceTree = "<group>"; };
 		1A0000292A00000000000001 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		1A00002B2A00000000000001 /* TISButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISButton.swift; sourceTree = "<group>"; };
 		1A00002D2A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000432A00000000000001 /* TISModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TISModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1A00002E2A00000000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -147,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				1A0000252A00000000000001 /* TISCard.swift */,
-				1A0000272A00000000000001 /* ToastTypes.swift */,
 				1A0000292A00000000000001 /* ToastView.swift */,
 				1A00002B2A00000000000001 /* TISButton.swift */,
 			);
@@ -175,8 +169,6 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			name = TIS;
 			productName = TIS;
 			productReference = 1A00002D2A00000000000001 /* TIS.app */;
@@ -198,7 +190,6 @@
 				};
 			};
 			buildConfigurationList = 1A00003E2A00000000000001 /* Build configuration list for PBXProject "TIS" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -206,6 +197,7 @@
 				Base,
 			);
 			mainGroup = 1A00002F2A00000000000001;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 1A0000312A00000000000001 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -218,19 +210,16 @@
 /* Begin PBXResourcesBuildPhase section */
 		1A00003C2A00000000000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				1A0000082A00000000000001 /* Preview Assets.xcassets in Resources */,
 				1A0000052A00000000000001 /* Assets.xcassets in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1A00003B2A00000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				1A00000C2A00000000000001 /* TISModel.xcdatamodeld in Sources */,
 				1A00000E2A00000000000001 /* TimeTracker.swift in Sources */,
@@ -246,19 +235,17 @@
 				1A0000222A00000000000001 /* ExportManager.swift in Sources */,
 				1A0000242A00000000000001 /* ColorScheme.swift in Sources */,
 				1A0000262A00000000000001 /* TISCard.swift in Sources */,
-				1A0000282A00000000000001 /* ToastTypes.swift in Sources */,
 				1A00002A2A00000000000001 /* ToastView.swift in Sources */,
 				1A00002C2A00000000000001 /* TISButton.swift in Sources */,
 				1A0000032A00000000000001 /* ContentView.swift in Sources */,
 				1A0000012A00000000000001 /* TISApp.swift in Sources */,
 				1A00000A2A00000000000001 /* PersistenceController.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1A00003F2A00000000000001 /* Debug */ = {
+		1A00003F2A00000000000001 /* Debug configuration for PBXProject "TIS" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -321,7 +308,7 @@
 			};
 			name = Debug;
 		};
-		1A0000402A00000000000001 /* Release */ = {
+		1A0000402A00000000000001 /* Release configuration for PBXProject "TIS" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -377,7 +364,7 @@
 			};
 			name = Release;
 		};
-		1A0000412A00000000000001 /* Debug */ = {
+		1A0000412A00000000000001 /* Debug configuration for PBXNativeTarget "TIS" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -385,6 +372,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
+				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -397,7 +385,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tis.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.1oridevs.tis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -405,7 +393,7 @@
 			};
 			name = Debug;
 		};
-		1A0000422A00000000000001 /* Release */ = {
+		1A0000422A00000000000001 /* Release configuration for PBXNativeTarget "TIS" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -413,6 +401,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TIS/Preview Content\"";
+				DEVELOPMENT_TEAM = RDJ3S42ZS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -425,7 +414,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tis.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.1oridevs.tis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -439,19 +428,17 @@
 		1A00003A2A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A0000412A00000000000001 /* Debug */,
-				1A0000422A00000000000001 /* Release */,
+				1A0000412A00000000000001 /* Debug configuration for PBXNativeTarget "TIS" */,
+				1A0000422A00000000000001 /* Release configuration for PBXNativeTarget "TIS" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		1A00003E2A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A00003F2A00000000000001 /* Debug */,
-				1A0000402A00000000000001 /* Release */,
+				1A00003F2A00000000000001 /* Debug configuration for PBXProject "TIS" */,
+				1A0000402A00000000000001 /* Release configuration for PBXProject "TIS" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */

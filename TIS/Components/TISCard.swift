@@ -164,7 +164,7 @@ struct TISProgressBar: View {
             Text("Sample Card Content")
         }
         
-        TISButton("Sample Button", icon: "plus") {
+        TISButton("Sample Button", icon: "plus", color: TISColors.primary) {
             // Action
         }
         
