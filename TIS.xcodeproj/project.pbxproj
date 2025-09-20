@@ -65,11 +65,11 @@
 		1A0000332A00000000000001 /* ShiftRemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftRemindersView.swift; sourceTree = "<group>"; };
 		1A0000352A00000000000001 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
 		1A0000372A00000000000001 /* LocalizationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationSettingsView.swift; sourceTree = "<group>"; };
-		1A0000352A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000392A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1A0000362A00000000000001 /* Frameworks */ = {
+		1A00003A2A00000000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -93,14 +93,14 @@
 				1A0000002A00000000000001 /* TISApp.swift */,
 				1A0000022A00000000000001 /* ContentView.swift */,
 				1A00000B2A00000000000001 /* TISModel.xcdatamodeld */,
-				1A00003A2A00000000000001 /* Models */,
-				1A00003B2A00000000000001 /* ViewModels */,
-				1A00003C2A00000000000001 /* Views */,
-				1A00003D2A00000000000001 /* Managers */,
-				1A00003E2A00000000000001 /* Components */,
-				1A00003F2A00000000000001 /* Design */,
+				1A00003B2A00000000000001 /* Models */,
+				1A00003C2A00000000000001 /* ViewModels */,
+				1A00003D2A00000000000001 /* Views */,
+				1A00003E2A00000000000001 /* Managers */,
+				1A00003F2A00000000000001 /* Components */,
+				1A0000402A00000000000001 /* Design */,
 				1A0000042A00000000000001 /* Assets.xcassets */,
-				1A0000402A00000000000001 /* Preview Content */,
+				1A0000412A00000000000001 /* Preview Content */,
 			);
 			path = TIS;
 			sourceTree = "<group>";
@@ -108,19 +108,19 @@
 		1A0000392A00000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1A0000352A00000000000001 /* TIS.app */,
+				1A0000392A00000000000001 /* TIS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1A00003A2A00000000000001 /* Models */ = {
+		1A00003B2A00000000000001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1A00003B2A00000000000001 /* ViewModels */ = {
+		1A00003C2A00000000000001 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				1A00000D2A00000000000001 /* TimeTracker.swift */,
@@ -128,7 +128,7 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		1A00003C2A00000000000001 /* Views */ = {
+		1A00003D2A00000000000001 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1A00000F2A00000000000001 /* DashboardView.swift */,
@@ -148,7 +148,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1A00003D2A00000000000001 /* Managers */ = {
+		1A00003E2A00000000000001 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000092A00000000000001 /* PersistenceController.swift */,
@@ -159,7 +159,7 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		1A00003E2A00000000000001 /* Components */ = {
+		1A00003F2A00000000000001 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000252A00000000000001 /* TISCard.swift */,
@@ -169,7 +169,7 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		1A00003F2A00000000000001 /* Design */ = {
+		1A0000402A00000000000001 /* Design */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000232A00000000000001 /* ColorScheme.swift */,
@@ -177,7 +177,7 @@
 			path = Design;
 			sourceTree = "<group>";
 		};
-		1A0000402A00000000000001 /* Preview Content */ = {
+		1A0000412A00000000000001 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
 				1A0000072A00000000000001 /* Preview Assets.xcassets */,
@@ -188,13 +188,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1A0000412A00000000000001 /* TIS */ = {
+		1A0000422A00000000000001 /* TIS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1A0000422A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */;
+			buildConfigurationList = 1A0000432A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */;
 			buildPhases = (
-				1A0000432A00000000000001 /* Sources */,
-				1A0000362A00000000000001 /* Frameworks */,
-				1A0000442A00000000000001 /* Resources */,
+				1A0000442A00000000000001 /* Sources */,
+				1A00003A2A00000000000001 /* Frameworks */,
+				1A0000452A00000000000001 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -202,13 +202,13 @@
 			);
 			name = TIS;
 			productName = TIS;
-			productReference = 1A0000352A00000000000001 /* TIS.app */;
+			productReference = 1A0000392A00000000000001 /* TIS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1A0000452A00000000000001 /* Project object */ = {
+		1A0000462A00000000000001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
@@ -220,7 +220,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1A0000462A00000000000001 /* Build configuration list for PBXProject "TIS" */;
+			buildConfigurationList = 1A0000472A00000000000001 /* Build configuration list for PBXProject "TIS" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -233,13 +233,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1A0000412A00000000000001 /* TIS */,
+				1A0000422A00000000000001 /* TIS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1A0000442A00000000000001 /* Resources */ = {
+		1A0000452A00000000000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -251,7 +251,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1A0000432A00000000000001 /* Sources */ = {
+		1A0000442A00000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -286,7 +286,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1A0000472A00000000000001 /* Debug */ = {
+		1A0000482A00000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -349,7 +349,7 @@
 			};
 			name = Debug;
 		};
-		1A0000482A00000000000001 /* Release */ = {
+		1A0000492A00000000000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -405,7 +405,7 @@
 			};
 			name = Release;
 		};
-		1A0000492A00000000000001 /* Debug */ = {
+		1A00004A2A00000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -433,7 +433,7 @@
 			};
 			name = Debug;
 		};
-		1A00004A2A00000000000001 /* Release */ = {
+		1A00004B2A00000000000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -464,20 +464,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1A0000422A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */ = {
+		1A0000432A00000000000001 /* Build configuration list for PBXNativeTarget "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A0000492A00000000000001 /* Debug */,
-				1A00004A2A00000000000001 /* Release */,
+				1A00004A2A00000000000001 /* Debug */,
+				1A00004B2A00000000000001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1A0000462A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
+		1A0000472A00000000000001 /* Build configuration list for PBXProject "TIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A0000472A00000000000001 /* Debug */,
-				1A0000482A00000000000001 /* Release */,
+				1A0000482A00000000000001 /* Debug */,
+				1A0000492A00000000000001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -497,5 +497,5 @@
 		};
 /* End XCVersionGroup section */
 	};
-	rootObject = 1A0000452A00000000000001 /* Project object */;
+	rootObject = 1A0000462A00000000000001 /* Project object */;
 }
