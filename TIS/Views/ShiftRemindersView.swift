@@ -3,7 +3,7 @@ import UserNotifications
 
 struct ShiftRemindersView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var notificationManager = NotificationManager.shared
     
     @State private var shiftStartReminder = true
     @State private var shiftEndReminder = true
@@ -101,7 +101,7 @@ struct ShiftRemindersView: View {
 }
 
 struct PermissionStatusCard: View {
-    @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var notificationManager = NotificationManager.shared
     @State private var permissionStatus: UNAuthorizationStatus = .notDetermined
     
     var body: some View {
@@ -409,7 +409,7 @@ struct WeeklySummaryCard: View {
 }
 
 struct TestNotificationsCard: View {
-    @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var notificationManager = NotificationManager.shared
     @State private var isSendingTest = false
     
     var body: some View {
