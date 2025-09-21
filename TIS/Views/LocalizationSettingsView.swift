@@ -260,7 +260,7 @@ struct PreviewCard: View {
                     }
                     
                     HStack {
-                        Text(localizationManager.localizedString("time_tracking.tracking"))
+                        Text(localizationManager.localizedString(for: "time_tracking.tracking"))
                             .font(.caption)
                             .foregroundColor(TISColors.secondaryText)
                         
