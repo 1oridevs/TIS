@@ -24,7 +24,7 @@ struct LocalizationSettingsView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text(localizationManager.localizedString("settings.language"))
+                            Text(localizationManager.localizedString(for: "settings.language"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
@@ -50,11 +50,11 @@ struct LocalizationSettingsView: View {
                 .padding(.bottom, 100)
             }
             .background(TISColors.background)
-            .navigationTitle(localizationManager.localizedString("settings.language"))
+            .navigationTitle(localizationManager.localizedString(for: "settings.language"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(localizationManager.localizedString("common.done")) {
+                    Button(localizationManager.localizedString(for: "common.done")) {
                         dismiss()
                     }
                 }
@@ -82,7 +82,7 @@ struct LanguageSelectionCard: View {
                         .font(.title2)
                         .foregroundColor(TISColors.primary)
                     
-                    Text(localizationManager.localizedString("settings.language"))
+                    Text(localizationManager.localizedString(for: "settings.language"))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
@@ -156,7 +156,7 @@ struct CurrencySelectionCard: View {
                         .font(.title2)
                         .foregroundColor(TISColors.success)
                     
-                    Text(localizationManager.localizedString("settings.currency"))
+                    Text(localizationManager.localizedString(for: "settings.currency"))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
@@ -247,7 +247,7 @@ struct PreviewCard: View {
                 
                 VStack(spacing: 12) {
                     HStack {
-                        Text(localizationManager.localizedString("dashboard.welcome"))
+                        Text(localizationManager.localizedString(for: "dashboard.welcome"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.primaryText)
                         
