@@ -10,11 +10,12 @@ struct AchievementData: Identifiable, Codable {
     let rarity: AchievementRarity
     let points: Int
     let targetValue: Double
+    let requirement: String
     var currentValue: Double
     var isUnlocked: Bool
     var unlockedDate: Date?
     
-    init(id: UUID = UUID(), name: String, description: String, icon: String, category: AchievementCategory, rarity: AchievementRarity, points: Int, targetValue: Double, currentValue: Double = 0, isUnlocked: Bool = false, unlockedDate: Date? = nil) {
+    init(id: UUID = UUID(), name: String, description: String, icon: String, category: AchievementCategory, rarity: AchievementRarity, points: Int, targetValue: Double, requirement: String, currentValue: Double = 0, isUnlocked: Bool = false, unlockedDate: Date? = nil) {
         self.id = id
         self.name = name
         self.description = description
@@ -23,6 +24,7 @@ struct AchievementData: Identifiable, Codable {
         self.rarity = rarity
         self.points = points
         self.targetValue = targetValue
+        self.requirement = requirement
         self.currentValue = currentValue
         self.isUnlocked = isUnlocked
         self.unlockedDate = unlockedDate
@@ -125,7 +127,8 @@ extension AchievementData {
             category: .timeTracking,
             rarity: .common,
             points: 10,
-            targetValue: 1
+            targetValue: 1,
+            requirement: "Complete 1 shift"
         ),
         AchievementData(
             name: "Getting Started",
@@ -134,7 +137,8 @@ extension AchievementData {
             category: .timeTracking,
             rarity: .common,
             points: 5,
-            targetValue: 1
+            targetValue: 1,
+            requirement: "Add 1 job"
         ),
         
         // Time Tracking
@@ -146,7 +150,8 @@ extension AchievementData {
             rarity: .uncommon,
             points: 15,
             targetValue: 10
-        ),
+        ,
+            requirement: "Track 10 hours"),
         AchievementData(
             name: "Marathon Worker",
             description: "Track 100 hours total",
@@ -155,7 +160,8 @@ extension AchievementData {
             rarity: .rare,
             points: 50,
             targetValue: 100
-        ),
+        ,
+            requirement: "Track 100 hours"),
         AchievementData(
             name: "Time Master",
             description: "Track 1000 hours total",
@@ -164,7 +170,8 @@ extension AchievementData {
             rarity: .epic,
             points: 100,
             targetValue: 1000
-        ),
+        ,
+            requirement: "Track 1000 hours"),
         
         // Earnings
         AchievementData(
@@ -175,7 +182,8 @@ extension AchievementData {
             rarity: .common,
             points: 10,
             targetValue: 1
-        ),
+        ,
+            requirement: "Earn $1"),
         AchievementData(
             name: "Hundredaire",
             description: "Earn $100 total",
@@ -184,7 +192,8 @@ extension AchievementData {
             rarity: .uncommon,
             points: 25,
             targetValue: 100
-        ),
+        ,
+            requirement: "Earn $100"),
         AchievementData(
             name: "Thousandaire",
             description: "Earn $1,000 total",
@@ -193,7 +202,8 @@ extension AchievementData {
             rarity: .rare,
             points: 75,
             targetValue: 1000
-        ),
+        ,
+            requirement: "Earn $1,000"),
         AchievementData(
             name: "Money Maker",
             description: "Earn $10,000 total",
@@ -202,7 +212,8 @@ extension AchievementData {
             rarity: .epic,
             points: 150,
             targetValue: 10000
-        ),
+        ,
+            requirement: "Earn $10,000"),
         
         // Consistency
         AchievementData(
@@ -213,7 +224,8 @@ extension AchievementData {
             rarity: .uncommon,
             points: 30,
             targetValue: 7
-        ),
+        ,
+            requirement: "Work 7 consecutive days"),
         AchievementData(
             name: "Week Warrior",
             description: "Work 4 weeks in a row",
@@ -222,7 +234,8 @@ extension AchievementData {
             rarity: .rare,
             points: 75,
             targetValue: 4
-        ),
+        ,
+            requirement: "Work 4 consecutive weeks"),
         AchievementData(
             name: "Monthly Master",
             description: "Work 3 months in a row",
@@ -231,7 +244,8 @@ extension AchievementData {
             rarity: .epic,
             points: 150,
             targetValue: 3
-        ),
+        ,
+            requirement: "Work 3 consecutive months"),
         
         // Special Achievements
         AchievementData(
@@ -242,7 +256,8 @@ extension AchievementData {
             rarity: .rare,
             points: 40,
             targetValue: 10
-        ),
+        ,
+            requirement: "Work 10 overtime shifts"),
         AchievementData(
             name: "Bonus Hunter",
             description: "Earn $500 in bonuses",
@@ -251,7 +266,8 @@ extension AchievementData {
             rarity: .rare,
             points: 60,
             targetValue: 500
-        ),
+        ,
+            requirement: "Earn $500 in bonuses"),
         AchievementData(
             name: "Multi-Tasker",
             description: "Work 5 different jobs",
@@ -260,7 +276,8 @@ extension AchievementData {
             rarity: .uncommon,
             points: 50,
             targetValue: 5
-        ),
+        ,
+            requirement: "Work 5 different jobs"),
         
         // Milestones
         AchievementData(
@@ -271,7 +288,8 @@ extension AchievementData {
             rarity: .epic,
             points: 100,
             targetValue: 100
-        ),
+        ,
+            requirement: "Complete 100 shifts"),
         AchievementData(
             name: "Half Thousand",
             description: "Complete 500 shifts",
@@ -280,7 +298,8 @@ extension AchievementData {
             rarity: .legendary,
             points: 250,
             targetValue: 500
-        ),
+        ,
+            requirement: "Complete 500 shifts"),
         AchievementData(
             name: "Thousand Club",
             description: "Complete 1000 shifts",
@@ -289,6 +308,7 @@ extension AchievementData {
             rarity: .legendary,
             points: 500,
             targetValue: 1000
-        )
+        ,
+            requirement: "Complete 1000 shifts")
     ]
 }

@@ -162,7 +162,7 @@ class AchievementManager: ObservableObject {
                 achievement.iconName = achievementData.icon
                 achievement.isUnlocked = false
                 achievement.category = achievementData.category.rawValue
-                achievement.points = achievementData.points
+                achievement.points = Int32(achievementData.points)
                 achievement.requirement = achievementData.requirement
                 achievement.progress = 0
                 achievement.maxProgress = achievementData.targetValue

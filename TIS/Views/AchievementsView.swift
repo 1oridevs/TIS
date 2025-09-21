@@ -319,7 +319,22 @@ struct AchievementCard: View {
                 Text("\(achievement.points) pts")
                     .font(.caption)
                     .fontWeight(.medium)
-                    .foregroundColor(achievement.rarity.color == "gold" ? TISColors.gold : TISColors.secondaryText)
+                    .foregroundColor({
+                        let rarity: AchievementRarity
+                        switch achievement.points {
+                        case 0...10:
+                            rarity = .common
+                        case 11...25:
+                            rarity = .uncommon
+                        case 26...50:
+                            rarity = .rare
+                        case 51...100:
+                            rarity = .epic
+                        default:
+                            rarity = .legendary
+                        }
+                        return rarity.color == "gold" ? TISColors.gold : TISColors.secondaryText
+                    }())
             }
         }
         .padding()
