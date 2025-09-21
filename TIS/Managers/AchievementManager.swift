@@ -158,7 +158,7 @@ class AchievementManager: ObservableObject {
                 let achievement = Achievement(context: viewContext)
                 achievement.id = UUID()
                 achievement.name = achievementData.name
-                achievement.description = achievementData.description
+                achievement.achievementDescription = achievementData.description
                 achievement.iconName = achievementData.iconName
                 achievement.isUnlocked = false
                 achievement.category = achievementData.category
