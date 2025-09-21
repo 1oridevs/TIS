@@ -154,18 +154,18 @@ class AchievementManager: ObservableObject {
         let existingAchievements = fetchAllAchievements()
         
         if existingAchievements.isEmpty {
-            for achievementData in Achievement.predefinedAchievements {
+            for achievementData in AchievementData.predefinedAchievements {
                 let achievement = Achievement(context: viewContext)
                 achievement.id = UUID()
                 achievement.name = achievementData.name
                 achievement.achievementDescription = achievementData.description
-                achievement.iconName = achievementData.iconName
+                achievement.iconName = achievementData.icon
                 achievement.isUnlocked = false
-                achievement.category = achievementData.category
+                achievement.category = achievementData.category.rawValue
                 achievement.points = achievementData.points
                 achievement.requirement = achievementData.requirement
                 achievement.progress = 0
-                achievement.maxProgress = achievementData.maxProgress
+                achievement.maxProgress = achievementData.targetValue
             }
             
             saveContext()
@@ -227,7 +227,19 @@ class AchievementManager: ObservableObject {
         var distribution: [AchievementRarity: Int] = [:]
         
         for achievement in unlockedAchievements {
-            let rarity = achievement.rarity
+            let rarity: AchievementRarity
+            switch achievement.points {
+            case 0...10:
+                rarity = .common
+            case 11...25:
+                rarity = .uncommon
+            case 26...50:
+                rarity = .rare
+            case 51...100:
+                rarity = .epic
+            default:
+                rarity = .legendary
+            }
             distribution[rarity, default: 0] += 1
         }
         

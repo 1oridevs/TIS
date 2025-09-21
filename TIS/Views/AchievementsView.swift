@@ -121,7 +121,7 @@ struct AchievementsHeaderView: View {
             // Progress Bar
             ProgressBarView(
                 current: unlockedCount,
-                total: Achievement.predefinedAchievements.count,
+                total: AchievementData.predefinedAchievements.count,
                 color: TISColors.primary
             )
         }
@@ -295,7 +295,7 @@ struct AchievementCard: View {
                                 
                                 Rectangle()
                                     .fill(TISColors.primary)
-                                    .frame(width: geometry.size.width * achievement.progressPercentage, height: 4)
+                                    .frame(width: geometry.size.width * (achievement.maxProgress > 0 ? min(achievement.progress / achievement.maxProgress, 1.0) : 0), height: 4)
                                     .cornerRadius(2)
                             }
                         }
