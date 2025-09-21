@@ -99,7 +99,6 @@
 			children = (
 				1A0000002A00000000000001 /* TISApp.swift */,
 				1A0000022A00000000000001 /* ContentView.swift */,
-				1A00000B2A00000000000001 /* TISModel.xcdatamodeld */,
 				1A0000402A00000000000001 /* Models */,
 				1A0000412A00000000000001 /* ViewModels */,
 				1A0000422A00000000000001 /* Views */,
@@ -124,6 +123,7 @@
 		1A0000402A00000000000001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1A00000B2A00000000000001 /* TISModel.xcdatamodeld */,
 				1A0000542A00000000000001 /* Achievement.swift */,
 			);
 			path = Models;
