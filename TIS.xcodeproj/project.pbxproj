@@ -34,7 +34,7 @@
 		1A0000362A00000000000001 /* LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000352A00000000000001 /* LocalizationManager.swift */; };
 		1A0000382A00000000000001 /* LocalizationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000372A00000000000001 /* LocalizationSettingsView.swift */; };
 		1A00003A2A00000000000001 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000392A00000000000001 /* PersistenceController.swift */; };
-		1A0000532A00000000000001 /* TimeTrackingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000522A00000000000001 /* TimeTrackingWidget.swift */; };
+		1A0000532A00000000000001 /* TimeTrackingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A00005B2A00000000000001 /* TimeTrackingWidget.swift */; };
 		1A0000552A00000000000001 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000542A00000000000001 /* Achievement.swift */; };
 		1A0000572A00000000000001 /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000562A00000000000001 /* AchievementManager.swift */; };
 		1A0000592A00000000000001 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000582A00000000000001 /* AchievementsView.swift */; };
@@ -67,7 +67,7 @@
 		1A0000352A00000000000001 /* LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationManager.swift; sourceTree = "<group>"; };
 		1A0000372A00000000000001 /* LocalizationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationSettingsView.swift; sourceTree = "<group>"; };
 		1A0000392A00000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		1A0000522A00000000000001 /* TimeTrackingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingWidget.swift; sourceTree = "<group>"; };
+		1A00005B2A00000000000001 /* TimeTrackingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingWidget.swift; sourceTree = "<group>"; };
 		1A0000542A00000000000001 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		1A0000562A00000000000001 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
 		1A0000582A00000000000001 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
@@ -198,7 +198,7 @@
 		1A00005A2A00000000000001 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
-				1A0000522A00000000000001 /* TimeTrackingWidget.swift */,
+				1A00005B2A00000000000001 /* TimeTrackingWidget.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
