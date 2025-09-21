@@ -68,7 +68,7 @@
 		1A0000372A00000000000001 /* LocalizationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationSettingsView.swift; sourceTree = "<group>"; };
 		1A0000392A00000000000001 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		1A00005B2A00000000000001 /* TimeTrackingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTrackingWidget.swift; sourceTree = "<group>"; };
-		1A0000542A00000000000001 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		1A0000542A00000000000001 /* AchievementData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementData.swift; sourceTree = "<group>"; };
 		1A0000562A00000000000001 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
 		1A0000582A00000000000001 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		1A00003B2A00000000000001 /* TIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,7 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0000512A00000000000001 /* TISModel.xcdatamodeld */,
-				1A0000542A00000000000001 /* Achievement.swift */,
+				1A0000542A00000000000001 /* AchievementData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

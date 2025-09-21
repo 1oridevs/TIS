@@ -1,6 +1,7 @@
 import WidgetKit
 import SwiftUI
 import CoreData
+import Intents
 
 struct TimeTrackingWidget: Widget {
     let kind: String = "TimeTrackingWidget"
@@ -21,7 +22,7 @@ struct TimeTrackingEntry: TimelineEntry {
     let isTracking: Bool
     let currentJob: String?
     let elapsedTime: String
-    let configuration: ConfigurationIntent?
+    let configuration: INIntent?
 }
 
 struct TimeTrackingProvider: TimelineProvider {
@@ -51,7 +52,7 @@ struct TimeTrackingProvider: TimelineProvider {
         let entry = TimeTrackingEntry(
             date: currentDate,
             isTracking: false,
-            currentJob: nil,
+            currentJob: "Sample Job",
             elapsedTime: "00:00:00",
             configuration: nil
         )
@@ -101,7 +102,7 @@ struct TimeTrackingWidgetEntryView: View {
     TimeTrackingWidget()
 } timeline: {
     TimeTrackingEntry(
-        date: .now,
+        date: Date(),
         isTracking: false,
         currentJob: "Sample Job",
         elapsedTime: "00:00:00",
@@ -109,7 +110,7 @@ struct TimeTrackingWidgetEntryView: View {
     )
     
     TimeTrackingEntry(
-        date: .now,
+        date: Date(),
         isTracking: true,
         currentJob: "Sample Job",
         elapsedTime: "02:30:45",
