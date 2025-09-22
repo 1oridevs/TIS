@@ -4,6 +4,7 @@ import Charts
 
 struct AnalyticsView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Shift.startTime, ascending: false)],
         predicate: NSPredicate(format: "isActive == NO"),
@@ -109,8 +110,36 @@ struct AnalyticsView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 100)
             }
-            .background(TISColors.background)
-            .navigationTitle("Analytics")
+            .background(
+                ZStack {
+                    // Enhanced gradient background
+                    LinearGradient(
+                        colors: [
+                            TISColors.background,
+                            TISColors.background.opacity(0.95),
+                            TISColors.primary.opacity(0.03)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    
+                    // Subtle pattern overlay
+                    GeometryReader { geometry in
+                        Circle()
+                            .fill(TISColors.accent.opacity(0.02))
+                            .frame(width: 300, height: 300)
+                            .position(x: geometry.size.width * 0.7, y: geometry.size.height * 0.3)
+                            .blur(radius: 30)
+                        
+                        Circle()
+                            .fill(TISColors.primary.opacity(0.02))
+                            .frame(width: 200, height: 200)
+                            .position(x: geometry.size.width * 0.3, y: geometry.size.height * 0.7)
+                            .blur(radius: 25)
+                    }
+                }
+            )
+            .navigationTitle(localizationManager.localizedString(for: "analytics.title"))
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
