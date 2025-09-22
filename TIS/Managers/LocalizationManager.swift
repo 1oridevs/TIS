@@ -250,7 +250,29 @@ class LocalizationManager: ObservableObject {
         "common.error": "Error",
         "common.success": "Success",
         "common.warning": "Warning",
-        "common.info": "Info"
+        "common.info": "Info",
+        
+        // Additional common strings
+        "common.loading": "Loading...",
+        "common.retry": "Retry",
+        "common.close": "Close",
+        "common.next": "Next",
+        "common.previous": "Previous",
+        "common.continue": "Continue",
+        "common.finish": "Finish",
+        "common.back": "Back",
+        "common.forward": "Forward",
+        "common.refresh": "Refresh",
+        "common.search": "Search",
+        "common.filter": "Filter",
+        "common.sort": "Sort",
+        "common.clear": "Clear",
+        "common.reset": "Reset",
+        "common.apply": "Apply",
+        "common.confirm": "Confirm",
+        "common.discard": "Discard",
+        "common.undo": "Undo",
+        "common.redo": "Redo"
     ]
     
     private let hebrewStrings: [String: String] = [
@@ -394,7 +416,29 @@ class LocalizationManager: ObservableObject {
         "common.error": "שגיאה",
         "common.success": "הצלחה",
         "common.warning": "אזהרה",
-        "common.info": "מידע"
+        "common.info": "מידע",
+        
+        // Additional common strings
+        "common.loading": "טוען...",
+        "common.retry": "נסה שוב",
+        "common.close": "סגור",
+        "common.next": "הבא",
+        "common.previous": "הקודם",
+        "common.continue": "המשך",
+        "common.finish": "סיים",
+        "common.back": "חזור",
+        "common.forward": "קדימה",
+        "common.refresh": "רענן",
+        "common.search": "חיפוש",
+        "common.filter": "סינון",
+        "common.sort": "מיון",
+        "common.clear": "נקה",
+        "common.reset": "איפוס",
+        "common.apply": "החל",
+        "common.confirm": "אשר",
+        "common.discard": "התעלם",
+        "common.undo": "בטל",
+        "common.redo": "חזור על"
     ]
 }
 
