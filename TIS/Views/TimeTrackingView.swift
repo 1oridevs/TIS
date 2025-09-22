@@ -23,18 +23,28 @@ struct TimeTrackingView: View {
                 VStack(spacing: 24) {
                     // Time Display
                     TimeDisplayView()
+                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.0), value: UUID())
                     
                     // Job Selection
                     JobSelectionView()
+                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: UUID())
                     
                     // Shift Type Display
                     ShiftTypeDisplayView()
+                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: UUID())
                     
                     // Notes Section
                     NotesSectionView()
+                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3), value: UUID())
                     
                     // Control Buttons
                     ControlButtonsView()
+                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: UUID())
                     
                     // Bottom padding to prevent interference with tab bar
                     Color.clear
@@ -43,6 +53,32 @@ struct TimeTrackingView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
             }
+            .background(
+                ZStack {
+                    // Base gradient
+                    LinearGradient(
+                        colors: [
+                            TISColors.background,
+                            TISColors.background.opacity(0.95),
+                            TISColors.primary.opacity(0.03)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    
+                    // Animated gradient overlay
+                    LinearGradient(
+                        colors: [
+                            TISColors.primary.opacity(0.05),
+                            Color.clear,
+                            TISColors.accent.opacity(0.03)
+                        ],
+                        startPoint: .topTrailing,
+                        endPoint: .bottomLeading
+                    )
+                    .opacity(0.8)
+                }
+            )
             .navigationTitle("Time Tracking")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {

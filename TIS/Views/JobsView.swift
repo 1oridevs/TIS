@@ -3,6 +3,7 @@ import CoreData
 
 struct JobsView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Job.name, ascending: true)],
         animation: .default)
@@ -13,15 +14,78 @@ struct JobsView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(jobs, id: \.id) { job in
-                    JobDetailRowView(job: job) {
-                        jobToEdit = job
+            ZStack {
+                // Enhanced background
+                LinearGradient(
+                    colors: [
+                        TISColors.background,
+                        TISColors.background.opacity(0.95),
+                        TISColors.primary.opacity(0.02)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                
+                if jobs.isEmpty {
+                    // Enhanced empty state
+                    VStack(spacing: 24) {
+                        ZStack {
+                            Circle()
+                                .fill(TISColors.primary.opacity(0.1))
+                                .frame(width: 120, height: 120)
+                            
+                            Image(systemName: "briefcase.fill")
+                                .font(.system(size: 50))
+                                .foregroundColor(TISColors.primary)
+                        }
+                        
+                        VStack(spacing: 12) {
+                            Text(localizationManager.localizedString(for: "jobs.no_jobs"))
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(TISColors.primaryText)
+                            
+                            Text(localizationManager.localizedString(for: "jobs.add_first_job"))
+                                .font(.body)
+                                .foregroundColor(TISColors.secondaryText)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 40)
+                        }
+                        
+                        Button(action: { showingAddJob = true }) {
+                            HStack {
+                                Image(systemName: "plus.circle.fill")
+                                Text(localizationManager.localizedString(for: "jobs.add_job"))
+                            }
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(TISColors.primaryGradient)
+                            .cornerRadius(25)
+                            .shadow(color: TISColors.primary.opacity(0.3), radius: 8, x: 0, y: 4)
+                        }
+                        .scaleEffect(1.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: UUID())
                     }
+                } else {
+                    List {
+                        ForEach(jobs, id: \.id) { job in
+                            JobDetailRowView(job: job) {
+                                jobToEdit = job
+                            }
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .padding(.vertical, 4)
+                        }
+                        .onDelete(perform: deleteJobs)
+                    }
+                    .listStyle(PlainListStyle())
+                    .background(Color.clear)
                 }
-                .onDelete(perform: deleteJobs)
             }
-            .navigationTitle("Jobs")
+            .navigationTitle(localizationManager.localizedString(for: "jobs.title"))
             .navigationBarTitleDisplayMode(.large)
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {

@@ -20,39 +20,79 @@ struct DashboardView: View {
                     // Welcome Header
                     WelcomeHeaderCard()
                         .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.0), value: UUID())
                     
                     // Current Status Card
                     CurrentStatusCard()
                         .transition(.asymmetric(insertion: .move(edge: .top).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: UUID())
                     
                     // Quick Actions
                     QuickActionsCard()
                         .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: UUID())
                     
                     // Jobs Overview
                     JobsOverviewCard()
                         .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3), value: UUID())
                     
                     // Earnings Goals
                     EarningsGoalsCard {
                         showingEarningsGoals = true
                     }
                     .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: UUID())
                     
                     // Recent Activity
                     RecentActivityCard()
                         .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.5), value: UUID())
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
                 .padding(.bottom, 100) // Extra padding for tab bar
             }
             .background(
-                LinearGradient(
-                    colors: [TISColors.background, TISColors.background.opacity(0.8)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+                ZStack {
+                    // Base gradient
+                    LinearGradient(
+                        colors: [
+                            TISColors.background,
+                            TISColors.background.opacity(0.95),
+                            TISColors.primary.opacity(0.05)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    
+                    // Animated gradient overlay
+                    LinearGradient(
+                        colors: [
+                            TISColors.primary.opacity(0.1),
+                            Color.clear,
+                            TISColors.accent.opacity(0.05)
+                        ],
+                        startPoint: .topTrailing,
+                        endPoint: .bottomLeading
+                    )
+                    .opacity(0.6)
+                    
+                    // Subtle pattern overlay
+                    GeometryReader { geometry in
+                        Circle()
+                            .fill(TISColors.primary.opacity(0.03))
+                            .frame(width: 200, height: 200)
+                            .position(x: geometry.size.width * 0.8, y: geometry.size.height * 0.2)
+                            .blur(radius: 20)
+                        
+                        Circle()
+                            .fill(TISColors.accent.opacity(0.03))
+                            .frame(width: 150, height: 150)
+                            .position(x: geometry.size.width * 0.2, y: geometry.size.height * 0.8)
+                            .blur(radius: 15)
+                    }
+                }
             )
             .navigationTitle("Dashboard")
             .navigationBarTitleDisplayMode(.large)
@@ -160,20 +200,38 @@ struct WelcomeHeaderCard: View {
 
 struct CurrentStatusCard: View {
     @EnvironmentObject private var timeTracker: TimeTracker
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var pulseAnimation = false
+    @State private var glowAnimation = false
     
     var body: some View {
         TISCard(shadow: TISShadows.medium) {
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     ZStack {
-                        // Pulsing background for active tracking
+                        // Enhanced pulsing background for active tracking
                         if timeTracker.isTracking {
+                            // Multiple pulsing rings
+                            ForEach(0..<3, id: \.self) { index in
+                                Circle()
+                                    .fill(TISColors.success.opacity(0.1 - Double(index) * 0.03))
+                                    .frame(width: 70 + CGFloat(index * 15), height: 70 + CGFloat(index * 15))
+                                    .scaleEffect(pulseAnimation ? 1.3 + CGFloat(index) * 0.1 : 1.0)
+                                    .animation(
+                                        .easeInOut(duration: 1.5 + Double(index) * 0.3)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(index) * 0.2),
+                                        value: pulseAnimation
+                                    )
+                            }
+                            
+                            // Glow effect
                             Circle()
-                                .fill(TISColors.success.opacity(0.3))
-                                .frame(width: 70, height: 70)
-                                .scaleEffect(pulseAnimation ? 1.2 : 1.0)
-                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: pulseAnimation)
+                                .fill(TISColors.successGradient)
+                                .frame(width: 80, height: 80)
+                                .blur(radius: glowAnimation ? 8 : 4)
+                                .opacity(glowAnimation ? 0.6 : 0.3)
+                                .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: glowAnimation)
                         }
                         
                         Circle()
@@ -262,13 +320,16 @@ struct CurrentStatusCard: View {
         .onAppear {
             if timeTracker.isTracking {
                 pulseAnimation = true
+                glowAnimation = true
             }
         }
         .onChange(of: timeTracker.isTracking) { oldValue, isTracking in
             if isTracking {
                 pulseAnimation = true
+                glowAnimation = true
             } else {
                 pulseAnimation = false
+                glowAnimation = false
             }
         }
     }
