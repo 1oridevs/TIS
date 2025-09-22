@@ -4,6 +4,7 @@ import CoreData
 struct DashboardView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject private var timeTracker: TimeTracker
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Job.createdAt, ascending: false)],
         animation: .default)
@@ -81,6 +82,7 @@ struct DashboardView: View {
 }
 
 struct WelcomeHeaderCard: View {
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var currentTime = Date()
     @State private var greeting = ""
     
@@ -96,7 +98,7 @@ struct WelcomeHeaderCard: View {
                             .fontWeight(.semibold)
                             .foregroundColor(TISColors.primaryText)
                         
-                        Text("Ready to track your time?")
+                        Text(localizationManager.localizedString(for: "dashboard.welcome"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
                     }
@@ -145,13 +147,13 @@ struct WelcomeHeaderCard: View {
         
         switch hour {
         case 5..<12:
-            greeting = "Good Morning"
+            greeting = localizationManager.localizedString(for: "dashboard.good_morning")
         case 12..<17:
-            greeting = "Good Afternoon"
+            greeting = localizationManager.localizedString(for: "dashboard.good_afternoon")
         case 17..<22:
-            greeting = "Good Evening"
+            greeting = localizationManager.localizedString(for: "dashboard.good_evening")
         default:
-            greeting = "Good Night"
+            greeting = localizationManager.localizedString(for: "dashboard.good_evening")
         }
     }
 }
