@@ -4,6 +4,7 @@ import CoreData
 struct TimeTrackingView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject private var timeTracker: TimeTracker
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Job.name, ascending: true)],
         animation: .default)
@@ -396,7 +397,7 @@ struct TimeTrackingView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("End Shift")
+                            Text(localizationManager.localizedString(for: "time_tracking.end_shift"))
                                 .font(.headline)
                                 .fontWeight(.bold)
                             
@@ -440,7 +441,7 @@ struct TimeTrackingView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Start Shift")
+                            Text(localizationManager.localizedString(for: "time_tracking.start_shift"))
                                 .font(.headline)
                                 .fontWeight(.bold)
                             
@@ -739,7 +740,7 @@ struct InnerContentView: View {
                 }
                 
                 // Status text with enhanced styling
-                Text(isTracking ? "TRACKING" : "READY")
+                Text(isTracking ? localizationManager.localizedString(for: "time_tracking.tracking") : localizationManager.localizedString(for: "time_tracking.ready"))
                     .font(.caption)
                     .fontWeight(.bold)
                     .foregroundColor(.white.opacity(0.9))

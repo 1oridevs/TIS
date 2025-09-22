@@ -3,6 +3,7 @@ import UserNotifications
 
 struct SettingsView: View {
     @StateObject private var notificationManager = NotificationManager.shared
+    @StateObject private var localizationManager = LocalizationManager.shared
     @State private var showingNotificationSettings = false
     @State private var dailyReminderTime = Date()
     @State private var enableDailyReminder = false
@@ -15,18 +16,18 @@ struct SettingsView: View {
         NavigationView {
             List {
                 // Notifications Section
-                Section("Notifications") {
+                Section(localizationManager.localizedString(for: "settings.notifications")) {
                     HStack {
                         Image(systemName: "bell.fill")
                             .foregroundColor(.blue)
-                        Text("Notification Permission")
+                        Text(localizationManager.localizedString(for: "reminders.notification_status"))
                         Spacer()
                         if notificationManager.isAuthorized {
-                            Text("Enabled")
+                            Text(localizationManager.localizedString(for: "reminders.enabled"))
                                 .foregroundColor(.green)
                                 .font(.caption)
                         } else {
-                            Button("Enable") {
+                            Button(localizationManager.localizedString(for: "reminders.enable")) {
                                 notificationManager.requestPermission()
                             }
                             .font(.caption)
@@ -55,7 +56,7 @@ struct SettingsView: View {
                         HStack {
                             Image(systemName: "clock.badge.checkmark")
                                 .foregroundColor(.blue)
-                            Text("Manage Shift Reminders")
+                            Text(localizationManager.localizedString(for: "settings.manage_reminders"))
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.gray)
@@ -70,7 +71,7 @@ struct SettingsView: View {
                         HStack {
                             Image(systemName: "globe")
                                 .foregroundColor(.blue)
-                            Text("Language & Currency")
+                            Text("\(localizationManager.localizedString(for: "settings.language")) & \(localizationManager.localizedString(for: "settings.currency"))")
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.gray)
