@@ -14,7 +14,20 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationView {
-            List {
+            ZStack {
+                // Enhanced background
+                LinearGradient(
+                    colors: [
+                        TISColors.background,
+                        TISColors.background.opacity(0.95),
+                        TISColors.primary.opacity(0.02)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+                
+                List {
                 // Notifications Section
                 Section(localizationManager.localizedString(for: "settings.notifications")) {
                     HStack {
@@ -132,8 +145,10 @@ struct SettingsView: View {
                     }
                     .padding(.vertical, 4)
                 }
+                .listStyle(PlainListStyle())
+                .background(Color.clear)
             }
-            .navigationTitle("Settings")
+            .navigationTitle(localizationManager.localizedString(for: "settings.title"))
             .navigationBarTitleDisplayMode(.large)
         }
         .sheet(isPresented: $showingExportOptions) {

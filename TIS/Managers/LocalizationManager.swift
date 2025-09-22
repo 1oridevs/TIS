@@ -272,8 +272,27 @@ class LocalizationManager: ObservableObject {
         "common.confirm": "Confirm",
         "common.discard": "Discard",
         "common.undo": "Undo",
-        "common.redo": "Redo"
-    ]
+            "common.redo": "Redo",
+            
+            // History
+            "history.title": "History",
+            "history.no_shifts": "No shifts found",
+            "history.add_first_shift": "Start tracking your work to see your history here",
+            "history.export_data": "Export Data",
+            "history.export_csv": "Export as CSV",
+            "history.export_pdf": "Export as PDF",
+            "history.total_earnings": "Total Earnings",
+            "history.total_hours": "Total Hours",
+            "history.average_rate": "Average Rate",
+            "history.shifts_count": "Shifts",
+            
+            // Settings
+            "settings.title": "Settings",
+            "settings.app_info": "App Information",
+            "settings.version": "Version",
+            "settings.build": "Build",
+            "settings.description": "Track your work hours, calculate earnings, and manage your time effectively. Built with SwiftUI and Core Data for offline-first functionality."
+        ]
     
     private let hebrewStrings: [String: String] = [
         // Navigation
@@ -438,8 +457,27 @@ class LocalizationManager: ObservableObject {
         "common.confirm": "אשר",
         "common.discard": "התעלם",
         "common.undo": "בטל",
-        "common.redo": "חזור על"
-    ]
+            "common.redo": "חזור על",
+            
+            // History
+            "history.title": "היסטוריה",
+            "history.no_shifts": "לא נמצאו משמרות",
+            "history.add_first_shift": "התחל לעקוב אחר העבודה שלך כדי לראות את ההיסטוריה כאן",
+            "history.export_data": "ייצא נתונים",
+            "history.export_csv": "ייצא כ-CSV",
+            "history.export_pdf": "ייצא כ-PDF",
+            "history.total_earnings": "הכנסות כוללות",
+            "history.total_hours": "שעות כוללות",
+            "history.average_rate": "שכר ממוצע",
+            "history.shifts_count": "משמרות",
+            
+            // Settings
+            "settings.title": "הגדרות",
+            "settings.app_info": "מידע על האפליקציה",
+            "settings.version": "גרסה",
+            "settings.build": "בנייה",
+            "settings.description": "עקוב אחר שעות העבודה שלך, חשב הכנסות ונהל את הזמן שלך ביעילות. נבנה עם SwiftUI ו-Core Data לפונקציונליות אופליין."
+        ]
 }
 
 // MARK: - View Extensions

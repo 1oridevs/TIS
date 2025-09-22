@@ -3,6 +3,7 @@ import CoreData
 
 struct HistoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Shift.startTime, ascending: false)],
         predicate: NSPredicate(format: "isActive == NO"),
@@ -74,17 +75,37 @@ struct HistoryView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                // Summary Cards
-                SummaryCardsView()
+            ZStack {
+                // Enhanced background
+                LinearGradient(
+                    colors: [
+                        TISColors.background,
+                        TISColors.background.opacity(0.95),
+                        TISColors.primary.opacity(0.02)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
                 
-                // Period Selector
-                PeriodSelectorView()
-                
-                // Shifts List
-                ShiftsListView()
+                VStack(spacing: 0) {
+                    // Summary Cards
+                    SummaryCardsView()
+                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.0), value: UUID())
+                    
+                    // Period Selector
+                    PeriodSelectorView()
+                        .transition(.asymmetric(insertion: .move(edge: .top).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: UUID())
+                    
+                    // Shifts List
+                    ShiftsListView()
+                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: UUID())
+                }
             }
-            .navigationTitle("History")
+            .navigationTitle(localizationManager.localizedString(for: "history.title"))
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
