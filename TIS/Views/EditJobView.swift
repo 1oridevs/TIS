@@ -4,6 +4,7 @@ import CoreData
 struct EditJobView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     let job: Job
     
@@ -48,12 +49,12 @@ struct EditJobView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text("Edit Job")
+                            Text(localizationManager.localizedString(for: "jobs.edit_job"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
                             
-                            Text("Update your job details and settings")
+                            Text(localizationManager.localizedString(for: "jobs.edit_job_subtitle"))
                                 .font(.subheadline)
                                 .foregroundColor(TISColors.secondaryText)
                                 .multilineTextAlignment(.center)
@@ -64,7 +65,7 @@ struct EditJobView: View {
                     // Job Information Card
                     TISCard {
                         VStack(alignment: .leading, spacing: 20) {
-                            Text("Job Information")
+                            Text(localizationManager.localizedString(for: "jobs.job_information"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -72,12 +73,12 @@ struct EditJobView: View {
                             VStack(spacing: 16) {
                                 // Job Name
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("Job Name")
+                                    Text(localizationManager.localizedString(for: "jobs.job_name"))
                                         .font(.subheadline)
                                         .fontWeight(.medium)
                                         .foregroundColor(TISColors.primaryText)
                                     
-                                    TextField("Enter job name", text: $jobName)
+                                    TextField(localizationManager.localizedString(for: "jobs.job_name_placeholder"), text: $jobName)
                                         .textFieldStyle(TISTextFieldStyle())
                                         .onChange(of: jobName) { oldValue, newValue in
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
@@ -91,13 +92,13 @@ struct EditJobView: View {
                                 
                                 // Hourly Rate
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("Hourly Rate")
+                                    Text(localizationManager.localizedString(for: "jobs.hourly_rate"))
                                         .font(.subheadline)
                                         .fontWeight(.medium)
                                         .foregroundColor(TISColors.primaryText)
                                     
                                     HStack {
-                                        Text("$")
+                                        Text(localizationManager.currentCurrency.symbol)
                                             .font(.title2)
                                             .fontWeight(.semibold)
                                             .foregroundColor(TISColors.primary)
@@ -115,7 +116,7 @@ struct EditJobView: View {
                     TISCard {
                         VStack(alignment: .leading, spacing: 20) {
                             HStack {
-                                Text("Bonuses")
+                                Text(localizationManager.localizedString(for: "jobs.bonuses"))
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .foregroundColor(TISColors.primaryText)
@@ -135,11 +136,11 @@ struct EditJobView: View {
                                         .font(.title2)
                                         .foregroundColor(TISColors.secondaryText)
                                     
-                                    Text("No bonuses added")
+                                    Text(localizationManager.localizedString(for: "jobs.no_bonuses_added"))
                                         .font(.subheadline)
                                         .foregroundColor(TISColors.secondaryText)
                                     
-                                    Text("Add bonuses for special events or achievements")
+                                    Text(localizationManager.localizedString(for: "jobs.add_bonuses_tip"))
                                         .font(.caption)
                                         .foregroundColor(TISColors.secondaryText)
                                         .multilineTextAlignment(.center)
@@ -161,12 +162,12 @@ struct EditJobView: View {
                     
                     // Action Buttons
                     VStack(spacing: 12) {
-                        TISButton("Save Changes", icon: "checkmark.circle.fill", color: TISColors.success) {
+                        TISButton(localizationManager.localizedString(for: "jobs.save_changes"), icon: "checkmark.circle.fill", color: TISColors.success) {
                             saveJob()
                         }
                         .disabled(jobName.isEmpty || hourlyRate.isEmpty)
                         
-                        TISSecondaryButton("Cancel", icon: "xmark.circle") {
+                        TISSecondaryButton(localizationManager.localizedString(for: "jobs.cancel"), icon: "xmark.circle") {
                             dismiss()
                         }
                     }
@@ -175,11 +176,11 @@ struct EditJobView: View {
                 .padding(.horizontal, 20)
             }
             .background(TISColors.background)
-            .navigationTitle("Edit Job")
+            .navigationTitle(localizationManager.localizedString(for: "jobs.edit_job"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(localizationManager.localizedString(for: "jobs.cancel")) {
                         dismiss()
                     }
                 }
@@ -220,21 +221,21 @@ struct EditJobView: View {
     private func saveJob() {
         // Validation
         guard !jobName.isEmpty else {
-            toastMessage = "Please enter a job name"
+            toastMessage = localizationManager.localizedString(for: "jobs.please_enter_job_name")
             toastType = .warning
             showingToast = true
             return
         }
         
         guard !hourlyRate.isEmpty else {
-            toastMessage = "Please enter an hourly rate"
+            toastMessage = localizationManager.localizedString(for: "jobs.please_enter_hourly_rate")
             toastType = .warning
             showingToast = true
             return
         }
         
         guard let rate = Double(hourlyRate), rate > 0 else {
-            toastMessage = "Please enter a valid hourly rate"
+            toastMessage = localizationManager.localizedString(for: "jobs.please_enter_valid_hourly_rate")
             toastType = .warning
             showingToast = true
             return
@@ -266,7 +267,7 @@ struct EditJobView: View {
         
         do {
             try viewContext.save()
-            toastMessage = "Job '\(jobName)' updated successfully!"
+            toastMessage = String(format: localizationManager.localizedString(for: "jobs.job_updated_success"), jobName)
             toastType = .success
             showingToast = true
             
@@ -275,7 +276,7 @@ struct EditJobView: View {
                 dismiss()
             }
         } catch {
-            errorMessage = "Failed to update job: \(error.localizedDescription)"
+            errorMessage = String(format: localizationManager.localizedString(for: "jobs.failed_to_update_job"), error.localizedDescription)
             showingError = true
         }
     }

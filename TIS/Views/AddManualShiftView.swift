@@ -4,6 +4,7 @@ import CoreData
 struct AddManualShiftView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     @State private var selectedJob: Job?
     @State private var startDate = Date()
@@ -47,12 +48,12 @@ struct AddManualShiftView: View {
                                 .foregroundColor(.white)
                         }
                         
-                        Text("Add Manual Shift")
+                        Text(localizationManager.localizedString(for: "shifts.add_manual_shift"))
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(TISColors.primaryText)
                         
-                        Text("Record past work hours")
+                        Text(localizationManager.localizedString(for: "shifts.record_past_work"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
                     }
@@ -65,7 +66,7 @@ struct AddManualShiftView: View {
                                 .foregroundColor(TISColors.primary)
                                 .font(.title3)
                             
-                            Text("Job Selection")
+                            Text(localizationManager.localizedString(for: "shifts.job_selection"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -88,16 +89,16 @@ struct AddManualShiftView: View {
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(selectedJob?.name ?? "Select Job")
+                                    Text(selectedJob?.name ?? localizationManager.localizedString(for: "shifts.select_job"))
                                         .font(.headline)
                                         .foregroundColor(selectedJob == nil ? TISColors.secondaryText : TISColors.primaryText)
                                     
                                     if let job = selectedJob {
-                                        Text(String(format: "$%.2f/hour", job.hourlyRate))
+                                        Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f/hour", job.hourlyRate))
                                             .font(.subheadline)
                                             .foregroundColor(TISColors.success)
                                     } else {
-                                        Text("Choose your work position")
+                                        Text(localizationManager.localizedString(for: "shifts.choose_work_position"))
                                             .font(.subheadline)
                                             .foregroundColor(TISColors.secondaryText)
                                     }
@@ -139,7 +140,7 @@ struct AddManualShiftView: View {
                                 .foregroundColor(TISColors.primary)
                                 .font(.title3)
                             
-                            Text("Time Details")
+                            Text(localizationManager.localizedString(for: "shifts.time_details"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -149,7 +150,7 @@ struct AddManualShiftView: View {
                         
                         VStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Start Time")
+                                Text(localizationManager.localizedString(for: "shifts.start_time"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                     .foregroundColor(TISColors.primaryText)
@@ -160,7 +161,7 @@ struct AddManualShiftView: View {
                             }
                             
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("End Time")
+                                Text(localizationManager.localizedString(for: "shifts.end_time"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                     .foregroundColor(TISColors.primaryText)
@@ -175,7 +176,7 @@ struct AddManualShiftView: View {
                                 Image(systemName: "timer")
                                     .foregroundColor(TISColors.success)
                                 
-                                Text("Duration:")
+                                Text(localizationManager.localizedString(for: "shifts.duration"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                 
@@ -215,7 +216,7 @@ struct AddManualShiftView: View {
                                 .foregroundColor(TISColors.primary)
                                 .font(.title3)
                             
-                            Text("Additional Details")
+                            Text(localizationManager.localizedString(for: "shifts.additional_details"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -225,28 +226,28 @@ struct AddManualShiftView: View {
                         
                         VStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Notes (Optional)")
+                                Text(localizationManager.localizedString(for: "shifts.notes_optional"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                     .foregroundColor(TISColors.primaryText)
                                 
-                                TextField("Add notes about this shift...", text: $notes, axis: .vertical)
+                                TextField(localizationManager.localizedString(for: "shifts.add_notes_placeholder"), text: $notes, axis: .vertical)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                                     .lineLimit(3...6)
                             }
                             
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Bonus Amount")
+                                Text(localizationManager.localizedString(for: "shifts.bonus_amount"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                     .foregroundColor(TISColors.primaryText)
                                 
                                 HStack {
-                                    Text("$")
+                                    Text(localizationManager.currentCurrency.symbol)
                                         .font(.title3)
                                         .foregroundColor(TISColors.primary)
                                     
-                                    TextField("0.00", value: $bonusAmount, format: .currency(code: "USD"))
+                                    TextField("0.00", value: $bonusAmount, format: .currency(code: localizationManager.currentCurrency.rawValue))
                                         .keyboardType(.decimalPad)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                 }
@@ -272,7 +273,7 @@ struct AddManualShiftView: View {
                                     .foregroundColor(TISColors.success)
                                     .font(.title3)
                                 
-                                Text("Earnings Preview")
+                                Text(localizationManager.localizedString(for: "shifts.earnings_preview"))
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .foregroundColor(TISColors.primaryText)
@@ -282,24 +283,24 @@ struct AddManualShiftView: View {
                             
                             VStack(spacing: 12) {
                                 HStack {
-                                    Text("Base Pay (\(String(format: "%.1f", durationHours)) hours)")
+                                    Text("\(localizationManager.localizedString(for: "shifts.base_pay")) (\(String(format: "%.1f", durationHours)) hours)")
                                         .font(.subheadline)
                                     
                                     Spacer()
                                     
-                                    Text(String(format: "$%.2f", durationHours * job.hourlyRate))
+                                    Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f", durationHours * job.hourlyRate))
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                 }
                                 
                                 if bonusAmount > 0 {
                                     HStack {
-                                        Text("Bonus")
+                                        Text(localizationManager.localizedString(for: "shifts.bonus"))
                                             .font(.subheadline)
                                         
                                         Spacer()
                                         
-                                        Text(String(format: "$%.2f", bonusAmount))
+                                        Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f", bonusAmount))
                                             .font(.subheadline)
                                             .fontWeight(.semibold)
                                             .foregroundColor(TISColors.success)
@@ -309,13 +310,13 @@ struct AddManualShiftView: View {
                                 Divider()
                                 
                                 HStack {
-                                    Text("Total Earnings")
+                                    Text(localizationManager.localizedString(for: "shifts.total_earnings"))
                                         .font(.headline)
                                         .fontWeight(.bold)
                                     
                                     Spacer()
                                     
-                                    Text(String(format: "$%.2f", (durationHours * job.hourlyRate) + bonusAmount))
+                                    Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f", (durationHours * job.hourlyRate) + bonusAmount))
                                         .font(.headline)
                                         .fontWeight(.bold)
                                         .foregroundColor(TISColors.success)
@@ -340,17 +341,17 @@ struct AddManualShiftView: View {
                 }
                 .padding(.horizontal, 20)
             }
-            .navigationTitle("Add Manual Shift")
+            .navigationTitle(localizationManager.localizedString(for: "shifts.add_manual_shift"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(localizationManager.localizedString(for: "jobs.cancel")) {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(localizationManager.localizedString(for: "shifts.save")) {
                         saveShift()
                     }
                     .disabled(!isValidShift)
@@ -372,21 +373,21 @@ struct AddManualShiftView: View {
     private func saveShift() {
         // Validation
         guard let job = selectedJob else {
-            toastMessage = "Please select a job"
+            toastMessage = localizationManager.localizedString(for: "shifts.please_select_job")
             toastType = .warning
             showingToast = true
             return
         }
         
         guard startDate < endDate else {
-            toastMessage = "End time must be after start time"
+            toastMessage = localizationManager.localizedString(for: "shifts.end_time_after_start")
             toastType = .warning
             showingToast = true
             return
         }
         
         guard durationHours > 0 else {
-            toastMessage = "Shift duration must be greater than 0"
+            toastMessage = localizationManager.localizedString(for: "shifts.duration_greater_than_zero")
             toastType = .warning
             showingToast = true
             return
@@ -414,7 +415,7 @@ struct AddManualShiftView: View {
         
         do {
             try viewContext.save()
-            toastMessage = "Shift added successfully!"
+            toastMessage = localizationManager.localizedString(for: "shifts.shift_added_success")
             toastType = .success
             showingToast = true
             
@@ -423,7 +424,7 @@ struct AddManualShiftView: View {
                 dismiss()
             }
         } catch {
-            errorMessage = "Failed to save shift: \(error.localizedDescription)"
+            errorMessage = String(format: localizationManager.localizedString(for: "shifts.failed_to_save_shift"), error.localizedDescription)
             showingError = true
         }
     }
@@ -433,6 +434,7 @@ struct JobPickerView: View {
     @Binding var selectedJob: Job?
     let jobs: FetchedResults<Job>
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         NavigationView {
@@ -448,7 +450,7 @@ struct JobPickerView: View {
                                     .font(.headline)
                                     .foregroundColor(.primary)
                                 
-                                Text(String(format: "$%.2f/hour", job.hourlyRate))
+                                Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f/hour", job.hourlyRate))
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
@@ -464,11 +466,11 @@ struct JobPickerView: View {
                     }
                 }
             }
-            .navigationTitle("Select Job")
+            .navigationTitle(localizationManager.localizedString(for: "shifts.select_job_title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(localizationManager.localizedString(for: "shifts.done")) {
                         dismiss()
                     }
                 }

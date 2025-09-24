@@ -339,6 +339,46 @@ class LocalizationManager: ObservableObject {
         "common.undo": "Undo",
         "common.redo": "Redo",
         "common.done": "Done",
+        
+        // Manual Shift
+        "shifts.add_manual_shift": "Add Manual Shift",
+        "shifts.record_past_work": "Record past work hours",
+        "shifts.job_selection": "Job Selection",
+        "shifts.select_job": "Select Job",
+        "shifts.choose_work_position": "Choose your work position",
+        "shifts.time_details": "Time Details",
+        "shifts.start_time": "Start Time",
+        "shifts.end_time": "End Time",
+        "shifts.duration": "Duration:",
+        "shifts.additional_details": "Additional Details",
+        "shifts.notes_optional": "Notes (Optional)",
+        "shifts.add_notes_placeholder": "Add notes about this shift...",
+        "shifts.bonus_amount": "Bonus Amount",
+        "shifts.earnings_preview": "Earnings Preview",
+        "shifts.base_pay": "Base Pay",
+        "shifts.bonus": "Bonus",
+        "shifts.total_earnings": "Total Earnings",
+        "shifts.save": "Save",
+        "shifts.please_select_job": "Please select a job",
+        "shifts.end_time_after_start": "End time must be after start time",
+        "shifts.duration_greater_than_zero": "Shift duration must be greater than 0",
+        "shifts.shift_added_success": "Shift added successfully!",
+        "shifts.failed_to_save_shift": "Failed to save shift: %@",
+        "shifts.select_job_title": "Select Job",
+        "shifts.done": "Done",
+        
+        // Edit Job
+        "jobs.edit_job": "Edit Job",
+        "jobs.edit_job_subtitle": "Update your job details and settings",
+        "jobs.bonuses": "Bonuses",
+        "jobs.no_bonuses_added": "No bonuses added",
+        "jobs.add_bonuses_tip": "Add bonuses for special events or achievements",
+        "jobs.save_changes": "Save Changes",
+        "jobs.please_enter_job_name": "Please enter a job name",
+        "jobs.please_enter_hourly_rate": "Please enter an hourly rate",
+        "jobs.please_enter_valid_hourly_rate": "Please enter a valid hourly rate",
+        "jobs.job_updated_success": "Job '%@' updated successfully!",
+        "jobs.failed_to_update_job": "Failed to update job: %@"
     ]
     
     // MARK: - Hebrew Strings
@@ -550,6 +590,46 @@ class LocalizationManager: ObservableObject {
         "common.undo": "בטל",
         "common.redo": "חזור על",
         "common.done": "סיום",
+        
+        // Manual Shift
+        "shifts.add_manual_shift": "הוסף משמרת ידנית",
+        "shifts.record_past_work": "רשום שעות עבודה קודמות",
+        "shifts.job_selection": "בחירת עבודה",
+        "shifts.select_job": "בחר עבודה",
+        "shifts.choose_work_position": "בחר את תפקיד העבודה שלך",
+        "shifts.time_details": "פרטי זמן",
+        "shifts.start_time": "שעת התחלה",
+        "shifts.end_time": "שעת סיום",
+        "shifts.duration": "משך:",
+        "shifts.additional_details": "פרטים נוספים",
+        "shifts.notes_optional": "הערות (אופציונלי)",
+        "shifts.add_notes_placeholder": "הוסף הערות על המשמרת...",
+        "shifts.bonus_amount": "סכום בונוס",
+        "shifts.earnings_preview": "תצוגת הכנסות",
+        "shifts.base_pay": "תשלום בסיסי",
+        "shifts.bonus": "בונוס",
+        "shifts.total_earnings": "הכנסות כוללות",
+        "shifts.save": "שמור",
+        "shifts.please_select_job": "אנא בחר עבודה",
+        "shifts.end_time_after_start": "שעת הסיום חייבת להיות אחרי שעת ההתחלה",
+        "shifts.duration_greater_than_zero": "משך המשמרת חייב להיות גדול מ-0",
+        "shifts.shift_added_success": "המשמרת נוספה בהצלחה!",
+        "shifts.failed_to_save_shift": "נכשל בשמירת המשמרת: %@",
+        "shifts.select_job_title": "בחר עבודה",
+        "shifts.done": "סיום",
+        
+        // Edit Job
+        "jobs.edit_job": "ערוך עבודה",
+        "jobs.edit_job_subtitle": "עדכן את פרטי העבודה וההגדרות שלך",
+        "jobs.bonuses": "בונוסים",
+        "jobs.no_bonuses_added": "לא נוספו בונוסים",
+        "jobs.add_bonuses_tip": "הוסף בונוסים לאירועים מיוחדים או הישגים",
+        "jobs.save_changes": "שמור שינויים",
+        "jobs.please_enter_job_name": "אנא הכנס שם עבודה",
+        "jobs.please_enter_hourly_rate": "אנא הכנס שכר שעתי",
+        "jobs.please_enter_valid_hourly_rate": "אנא הכנס שכר שעתי תקין",
+        "jobs.job_updated_success": "העבודה '%@' עודכנה בהצלחה!",
+        "jobs.failed_to_update_job": "נכשל בעדכון העבודה: %@"
     ]
 }
 
