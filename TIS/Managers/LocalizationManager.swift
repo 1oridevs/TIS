@@ -485,9 +485,6 @@ class LocalizationManager: ObservableObject {
         "jobs.no_bonuses": "לא נוספו בונוסים",
         "jobs.add_bonus_tip": "הקש על + כדי להוסיף אפשרויות בונוס",
         "jobs.preview": "תצוגה מקדימה",
-        "jobs.job_label": "עבודה:",
-        "jobs.rate_label": "תעריף:",
-        "jobs.bonuses_label": "בונוסים:",
         "jobs.bonus_name": "שם הבונוס",
         "jobs.amount": "סכום",
         
