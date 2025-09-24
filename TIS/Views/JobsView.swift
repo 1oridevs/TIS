@@ -144,17 +144,17 @@ struct JobDetailRowView: View {
             // Statistics
             HStack(spacing: 20) {
                 StatisticView(
-                    title: "Total Hours",
+                    title: localizationManager.localizedString(for: "jobs.total_hours"),
                     value: String(format: "%.1fh", calculateTotalHours(for: job))
                 )
                 
                 StatisticView(
-                    title: "Total Earnings",
+                    title: localizationManager.localizedString(for: "jobs.total_earnings"),
                     value: String(format: "%@%.2f", localizationManager.currentCurrency.symbol, calculateTotalEarnings(for: job))
                 )
                 
                 StatisticView(
-                    title: "Shifts",
+                    title: localizationManager.localizedString(for: "jobs.shifts_count"),
                     value: "\(job.shifts?.count ?? 0)"
                 )
             }

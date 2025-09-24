@@ -285,6 +285,7 @@ struct EditJobView: View {
 struct BonusInputRow: View {
     @Binding var bonus: BonusInput
     let onDelete: () -> Void
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         HStack(spacing: 12) {
@@ -293,7 +294,7 @@ struct BonusInputRow: View {
                     .textFieldStyle(TISTextFieldStyle())
                 
                 HStack {
-                    Text("$")
+                    Text(localizationManager.currentCurrency.symbol)
                         .font(.subheadline)
                         .fontWeight(.medium)
                         .foregroundColor(TISColors.primary)
