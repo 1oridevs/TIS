@@ -386,7 +386,19 @@ class LocalizationManager: ObservableObject {
         "jobs.please_enter_hourly_rate": "Please enter an hourly rate",
         "jobs.please_enter_valid_hourly_rate": "Please enter a valid hourly rate",
         "jobs.job_updated_success": "Job '%@' updated successfully!",
-        "jobs.failed_to_update_job": "Failed to update job: %@"
+        "jobs.failed_to_update_job": "Failed to update job: %@",
+        
+        // Add Job validation messages
+        "jobs.enter_job_name_warning": "Please enter a job name",
+        "jobs.enter_hourly_rate_warning": "Please enter an hourly rate", 
+        "jobs.enter_valid_hourly_rate_warning": "Please enter a valid hourly rate",
+        "jobs.job_added_success": "Job '%@' added successfully!",
+        "jobs.failed_to_save_job": "Failed to save job: %@",
+        
+        // Job labels
+        "jobs.job_label": "Job:",
+        "jobs.rate_label": "Rate:",
+        "jobs.bonuses_label": "Bonuses:"
     ]
     
     // MARK: - Hebrew Strings
@@ -635,7 +647,19 @@ class LocalizationManager: ObservableObject {
         "jobs.please_enter_hourly_rate": "אנא הכנס שכר שעתי",
         "jobs.please_enter_valid_hourly_rate": "אנא הכנס שכר שעתי תקין",
         "jobs.job_updated_success": "העבודה '%@' עודכנה בהצלחה!",
-        "jobs.failed_to_update_job": "נכשל בעדכון העבודה: %@"
+        "jobs.failed_to_update_job": "נכשל בעדכון העבודה: %@",
+        
+        // Add Job validation messages
+        "jobs.enter_job_name_warning": "אנא הכנס שם עבודה",
+        "jobs.enter_hourly_rate_warning": "אנא הכנס שכר שעתי",
+        "jobs.enter_valid_hourly_rate_warning": "אנא הכנס שכר שעתי תקין",
+        "jobs.job_added_success": "העבודה '%@' נוספה בהצלחה!",
+        "jobs.failed_to_save_job": "נכשל בשמירת העבודה: %@",
+        
+        // Job labels
+        "jobs.job_label": "עבודה:",
+        "jobs.rate_label": "שכר:",
+        "jobs.bonuses_label": "בונוסים:"
     ]
 }
 

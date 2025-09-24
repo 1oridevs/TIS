@@ -23,35 +23,23 @@ struct DashboardView: View {
                     LazyVStack(spacing: 24) {
                     // Welcome Header
                     WelcomeHeaderCard()
-                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.0), value: UUID())
                     
                     // Current Status Card
                     CurrentStatusCard()
-                        .transition(.asymmetric(insertion: .move(edge: .top).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: UUID())
                     
                     // Quick Actions
                     QuickActionsCard()
-                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: UUID())
                     
                     // Jobs Overview
                     JobsOverviewCard()
-                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3), value: UUID())
                     
                     // Earnings Goals
                     EarningsGoalsCard {
                         showingEarningsGoals = true
                     }
-                    .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: UUID())
                     
                     // Recent Activity
                     RecentActivityCard()
-                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.5), value: UUID())
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 8)

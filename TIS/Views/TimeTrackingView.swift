@@ -23,28 +23,18 @@ struct TimeTrackingView: View {
                 VStack(spacing: 24) {
                     // Time Display
                     TimeDisplayView()
-                        .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.0), value: UUID())
                     
                     // Job Selection
                     JobSelectionView()
-                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: UUID())
                     
                     // Shift Type Display
                     ShiftTypeDisplayView()
-                        .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: UUID())
                     
                     // Notes Section
                     NotesSectionView()
-                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3), value: UUID())
                     
                     // Control Buttons
                     ControlButtonsView()
-                        .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: UUID())
                     
                     // Bottom padding to prevent interference with tab bar
                     Color.clear
