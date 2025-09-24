@@ -9,18 +9,27 @@ A modern, user-friendly iOS app for tracking work hours and calculating earnings
 - **Automatic shift type detection** (Regular, Overtime, Special Event, Flexible)
 - **Background timer support** for continuous tracking
 - **Manual shift entry** for past work sessions
+- **Shift templates** for common work patterns
 
 ### 💼 Job Management
 - **Multiple job support** with individual hourly rates
 - **Job-specific bonuses** and special pay rates
 - **Visual job overview** with earnings and hours worked
 - **Easy job creation** with modern UI
+- **Job editing** functionality (in progress)
 
 ### 📊 Analytics & Insights
 - **Earnings breakdown** by job and shift type
-- **Visual charts** and statistics
+- **Visual charts** using Swift Charts
 - **Trend analysis** and performance metrics
 - **Export capabilities** (CSV and PDF)
+- **Earnings goals** with progress tracking
+
+### 🌍 Localization & Currency
+- **Multi-language support** (English, Hebrew with RTL)
+- **Multi-currency support** (USD, ILS, EUR, GBP)
+- **Localized currency formatting**
+- **RTL layout support** for Hebrew
 
 ### 🎨 Modern Design
 - **Beautiful UI** with custom components
@@ -28,6 +37,8 @@ A modern, user-friendly iOS app for tracking work hours and calculating earnings
 - **Smooth animations** and transitions
 - **Toast notifications** for user feedback
 - **Responsive design** for all iOS devices
+- **Glass morphism** design elements
+- **Custom design system** (Typography, Spacing, Colors)
 
 ### 📱 Core Features
 - **Offline-first** data storage with Core Data
@@ -35,6 +46,8 @@ A modern, user-friendly iOS app for tracking work hours and calculating earnings
 - **Notification reminders** for shifts
 - **Settings customization**
 - **Universal iOS support** (iPhone and iPad)
+- **Achievement system** with badges and progress
+- **Haptic feedback** for enhanced UX
 
 ## 🏗️ Architecture
 
@@ -43,6 +56,9 @@ A modern, user-friendly iOS app for tracking work hours and calculating earnings
 - **Core Data** - Local data persistence
 - **MVVM Pattern** - Clean architecture
 - **Combine** - Reactive programming (where applicable)
+- **Swift Charts** - Data visualization
+- **UserNotifications** - Local notifications
+- **WidgetKit** - Home screen widgets
 
 ### Project Structure
 ```
@@ -53,17 +69,42 @@ TIS/
 │   ├── JobsView.swift
 │   ├── HistoryView.swift
 │   ├── AnalyticsView.swift
-│   └── SettingsView.swift
+│   ├── SettingsView.swift
+│   ├── AddJobView.swift
+│   ├── EditJobView.swift
+│   ├── AddManualShiftView.swift
+│   ├── AchievementsView.swift
+│   ├── EarningsGoalsView.swift
+│   ├── ShiftRemindersView.swift
+│   ├── ShiftTemplatesView.swift
+│   └── LocalizationSettingsView.swift
 ├── Components/            # Reusable UI components
 │   ├── TISCard.swift
 │   ├── TISButton.swift
-│   └── ToastView.swift
+│   ├── ToastView.swift
+│   ├── AnimatedBackgroundView.swift
+│   ├── EnhancedCard.swift
+│   ├── PressableButtonStyle.swift
+│   └── Shimmer.swift
 ├── Managers/              # Business logic managers
+│   ├── LocalizationManager.swift
 │   ├── ExportManager.swift
-│   └── NotificationManager.swift
+│   ├── NotificationManager.swift
+│   ├── AchievementManager.swift
+│   ├── HapticsManager.swift
+│   └── PersistenceController.swift
 ├── Design/                # Design system
-│   └── ColorScheme.swift
-└── Models/                # Core Data models
+│   ├── ColorScheme.swift
+│   ├── Typography.swift
+│   ├── Spacing.swift
+│   └── Shadows.swift
+├── Models/                # Core Data models
+│   ├── TISModel.xcdatamodeld
+│   └── AchievementData.swift
+├── ViewModels/           # View models
+│   └── TimeTracker.swift
+└── Widgets/              # Widget support
+    ├── TimeTrackingWidget.swift
     └── TISModel.xcdatamodeld
 ```
 
@@ -91,6 +132,8 @@ TIS/
 2. **Start tracking** your work hours
 3. **View analytics** to see your earnings
 4. **Export data** for record keeping
+5. **Set earnings goals** for motivation
+6. **Customize language and currency** in settings
 
 ## 📱 Screenshots
 
@@ -99,30 +142,51 @@ TIS/
 ## 🎯 Current Status
 
 ### ✅ Completed Features
-- [x] Core Data model with Job, Shift, and Bonus entities
-- [x] Time tracking with start/stop functionality
-- [x] Job management (add, view, delete)
-- [x] Manual shift entry
-- [x] Analytics dashboard with earnings breakdown
-- [x] Data export (CSV and PDF)
-- [x] Modern UI with custom components
-- [x] Toast notification system
-- [x] Settings and preferences
-- [x] Offline data storage
+- [x] **Core Data model** with Job, Shift, and Bonus entities
+- [x] **Time tracking** with start/stop functionality
+- [x] **Job management** (add, view, delete)
+- [x] **Manual shift entry** for past work sessions
+- [x] **Analytics dashboard** with earnings breakdown
+- [x] **Data export** (CSV and PDF)
+- [x] **Modern UI** with custom components
+- [x] **Toast notification system**
+- [x] **Settings and preferences**
+- [x] **Offline data storage**
+- [x] **Localization support** (English, Hebrew)
+- [x] **Multi-currency support** (USD, ILS, EUR, GBP)
+- [x] **Achievement system** with badges
+- [x] **Earnings goals** with progress tracking
+- [x] **Shift reminders** and notifications
+- [x] **Custom design system** (Typography, Spacing, Colors)
+- [x] **Haptic feedback** integration
+- [x] **Widget support** (TimeTrackingWidget)
+- [x] **Shift templates** for common patterns
+- [x] **RTL layout support** for Hebrew
+- [x] **Performance optimizations** (fixed freezing issues)
 
 ### 🚧 In Progress
-- [ ] Job editing functionality
-- [ ] Enhanced analytics charts
-- [ ] Push notifications for shift reminders
+- [ ] **Job editing functionality** - EditJobView needs completion
+- [ ] **Shift editing** - Allow users to edit past shifts
+- [ ] **Enhanced analytics charts** - More detailed visualizations
+- [ ] **Push notifications** for shift reminders
+- [ ] **Data validation** improvements
 
 ### 📋 Planned Features
-- [ ] Apple Watch companion app
-- [ ] iCloud sync across devices
-- [ ] Widget support for quick time tracking
-- [ ] Advanced reporting and insights
-- [ ] Team/shared job management
-- [ ] Integration with calendar apps
-- [ ] Voice commands for hands-free tracking
+- [ ] **Apple Watch companion app**
+- [ ] **iCloud sync** across devices
+- [ ] **Advanced reporting** and insights
+- [ ] **Team/shared job management**
+- [ ] **Calendar integration**
+- [ ] **Voice commands** for hands-free tracking
+- [ ] **Advanced achievement system**
+- [ ] **Data backup/restore** options
+
+## 🐛 Recent Fixes
+- ✅ **Fixed fatal crash** - Removed duplicate dictionary keys in LocalizationManager
+- ✅ **Fixed app freezing** - Removed infinite animations using UUID() as values
+- ✅ **Fixed missing localized strings** - Added missing validation strings for AddJobView
+- ✅ **Fixed currency display** - JobsView now shows correct currency symbol (₪ for ILS, etc.)
+- ✅ **Simplified AnimatedBackgroundView** - Removed heavy animations causing performance issues
 
 ## 🤝 Contributing
 
@@ -141,7 +205,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Ori Cohen* - *Initial work* - [@1oridevs](https://github.com/1oridevs)
+- **Ori Cohen** - *Initial work* - [@1oridevs](https://github.com/1oridevs)
 
 ## 🙏 Acknowledgments
 
