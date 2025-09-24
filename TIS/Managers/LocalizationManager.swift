@@ -378,9 +378,7 @@ class LocalizationManager: ObservableObject {
         "shifts.done": "Done",
         
         // Edit Job
-        "jobs.edit_job": "Edit Job",
         "jobs.edit_job_subtitle": "Update your job details and settings",
-        "jobs.bonuses": "Bonuses",
         "jobs.no_bonuses_added": "No bonuses added",
         "jobs.add_bonuses_tip": "Add bonuses for special events or achievements",
         "jobs.save_changes": "Save Changes",
@@ -629,9 +627,7 @@ class LocalizationManager: ObservableObject {
         "shifts.done": "סיום",
         
         // Edit Job
-        "jobs.edit_job": "ערוך עבודה",
         "jobs.edit_job_subtitle": "עדכן את פרטי העבודה וההגדרות שלך",
-        "jobs.bonuses": "בונוסים",
         "jobs.no_bonuses_added": "לא נוספו בונוסים",
         "jobs.add_bonuses_tip": "הוסף בונוסים לאירועים מיוחדים או הישגים",
         "jobs.save_changes": "שמור שינויים",
