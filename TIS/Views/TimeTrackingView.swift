@@ -463,6 +463,7 @@ struct TimeTrackingView: View {
                 .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
                 .accessibilityLabel("End shift button")
                 .accessibilityHint("Stop tracking current shift and save to history")
+                .buttonStyle(TISPressableButtonStyle())
             } else {
                 // Start Shift Button with Enhanced Design
                 Button(action: startShift) {
@@ -509,6 +510,7 @@ struct TimeTrackingView: View {
                 .animation(.easeInOut(duration: 0.3), value: selectedJob == nil)
                 .accessibilityLabel("Start shift button")
                 .accessibilityHint(selectedJob == nil ? "Select a job first" : "Begin tracking time for selected job")
+                .buttonStyle(TISPressableButtonStyle())
             }
             
             // Manual Shift Button (only when not tracking and job selected)
@@ -561,17 +563,18 @@ struct TimeTrackingView: View {
     }
     
     private func startShift() {
-        guard let job = selectedJob else { 
-            // Show error or feedback
-            return 
+        guard let job = selectedJob else {
+            hapticNotifyWarning()
+            return
         }
         
         // Check if already tracking
         if timeTracker.isTracking {
-            // Show alert or feedback
+            hapticNotifyWarning()
             return
         }
         
+        hapticTapMedium()
         timeTracker.startTracking(for: job)
         
         // Set notes (shift type will be set automatically when ending)
@@ -581,8 +584,10 @@ struct TimeTrackingView: View {
         
         do {
             try viewContext.save()
+            hapticNotifySuccess()
         } catch {
             print("Error saving shift start: \(error)")
+            hapticNotifyError()
         }
     }
     
@@ -590,22 +595,51 @@ struct TimeTrackingView: View {
         // Check if actually tracking
         guard timeTracker.isTracking else {
             print("Not currently tracking a shift")
+            hapticNotifyWarning()
             return
         }
         
+        hapticTapMedium()
         if let currentShift = timeTracker.currentShift {
             currentShift.notes = shiftNotes
         }
         
         do {
             try viewContext.save()
+            hapticNotifySuccess()
         } catch {
             print("Error saving shift end: \(error)")
+            hapticNotifyError()
         }
         
         timeTracker.endTracking()
         shiftNotes = ""
         selectedJob = nil
+    }
+    
+    // MARK: - Local Haptic Helpers
+    private func hapticTapMedium() {
+    #if canImport(UIKit)
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+    #endif
+    }
+    
+    private func hapticNotifySuccess() {
+    #if canImport(UIKit)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    #endif
+    }
+    
+    private func hapticNotifyWarning() {
+    #if canImport(UIKit)
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+    #endif
+    }
+    
+    private func hapticNotifyError() {
+    #if canImport(UIKit)
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
+    #endif
     }
     
     private func formatTime(_ timeInterval: TimeInterval) -> String {
@@ -743,6 +777,7 @@ struct InnerContentView: View {
     let isTracking: Bool
     let elapsedTime: TimeInterval
     let formatTime: (TimeInterval) -> String
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         VStack(spacing: 16) {
@@ -792,8 +827,21 @@ struct InnerContentView: View {
     }
 }
 
+struct TISPressableButtonStyle: ButtonStyle {
+    var scale: CGFloat = 0.97
+    var pressedOpacity: Double = 0.85
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? scale : 1.0)
+            .opacity(configuration.isPressed ? pressedOpacity : 1.0)
+            .animation(.spring(response: 0.2, dampingFraction: 0.8), value: configuration.isPressed)
+    }
+}
+
 #Preview {
     TimeTrackingView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(TimeTracker())
+        .environmentObject(LocalizationManager.shared)
 }

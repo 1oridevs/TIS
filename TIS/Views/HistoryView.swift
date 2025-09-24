@@ -103,6 +103,13 @@ struct HistoryView: View {
                     ShiftsListView()
                         .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                         .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: UUID())
+                        .refreshable {
+                            let current = selectedPeriod
+                            selectedPeriod = "All"
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                selectedPeriod = current
+                            }
+                        }
                 }
             }
             .navigationTitle(localizationManager.localizedString(for: "history.title"))
@@ -188,12 +195,16 @@ struct HistoryView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("No shifts found")
+            .accessibilityHint("Start tracking your time to see your history here")
         } else {
             List {
                 ForEach(filteredShifts, id: \.id) { shift in
                     ShiftDetailRowView(shift: shift)
                 }
             }
+            .listStyle(.plain)
         }
     }
 }

@@ -1,5 +1,5 @@
-import Foundation
 import SwiftUI
+import Foundation
 
 class LocalizationManager: ObservableObject {
     static let shared = LocalizationManager()
@@ -8,8 +8,11 @@ class LocalizationManager: ObservableObject {
     @Published var currentCurrency: Currency = .usd
     
     private init() {
-        loadSettings()
+        // Load saved preferences
+        loadPreferences()
     }
+    
+    // MARK: - Language Support
     
     enum Language: String, CaseIterable {
         case english = "en"
@@ -23,10 +26,7 @@ class LocalizationManager: ObservableObject {
         }
         
         var isRTL: Bool {
-            switch self {
-            case .english: return false
-            case .hebrew: return true
-            }
+            return self == .hebrew
         }
     }
     
@@ -77,37 +77,60 @@ class LocalizationManager: ObservableObject {
     
     func formatTime(_ timeInterval: TimeInterval) -> String {
         let hours = Int(timeInterval) / 3600
-        let minutes = Int(timeInterval) % 3600 / 60
-        let seconds = Int(timeInterval) % 60
+        let minutes = Int(timeInterval.truncatingRemainder(dividingBy: 3600)) / 60
+        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
         
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
-    // MARK: - Settings Management
-    
-    private func loadSettings() {
-        if let savedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage"),
-           let language = Language(rawValue: savedLanguage) {
-            currentLanguage = language
-        }
-        
-        if let savedCurrency = UserDefaults.standard.string(forKey: "selectedCurrency"),
-           let currency = Currency(rawValue: savedCurrency) {
-            currentCurrency = currency
+        if hours > 0 {
+            return String(format: "%d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            return String(format: "%d:%02d", minutes, seconds)
         }
     }
+    
+    // MARK: - Language Switching
     
     func setLanguage(_ language: Language) {
         currentLanguage = language
-        UserDefaults.standard.set(language.rawValue, forKey: "selectedLanguage")
+        savePreferences()
+        applyLayoutDirection()
+        objectWillChange.send()
     }
     
     func setCurrency(_ currency: Currency) {
         currentCurrency = currency
-        UserDefaults.standard.set(currency.rawValue, forKey: "selectedCurrency")
+        savePreferences()
     }
     
-    // MARK: - String Dictionaries
+    // MARK: - Persistence
+    
+    private func loadPreferences() {
+        if let languageString = UserDefaults.standard.string(forKey: "selectedLanguage"),
+           let language = Language(rawValue: languageString) {
+            currentLanguage = language
+        }
+        
+        if let currencyString = UserDefaults.standard.string(forKey: "selectedCurrency"),
+           let currency = Currency(rawValue: currencyString) {
+            currentCurrency = currency
+        }
+    }
+    
+    private func savePreferences() {
+        UserDefaults.standard.set(currentLanguage.rawValue, forKey: "selectedLanguage")
+        UserDefaults.standard.set(currentCurrency.rawValue, forKey: "selectedCurrency")
+    }
+    
+    private func applyLayoutDirection() {
+    #if canImport(UIKit)
+        let isRTL = currentLanguage.isRTL
+        let attribute: UISemanticContentAttribute = isRTL ? .forceRightToLeft : .forceLeftToRight
+        UIView.appearance().semanticContentAttribute = attribute
+        UINavigationBar.appearance().semanticContentAttribute = attribute
+        UITabBar.appearance().semanticContentAttribute = attribute
+    #endif
+    }
+    
+    // MARK: - English Strings
     
     private let englishStrings: [String: String] = [
         // Navigation
@@ -119,140 +142,171 @@ class LocalizationManager: ObservableObject {
         "nav.settings": "Settings",
         
         // Dashboard
-        "dashboard.welcome": "Welcome back!",
-        "dashboard.good_morning": "Good morning!",
-        "dashboard.good_afternoon": "Good afternoon!",
-        "dashboard.good_evening": "Good evening!",
+        "dashboard.title": "Dashboard",
+        "dashboard.welcome": "Welcome to TIS",
+        "dashboard.good_morning": "Good Morning",
+        "dashboard.good_afternoon": "Good Afternoon",
+        "dashboard.good_evening": "Good Evening",
         "dashboard.current_status": "Current Status",
-        "dashboard.not_tracking": "Not tracking time",
-        "dashboard.tracking": "Tracking time",
         "dashboard.quick_actions": "Quick Actions",
-        "dashboard.start_shift": "Start Shift",
-        "dashboard.add_job": "Add Job",
-        "dashboard.add_shift": "Add Shift",
         "dashboard.jobs_overview": "Jobs Overview",
+        "dashboard.recent_activity": "Recent Activity",
+        "dashboard.earnings_goals": "Earnings Goals",
+        "dashboard.start_tracking": "Start Tracking",
+        "dashboard.add_job": "Add Job",
+        "dashboard.view_history": "View History",
+        "dashboard.tracking": "TRACKING",
+        "dashboard.ready": "READY",
+        "dashboard.live": "LIVE",
+        "dashboard.job": "Job:",
+        "dashboard.duration": "Duration:",
+        "dashboard.earnings": "Earnings:",
         "dashboard.no_jobs": "No jobs yet",
         "dashboard.add_first_job": "Add your first job to get started",
-        "dashboard.recent_activity": "Recent Activity",
-        "dashboard.no_activity": "No recent activity",
-        "dashboard.earnings_goals": "Earnings Goals",
-        "dashboard.tap_to_set_goals": "Tap to set goals and track progress",
+        "dashboard.no_recent_activity": "No recent activity",
+        "dashboard.start_tracking_to_see_activity": "Start tracking to see your activity here",
         
         // Time Tracking
-        "time_tracking.ready": "READY",
-        "time_tracking.tracking": "TRACKING",
+        "time_tracking.title": "Time Tracking",
         "time_tracking.start_shift": "Start Shift",
         "time_tracking.end_shift": "End Shift",
         "time_tracking.select_job": "Select Job",
+        "time_tracking.shift_type": "Shift Type",
+        "time_tracking.notes": "Notes",
+        "time_tracking.tracking": "TRACKING",
+        "time_tracking.ready": "READY",
+        "time_tracking.regular": "Regular",
+        "time_tracking.overtime": "Overtime",
+        "time_tracking.special": "Special Event",
+        "time_tracking.flexible": "Flexible",
         "time_tracking.no_jobs_available": "No jobs available",
         "time_tracking.add_job_first": "Add a job first to start tracking",
-        "time_tracking.notes": "Notes",
-        "time_tracking.add_notes": "Add notes about this shift...",
-        "time_tracking.characters": "characters",
-        "time_tracking.notes_saved": "Notes will be saved with your shift",
+        "time_tracking.shift_notes_placeholder": "Add notes for this shift...",
+        "time_tracking.character_count": "characters",
         
         // Jobs
         "jobs.title": "Jobs",
         "jobs.add_job": "Add Job",
         "jobs.edit_job": "Edit Job",
+        "jobs.delete_job": "Delete Job",
         "jobs.job_name": "Job Name",
         "jobs.hourly_rate": "Hourly Rate",
         "jobs.bonuses": "Bonuses",
-        "jobs.add_bonus": "Add Bonus",
-        "jobs.bonus_name": "Bonus Name",
-        "jobs.bonus_amount": "Amount",
         "jobs.total_hours": "Total Hours",
         "jobs.total_earnings": "Total Earnings",
         "jobs.no_jobs": "No jobs yet",
         "jobs.add_first_job": "Add your first job to get started",
+        "jobs.job_name_placeholder": "Enter job name",
+        "jobs.hourly_rate_placeholder": "0.00",
+        "jobs.bonus_name_placeholder": "Bonus name",
+        "jobs.bonus_amount_placeholder": "0.00",
+        "jobs.add_bonus": "Add Bonus",
+        "jobs.remove_bonus": "Remove",
+        "jobs.save_job": "Save Job",
+        "jobs.cancel": "Cancel",
+        "jobs.delete": "Delete",
+        "jobs.edit": "Edit",
+        "jobs.job_name_required": "Job name is required",
+        "jobs.hourly_rate_required": "Hourly rate is required",
+        "jobs.hourly_rate_invalid": "Please enter a valid hourly rate",
+        "jobs.job_saved": "Job saved successfully",
+        "jobs.job_deleted": "Job deleted successfully",
+        "jobs.error_saving": "Error saving job",
+        "jobs.error_deleting": "Error deleting job",
         
         // History
         "history.title": "History",
-        "history.export": "Export",
+        "history.no_shifts": "No shifts found",
+        "history.add_first_shift": "Start tracking your work to see your history here",
+        "history.export_data": "Export Data",
         "history.export_csv": "Export as CSV",
         "history.export_pdf": "Export as PDF",
-        "history.no_shifts": "No shifts recorded",
-        "history.start_recording": "Start recording shifts to see them here",
+        "history.total_earnings": "Total Earnings",
+        "history.total_hours": "Total Hours",
+        "history.average_rate": "Average Rate",
+        "history.shifts_count": "Shifts",
+        "history.period_all": "All",
+        "history.period_today": "Today",
+        "history.period_this_week": "This Week",
+        "history.period_this_month": "This Month",
+        "history.period_last_30_days": "Last 30 Days",
         
         // Analytics
         "analytics.title": "Analytics",
-        "analytics.total_earnings": "Total Earnings",
-        "analytics.total_hours": "Total Hours",
-        "analytics.average_rate": "Average Rate",
+        "analytics.earnings_overview": "Earnings Overview",
+        "analytics.hours_worked": "Hours Worked",
+        "analytics.average_hourly_rate": "Average Hourly Rate",
         "analytics.earnings_breakdown": "Earnings Breakdown",
-        "analytics.regular": "Regular",
-        "analytics.overtime": "Overtime",
-        "analytics.special": "Special",
-        "analytics.bonus": "Bonus",
         "analytics.top_jobs": "Top Jobs",
+        "analytics.insights": "Insights",
+        "analytics.regular_shifts": "Regular Shifts",
+        "analytics.overtime_shifts": "Overtime Shifts",
+        "analytics.special_shifts": "Special Shifts",
+        "analytics.bonus_earnings": "Bonus Earnings",
+        "analytics.this_week": "This Week",
+        "analytics.this_month": "This Month",
+        "analytics.last_3_months": "Last 3 Months",
+        "analytics.this_year": "This Year",
+        "analytics.all_time": "All Time",
+        "analytics.filter_by_job": "Filter by Job",
+        "analytics.all_jobs": "All Jobs",
         "analytics.no_data": "No data available",
-        "analytics.start_tracking": "Start tracking to see analytics",
+        "analytics.start_tracking_to_see_analytics": "Start tracking to see your analytics",
         
         // Settings
         "settings.title": "Settings",
+        "settings.notifications": "Notifications",
         "settings.language": "Language",
         "settings.currency": "Currency",
-        "settings.notifications": "Notifications",
-        "settings.manage_reminders": "Manage Shift Reminders",
-        "settings.data_management": "Data Management",
-        "settings.export_data": "Export Data",
-        "settings.about": "About",
+        "settings.app_info": "App Information",
         "settings.version": "Version",
-        "settings.developer": "Developer",
+        "settings.build": "Build",
+        "settings.description": "Track your work hours, calculate earnings, and manage your time effectively. Built with SwiftUI and Core Data for offline-first functionality.",
+        "settings.manage_reminders": "Manage Reminders",
+        "settings.language_currency": "Language & Currency",
+        
+        // Reminders
+        "reminders.title": "Reminders",
+        "reminders.notification_status": "Notification Status",
+        "reminders.enabled": "Enabled",
+        "reminders.disabled": "Disabled",
+        "reminders.enable": "Enable",
+        "reminders.daily_reminder": "Daily Reminder",
+        "reminders.shift_reminders": "Shift Reminders",
+        "reminders.weekly_summary": "Weekly Summary",
+        "reminders.test_notification": "Test Notification",
+        "reminders.permission_required": "Permission Required",
+        "reminders.grant_permission": "Grant Permission",
+        "reminders.reminder_time": "Reminder Time",
+        "reminders.shift_start_reminder": "Shift Start Reminder",
+        "reminders.shift_end_reminder": "Shift End Reminder",
+        "reminders.weekly_summary_reminder": "Weekly Summary Reminder",
+        "reminders.notification_sent": "Test notification sent!",
+        "reminders.error_sending": "Error sending notification",
+        "reminders.permission_denied": "Notification permission denied",
+        "reminders.settings_required": "Please enable notifications in Settings",
         
         // Earnings Goals
         "goals.title": "Earnings Goals",
-        "goals.set_track_targets": "Set and track your financial targets",
+        "goals.daily_goal": "Daily Goal",
+        "goals.weekly_goal": "Weekly Goal",
+        "goals.monthly_goal": "Monthly Goal",
+        "goals.set_goal": "Set Goal",
+        "goals.goal_achieved": "Goal Achieved!",
+        "goals.goal_progress": "Goal Progress",
+        "goals.remaining": "Remaining",
+        "goals.over_goal": "Over Goal",
+        "goals.goal_amount": "Goal Amount",
+        "goals.current_earnings": "Current Earnings",
+        "goals.progress_percentage": "Progress",
         "goals.daily": "Daily",
         "goals.weekly": "Weekly",
         "goals.monthly": "Monthly",
-        "goals.progress": "Progress",
-        "goals.goal_achieved": "Goal Achieved! 🎉",
-        "goals.edit_goal": "Edit Goal",
-        "goals.goal_amount": "Goal Amount",
-        "goals.quick_set": "Quick Set",
-        "goals.save_goal": "Save Goal",
-        "goals.today": "Today",
-        "goals.this_week": "This Week",
-        "goals.this_month": "This Month",
-        
-        // Shift Reminders
-        "reminders.title": "Shift Reminders",
-        "reminders.stay_on_track": "Stay on track with smart notifications",
-        "reminders.notification_status": "Notification Status",
-        "reminders.enabled": "Notifications are enabled",
-        "reminders.disabled": "Notifications are disabled",
-        "reminders.enable": "Enable",
-        "reminders.shift_reminders": "Shift Reminders",
-        "reminders.start_reminder": "Start Shift Reminder",
-        "reminders.end_reminder": "End Shift Reminder",
-        "reminders.remind_me_at": "Remind me at:",
-        "reminders.daily_reminders": "Daily Reminders",
-        "reminders.daily_work_reminder": "Daily Work Reminder",
-        "reminders.weekly_summary": "Weekly Summary",
-        "reminders.weekly_earnings_summary": "Weekly Earnings Summary",
-        "reminders.send_summary_on": "Send summary on:",
-        "reminders.test_notifications": "Test Notifications",
-        "reminders.send_test": "Send Test Notification",
-        "reminders.sending": "Sending...",
+        "goals.goal_saved": "Goal saved successfully",
+        "goals.goal_updated": "Goal updated successfully",
+        "goals.error_saving": "Error saving goal",
         
         // Common
-        "common.done": "Done",
-        "common.cancel": "Cancel",
-        "common.save": "Save",
-        "common.edit": "Edit",
-        "common.delete": "Delete",
-        "common.add": "Add",
-        "common.remove": "Remove",
-        "common.yes": "Yes",
-        "common.no": "No",
-        "common.ok": "OK",
-        "common.error": "Error",
-        "common.success": "Success",
-        "common.warning": "Warning",
-        "common.info": "Info",
-        
-        // Additional common strings
         "common.loading": "Loading...",
         "common.retry": "Retry",
         "common.close": "Close",
@@ -272,27 +326,11 @@ class LocalizationManager: ObservableObject {
         "common.confirm": "Confirm",
         "common.discard": "Discard",
         "common.undo": "Undo",
-            "common.redo": "Redo",
-            
-            // History
-            "history.title": "History",
-            "history.no_shifts": "No shifts found",
-            "history.add_first_shift": "Start tracking your work to see your history here",
-            "history.export_data": "Export Data",
-            "history.export_csv": "Export as CSV",
-            "history.export_pdf": "Export as PDF",
-            "history.total_earnings": "Total Earnings",
-            "history.total_hours": "Total Hours",
-            "history.average_rate": "Average Rate",
-            "history.shifts_count": "Shifts",
-            
-            // Settings
-            "settings.title": "Settings",
-            "settings.app_info": "App Information",
-            "settings.version": "Version",
-            "settings.build": "Build",
-            "settings.description": "Track your work hours, calculate earnings, and manage your time effectively. Built with SwiftUI and Core Data for offline-first functionality."
-        ]
+        "common.redo": "Redo",
+        "common.done": "Done",
+    ]
+    
+    // MARK: - Hebrew Strings
     
     private let hebrewStrings: [String: String] = [
         // Navigation
@@ -304,140 +342,171 @@ class LocalizationManager: ObservableObject {
         "nav.settings": "הגדרות",
         
         // Dashboard
-        "dashboard.welcome": "ברוכים השבים!",
-        "dashboard.good_morning": "בוקר טוב!",
-        "dashboard.good_afternoon": "אחר הצהריים טובים!",
-        "dashboard.good_evening": "ערב טוב!",
+        "dashboard.title": "לוח בקרה",
+        "dashboard.welcome": "ברוכים הבאים ל-TIS",
+        "dashboard.good_morning": "בוקר טוב",
+        "dashboard.good_afternoon": "צהריים טובים",
+        "dashboard.good_evening": "ערב טוב",
         "dashboard.current_status": "סטטוס נוכחי",
-        "dashboard.not_tracking": "לא עוקב אחר זמן",
-        "dashboard.tracking": "עוקב אחר זמן",
         "dashboard.quick_actions": "פעולות מהירות",
-        "dashboard.start_shift": "התחל משמרת",
-        "dashboard.add_job": "הוסף עבודה",
-        "dashboard.add_shift": "הוסף משמרת",
         "dashboard.jobs_overview": "סקירת עבודות",
+        "dashboard.recent_activity": "פעילות אחרונה",
+        "dashboard.earnings_goals": "יעדי הכנסות",
+        "dashboard.start_tracking": "התחל מעקב",
+        "dashboard.add_job": "הוסף עבודה",
+        "dashboard.view_history": "צפה בהיסטוריה",
+        "dashboard.tracking": "מעקב",
+        "dashboard.ready": "מוכן",
+        "dashboard.live": "חי",
+        "dashboard.job": "עבודה:",
+        "dashboard.duration": "משך:",
+        "dashboard.earnings": "הכנסות:",
         "dashboard.no_jobs": "אין עבודות עדיין",
         "dashboard.add_first_job": "הוסף את העבודה הראשונה שלך כדי להתחיל",
-        "dashboard.recent_activity": "פעילות אחרונה",
-        "dashboard.no_activity": "אין פעילות אחרונה",
-        "dashboard.earnings_goals": "יעדי רווחים",
-        "dashboard.tap_to_set_goals": "הקש כדי להגדיר יעדים ולעקוב אחר התקדמות",
+        "dashboard.no_recent_activity": "אין פעילות אחרונה",
+        "dashboard.start_tracking_to_see_activity": "התחל מעקב כדי לראות את הפעילות שלך כאן",
         
         // Time Tracking
-        "time_tracking.ready": "מוכן",
-        "time_tracking.tracking": "עוקב",
+        "time_tracking.title": "מעקב זמן",
         "time_tracking.start_shift": "התחל משמרת",
         "time_tracking.end_shift": "סיים משמרת",
         "time_tracking.select_job": "בחר עבודה",
+        "time_tracking.shift_type": "סוג משמרת",
+        "time_tracking.notes": "הערות",
+        "time_tracking.tracking": "מעקב",
+        "time_tracking.ready": "מוכן",
+        "time_tracking.regular": "רגיל",
+        "time_tracking.overtime": "שעות נוספות",
+        "time_tracking.special": "אירוע מיוחד",
+        "time_tracking.flexible": "גמיש",
         "time_tracking.no_jobs_available": "אין עבודות זמינות",
         "time_tracking.add_job_first": "הוסף עבודה קודם כדי להתחיל מעקב",
-        "time_tracking.notes": "הערות",
-        "time_tracking.add_notes": "הוסף הערות על המשמרת הזו...",
-        "time_tracking.characters": "תווים",
-        "time_tracking.notes_saved": "הערות יישמרו עם המשמרת שלך",
+        "time_tracking.shift_notes_placeholder": "הוסף הערות למשמרת זו...",
+        "time_tracking.character_count": "תווים",
         
         // Jobs
         "jobs.title": "עבודות",
         "jobs.add_job": "הוסף עבודה",
         "jobs.edit_job": "ערוך עבודה",
+        "jobs.delete_job": "מחק עבודה",
         "jobs.job_name": "שם העבודה",
         "jobs.hourly_rate": "שכר שעתי",
         "jobs.bonuses": "בונוסים",
-        "jobs.add_bonus": "הוסף בונוס",
-        "jobs.bonus_name": "שם הבונוס",
-        "jobs.bonus_amount": "סכום",
         "jobs.total_hours": "סה\"כ שעות",
-        "jobs.total_earnings": "סה\"כ רווחים",
+        "jobs.total_earnings": "סה\"כ הכנסות",
         "jobs.no_jobs": "אין עבודות עדיין",
         "jobs.add_first_job": "הוסף את העבודה הראשונה שלך כדי להתחיל",
+        "jobs.job_name_placeholder": "הכנס שם עבודה",
+        "jobs.hourly_rate_placeholder": "0.00",
+        "jobs.bonus_name_placeholder": "שם בונוס",
+        "jobs.bonus_amount_placeholder": "0.00",
+        "jobs.add_bonus": "הוסף בונוס",
+        "jobs.remove_bonus": "הסר",
+        "jobs.save_job": "שמור עבודה",
+        "jobs.cancel": "בטל",
+        "jobs.delete": "מחק",
+        "jobs.edit": "ערוך",
+        "jobs.job_name_required": "שם העבודה נדרש",
+        "jobs.hourly_rate_required": "שכר שעתי נדרש",
+        "jobs.hourly_rate_invalid": "אנא הכנס שכר שעתי תקין",
+        "jobs.job_saved": "העבודה נשמרה בהצלחה",
+        "jobs.job_deleted": "העבודה נמחקה בהצלחה",
+        "jobs.error_saving": "שגיאה בשמירת העבודה",
+        "jobs.error_deleting": "שגיאה במחיקת העבודה",
         
         // History
         "history.title": "היסטוריה",
-        "history.export": "ייצא",
+        "history.no_shifts": "לא נמצאו משמרות",
+        "history.add_first_shift": "התחל לעקוב אחר העבודה שלך כדי לראות את ההיסטוריה כאן",
+        "history.export_data": "ייצא נתונים",
         "history.export_csv": "ייצא כ-CSV",
         "history.export_pdf": "ייצא כ-PDF",
-        "history.no_shifts": "אין משמרות רשומות",
-        "history.start_recording": "התחל להקליט משמרות כדי לראות אותן כאן",
+        "history.total_earnings": "הכנסות כוללות",
+        "history.total_hours": "שעות כוללות",
+        "history.average_rate": "שכר ממוצע",
+        "history.shifts_count": "משמרות",
+        "history.period_all": "הכל",
+        "history.period_today": "היום",
+        "history.period_this_week": "השבוע",
+        "history.period_this_month": "החודש",
+        "history.period_last_30_days": "30 הימים האחרונים",
         
         // Analytics
         "analytics.title": "אנליטיקה",
-        "analytics.total_earnings": "סה\"כ רווחים",
-        "analytics.total_hours": "סה\"כ שעות",
-        "analytics.average_rate": "שכר ממוצע",
-        "analytics.earnings_breakdown": "פירוט רווחים",
-        "analytics.regular": "רגיל",
-        "analytics.overtime": "שעות נוספות",
-        "analytics.special": "מיוחד",
-        "analytics.bonus": "בונוס",
+        "analytics.earnings_overview": "סקירת הכנסות",
+        "analytics.hours_worked": "שעות עבודה",
+        "analytics.average_hourly_rate": "שכר שעתי ממוצע",
+        "analytics.earnings_breakdown": "פירוט הכנסות",
         "analytics.top_jobs": "עבודות מובילות",
+        "analytics.insights": "תובנות",
+        "analytics.regular_shifts": "משמרות רגילות",
+        "analytics.overtime_shifts": "משמרות שעות נוספות",
+        "analytics.special_shifts": "משמרות מיוחדות",
+        "analytics.bonus_earnings": "הכנסות בונוס",
+        "analytics.this_week": "השבוע",
+        "analytics.this_month": "החודש",
+        "analytics.last_3_months": "3 החודשים האחרונים",
+        "analytics.this_year": "השנה",
+        "analytics.all_time": "כל הזמנים",
+        "analytics.filter_by_job": "סנן לפי עבודה",
+        "analytics.all_jobs": "כל העבודות",
         "analytics.no_data": "אין נתונים זמינים",
-        "analytics.start_tracking": "התחל מעקב כדי לראות אנליטיקה",
+        "analytics.start_tracking_to_see_analytics": "התחל מעקב כדי לראות את האנליטיקה שלך",
         
         // Settings
         "settings.title": "הגדרות",
+        "settings.notifications": "התראות",
         "settings.language": "שפה",
         "settings.currency": "מטבע",
-        "settings.notifications": "התראות",
-        "settings.manage_reminders": "נהל תזכורות משמרת",
-        "settings.data_management": "ניהול נתונים",
-        "settings.export_data": "ייצא נתונים",
-        "settings.about": "אודות",
+        "settings.app_info": "מידע על האפליקציה",
         "settings.version": "גרסה",
-        "settings.developer": "מפתח",
+        "settings.build": "בנייה",
+        "settings.description": "עקוב אחר שעות העבודה שלך, חשב הכנסות ונהל את הזמן שלך ביעילות. נבנה עם SwiftUI ו-Core Data לפונקציונליות אופליין.",
+        "settings.manage_reminders": "נהל תזכורות",
+        "settings.language_currency": "שפה ומטבע",
+        
+        // Reminders
+        "reminders.title": "תזכורות",
+        "reminders.notification_status": "סטטוס התראות",
+        "reminders.enabled": "מופעל",
+        "reminders.disabled": "מבוטל",
+        "reminders.enable": "הפעל",
+        "reminders.daily_reminder": "תזכורת יומית",
+        "reminders.shift_reminders": "תזכורות משמרת",
+        "reminders.weekly_summary": "סיכום שבועי",
+        "reminders.test_notification": "בדוק התראה",
+        "reminders.permission_required": "נדרשת הרשאה",
+        "reminders.grant_permission": "הענק הרשאה",
+        "reminders.reminder_time": "זמן תזכורת",
+        "reminders.shift_start_reminder": "תזכורת התחלת משמרת",
+        "reminders.shift_end_reminder": "תזכורת סיום משמרת",
+        "reminders.weekly_summary_reminder": "תזכורת סיכום שבועי",
+        "reminders.notification_sent": "התראה נשלחה!",
+        "reminders.error_sending": "שגיאה בשליחת התראה",
+        "reminders.permission_denied": "הרשאת התראות נדחתה",
+        "reminders.settings_required": "אנא הפעל התראות בהגדרות",
         
         // Earnings Goals
-        "goals.title": "יעדי רווחים",
-        "goals.set_track_targets": "הגדר ועקוב אחר יעדים פיננסיים",
+        "goals.title": "יעדי הכנסות",
+        "goals.daily_goal": "יעד יומי",
+        "goals.weekly_goal": "יעד שבועי",
+        "goals.monthly_goal": "יעד חודשי",
+        "goals.set_goal": "הגדר יעד",
+        "goals.goal_achieved": "היעד הושג!",
+        "goals.goal_progress": "התקדמות יעד",
+        "goals.remaining": "נותר",
+        "goals.over_goal": "מעל היעד",
+        "goals.goal_amount": "סכום יעד",
+        "goals.current_earnings": "הכנסות נוכחיות",
+        "goals.progress_percentage": "התקדמות",
         "goals.daily": "יומי",
         "goals.weekly": "שבועי",
         "goals.monthly": "חודשי",
-        "goals.progress": "התקדמות",
-        "goals.goal_achieved": "יעד הושג! 🎉",
-        "goals.edit_goal": "ערוך יעד",
-        "goals.goal_amount": "סכום יעד",
-        "goals.quick_set": "הגדרה מהירה",
-        "goals.save_goal": "שמור יעד",
-        "goals.today": "היום",
-        "goals.this_week": "השבוע",
-        "goals.this_month": "החודש",
-        
-        // Shift Reminders
-        "reminders.title": "תזכורות משמרת",
-        "reminders.stay_on_track": "הישאר על המסלול עם התראות חכמות",
-        "reminders.notification_status": "סטטוס התראות",
-        "reminders.enabled": "התראות מופעלות",
-        "reminders.disabled": "התראות מושבתות",
-        "reminders.enable": "הפעל",
-        "reminders.shift_reminders": "תזכורות משמרת",
-        "reminders.start_reminder": "תזכורת התחלת משמרת",
-        "reminders.end_reminder": "תזכורת סיום משמרת",
-        "reminders.remind_me_at": "תזכר אותי ב:",
-        "reminders.daily_reminders": "תזכורות יומיות",
-        "reminders.daily_work_reminder": "תזכורת עבודה יומית",
-        "reminders.weekly_summary": "סיכום שבועי",
-        "reminders.weekly_earnings_summary": "סיכום רווחים שבועי",
-        "reminders.send_summary_on": "שלח סיכום ב:",
-        "reminders.test_notifications": "בדיקת התראות",
-        "reminders.send_test": "שלח התראה לבדיקה",
-        "reminders.sending": "שולח...",
+        "goals.goal_saved": "היעד נשמר בהצלחה",
+        "goals.goal_updated": "היעד עודכן בהצלחה",
+        "goals.error_saving": "שגיאה בשמירת היעד",
         
         // Common
-        "common.done": "סיום",
-        "common.cancel": "ביטול",
-        "common.save": "שמור",
-        "common.edit": "ערוך",
-        "common.delete": "מחק",
-        "common.add": "הוסף",
-        "common.remove": "הסר",
-        "common.yes": "כן",
-        "common.no": "לא",
-        "common.ok": "אישור",
-        "common.error": "שגיאה",
-        "common.success": "הצלחה",
-        "common.warning": "אזהרה",
-        "common.info": "מידע",
-        
-        // Additional common strings
         "common.loading": "טוען...",
         "common.retry": "נסה שוב",
         "common.close": "סגור",
@@ -457,41 +526,15 @@ class LocalizationManager: ObservableObject {
         "common.confirm": "אשר",
         "common.discard": "התעלם",
         "common.undo": "בטל",
-            "common.redo": "חזור על",
-            
-            // History
-            "history.title": "היסטוריה",
-            "history.no_shifts": "לא נמצאו משמרות",
-            "history.add_first_shift": "התחל לעקוב אחר העבודה שלך כדי לראות את ההיסטוריה כאן",
-            "history.export_data": "ייצא נתונים",
-            "history.export_csv": "ייצא כ-CSV",
-            "history.export_pdf": "ייצא כ-PDF",
-            "history.total_earnings": "הכנסות כוללות",
-            "history.total_hours": "שעות כוללות",
-            "history.average_rate": "שכר ממוצע",
-            "history.shifts_count": "משמרות",
-            
-            // Settings
-            "settings.title": "הגדרות",
-            "settings.app_info": "מידע על האפליקציה",
-            "settings.version": "גרסה",
-            "settings.build": "בנייה",
-            "settings.description": "עקוב אחר שעות העבודה שלך, חשב הכנסות ונהל את הזמן שלך ביעילות. נבנה עם SwiftUI ו-Core Data לפונקציונליות אופליין."
-        ]
+        "common.redo": "חזור על",
+        "common.done": "סיום",
+    ]
 }
 
 // MARK: - View Extensions
 
 extension View {
-    func localizedString(_ key: String) -> String {
+    func localizedString(for key: String) -> String {
         LocalizationManager.shared.localizedString(for: key)
-    }
-    
-    func formatCurrency(_ amount: Double) -> String {
-        LocalizationManager.shared.formatCurrency(amount)
-    }
-    
-    func formatTime(_ timeInterval: TimeInterval) -> String {
-        LocalizationManager.shared.formatTime(timeInterval)
     }
 }

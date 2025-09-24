@@ -161,6 +161,7 @@ struct SettingsView: View {
             LocalizationSettingsView()
         }
     }
+    }
     
     private func scheduleDailyReminder() {
         let calendar = Calendar.current

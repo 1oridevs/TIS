@@ -7,6 +7,7 @@ struct TISColors {
     static let primaryLight = Color(red: 0.2, green: 0.6, blue: 1.0)
     
     // Accent Colors - Vibrant and Modern
+    static let accent = Color(red: 0.0, green: 0.48, blue: 1.0) // Blue accent
     static let success = Color(red: 0.0, green: 0.8, blue: 0.4) // Bright Green
     static let warning = Color(red: 1.0, green: 0.6, blue: 0.0) // Bright Orange
     static let error = Color(red: 1.0, green: 0.3, blue: 0.3) // Bright Red
