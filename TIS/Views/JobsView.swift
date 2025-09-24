@@ -119,6 +119,7 @@ struct JobsView: View {
 struct JobDetailRowView: View {
     let job: Job
     let onEdit: () -> Void
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -127,7 +128,7 @@ struct JobDetailRowView: View {
                     Text(job.name ?? "Unknown Job")
                         .font(.headline)
                     
-                    Text(String(format: "$%.2f/hour", job.hourlyRate))
+                    Text(String(format: "%@%.2f/hour", localizationManager.currentCurrency.symbol, job.hourlyRate))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -149,7 +150,7 @@ struct JobDetailRowView: View {
                 
                 StatisticView(
                     title: "Total Earnings",
-                    value: String(format: "$%.2f", calculateTotalEarnings(for: job))
+                    value: String(format: "%@%.2f", localizationManager.currentCurrency.symbol, calculateTotalEarnings(for: job))
                 )
                 
                 StatisticView(
@@ -171,7 +172,7 @@ struct JobDetailRowView: View {
                             Text(bonus.name ?? "Unknown Bonus")
                                 .font(.caption)
                             Spacer()
-                            Text(String(format: "$%.2f", bonus.amount))
+                            Text(String(format: "%@%.2f", localizationManager.currentCurrency.symbol, bonus.amount))
                                 .font(.caption)
                                 .fontWeight(.medium)
                         }
