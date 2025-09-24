@@ -449,10 +449,12 @@ struct EarningsChartView: View {
                         Image(systemName: "chart.line.downtrend.xyaxis")
                             .font(.system(size: 40))
                             .foregroundColor(TISColors.secondaryText)
+                            .shimmer()
                         
                         Text("No data available")
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
+                            .shimmer()
                     }
                     .frame(height: 200)
                 } else {
@@ -598,10 +600,12 @@ struct HoursChartView: View {
                         Image(systemName: "clock.badge.xmark")
                             .font(.system(size: 40))
                             .foregroundColor(TISColors.secondaryText)
+                            .shimmer()
                         
                         Text("No data available")
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
+                            .shimmer()
                     }
                     .frame(height: 200)
                 } else {
@@ -690,10 +694,12 @@ struct TopJobsSection: View {
                         Image(systemName: "briefcase")
                             .font(.system(size: 40))
                             .foregroundColor(TISColors.secondaryText)
+                            .shimmer()
                         
                         Text("No jobs yet")
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
+                            .shimmer()
                     }
                     .frame(height: 100)
                 } else {

@@ -4,6 +4,7 @@ import CoreData
 struct AddJobView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     @State private var jobName = ""
     @State private var hourlyRate = ""
@@ -31,12 +32,12 @@ struct AddJobView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text("Add New Job")
+                            Text(localizationManager.localizedString(for: "jobs.add_job"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
                             
-                            Text("Create a new work position to track")
+                            Text(localizationManager.localizedString(for: "jobs.add_job_subtitle"))
                                 .font(.subheadline)
                                 .foregroundColor(TISColors.secondaryText)
                                 .multilineTextAlignment(.center)
@@ -51,7 +52,7 @@ struct AddJobView: View {
                                 .foregroundColor(TISColors.primary)
                                 .font(.title3)
                             
-                            Text("Job Information")
+                            Text(localizationManager.localizedString(for: "jobs.job_information"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -61,23 +62,23 @@ struct AddJobView: View {
                         
                         VStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Job Name")
+                                Text(localizationManager.localizedString(for: "jobs.job_name"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                     .foregroundColor(TISColors.primaryText)
                                 
-                                TextField("Enter job title", text: $jobName)
+                                TextField(localizationManager.localizedString(for: "jobs.job_name_placeholder"), text: $jobName)
                                     .textFieldStyle(CustomTextFieldStyle())
                             }
                             
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Hourly Rate")
+                                Text(localizationManager.localizedString(for: "jobs.hourly_rate"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                                     .foregroundColor(TISColors.primaryText)
                                 
                                 HStack {
-                                    Text("$")
+                                    Text(localizationManager.currentCurrency.symbol)
                                         .font(.title2)
                                         .fontWeight(.semibold)
                                         .foregroundColor(TISColors.primary)
@@ -107,7 +108,7 @@ struct AddJobView: View {
                                 .foregroundColor(TISColors.warning)
                                 .font(.title3)
                             
-                            Text("Bonuses (Optional)")
+                            Text(localizationManager.localizedString(for: "jobs.bonuses_optional"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -129,11 +130,11 @@ struct AddJobView: View {
                                     .font(.system(size: 40))
                                     .foregroundColor(TISColors.secondaryText.opacity(0.5))
                                 
-                                Text("No bonuses added")
+                                Text(localizationManager.localizedString(for: "jobs.no_bonuses"))
                                     .font(.subheadline)
                                     .foregroundColor(TISColors.secondaryText)
                                 
-                                Text("Tap + to add bonus opportunities")
+                                Text(localizationManager.localizedString(for: "jobs.add_bonus_tip"))
                                     .font(.caption)
                                     .foregroundColor(TISColors.secondaryText)
                             }
@@ -144,23 +145,23 @@ struct AddJobView: View {
                                 ForEach(bonuses.indices, id: \.self) { index in
                                     HStack(spacing: 12) {
                                         VStack(alignment: .leading, spacing: 8) {
-                                            Text("Bonus Name")
+                                            Text(localizationManager.localizedString(for: "jobs.bonus_name"))
                                                 .font(.caption)
                                                 .fontWeight(.medium)
                                                 .foregroundColor(TISColors.secondaryText)
                                             
-                                            TextField("e.g., Overtime, Holiday", text: $bonuses[index].name)
+                                            TextField(localizationManager.localizedString(for: "jobs.bonus_name"), text: $bonuses[index].name)
                                                 .textFieldStyle(CustomTextFieldStyle())
                                         }
                                         
                                         VStack(alignment: .leading, spacing: 8) {
-                                            Text("Amount")
+                                            Text(localizationManager.localizedString(for: "jobs.amount"))
                                                 .font(.caption)
                                                 .fontWeight(.medium)
                                                 .foregroundColor(TISColors.secondaryText)
                                             
                                             HStack {
-                                                Text("$")
+                                                Text(localizationManager.currentCurrency.symbol)
                                                     .font(.subheadline)
                                                     .foregroundColor(TISColors.primary)
                                                 
@@ -211,7 +212,7 @@ struct AddJobView: View {
                                     .foregroundColor(TISColors.success)
                                     .font(.title3)
                                 
-                                Text("Preview")
+                                Text(localizationManager.localizedString(for: "jobs.preview"))
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .foregroundColor(TISColors.primaryText)
@@ -221,7 +222,7 @@ struct AddJobView: View {
                             
                             VStack(spacing: 12) {
                                 HStack {
-                                    Text("Job:")
+                                    Text(localizationManager.localizedString(for: "jobs.job_label"))
                                         .font(.subheadline)
                                     
                                     Spacer()
@@ -233,12 +234,12 @@ struct AddJobView: View {
                                 }
                                 
                                 HStack {
-                                    Text("Rate:")
+                                    Text(localizationManager.localizedString(for: "jobs.rate_label"))
                                         .font(.subheadline)
                                     
                                     Spacer()
                                     
-                                    Text(String(format: "$%.2f/hour", Double(hourlyRate) ?? 0))
+                                    Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f/hour", Double(hourlyRate) ?? 0))
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                         .foregroundColor(TISColors.success)
@@ -246,7 +247,7 @@ struct AddJobView: View {
                                 
                                 if !bonuses.isEmpty {
                                     HStack {
-                                        Text("Bonuses:")
+                                        Text(localizationManager.localizedString(for: "jobs.bonuses_label"))
                                             .font(.subheadline)
                                         
                                         Spacer()
@@ -277,17 +278,17 @@ struct AddJobView: View {
                 }
                 .padding(.horizontal, 20)
             }
-            .navigationTitle("Add Job")
+            .navigationTitle(localizationManager.localizedString(for: "jobs.add_job"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(localizationManager.localizedString(for: "jobs.cancel")) {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(localizationManager.localizedString(for: "jobs.save_job")) {
                         saveJob()
                     }
                     .disabled(jobName.isEmpty || hourlyRate.isEmpty)
@@ -306,21 +307,21 @@ struct AddJobView: View {
     private func saveJob() {
         // Validation
         guard !jobName.isEmpty else {
-            toastMessage = "Please enter a job name"
+            toastMessage = localizationManager.localizedString(for: "jobs.enter_job_name_warning")
             toastType = .warning
             showingToast = true
             return
         }
         
         guard !hourlyRate.isEmpty else {
-            toastMessage = "Please enter an hourly rate"
+            toastMessage = localizationManager.localizedString(for: "jobs.enter_hourly_rate_warning")
             toastType = .warning
             showingToast = true
             return
         }
         
         guard let rate = Double(hourlyRate), rate > 0 else {
-            toastMessage = "Please enter a valid hourly rate"
+            toastMessage = localizationManager.localizedString(for: "jobs.enter_valid_hourly_rate_warning")
             toastType = .warning
             showingToast = true
             return
@@ -347,7 +348,7 @@ struct AddJobView: View {
         
         do {
             try viewContext.save()
-            toastMessage = "Job '\(jobName)' added successfully!"
+            toastMessage = String(format: localizationManager.localizedString(for: "jobs.job_added_success"), jobName)
             toastType = .success
             showingToast = true
             
@@ -356,7 +357,7 @@ struct AddJobView: View {
                 dismiss()
             }
         } catch {
-            errorMessage = "Failed to save job: \(error.localizedDescription)"
+            errorMessage = String(format: localizationManager.localizedString(for: "jobs.failed_to_save_job"), error.localizedDescription)
             showingError = true
         }
     }
@@ -385,4 +386,5 @@ struct BonusInput {
 #Preview {
     AddJobView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(LocalizationManager.shared)
 }

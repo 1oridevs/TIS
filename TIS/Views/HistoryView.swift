@@ -183,15 +183,18 @@ struct HistoryView: View {
                 Image(systemName: "clock")
                     .font(.system(size: 48))
                     .foregroundColor(.gray)
+                    .shimmer()
                 
                 Text("No shifts found")
                     .font(.headline)
                     .foregroundColor(.secondary)
+                    .shimmer()
                 
                 Text("Start tracking your time to see your history here")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
+                    .shimmer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
