@@ -15,8 +15,12 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVStack(spacing: 24) {
+            ZStack {
+                // Enhanced gradient background with animated elements
+                AnimatedBackgroundView()
+                
+                ScrollView {
+                    LazyVStack(spacing: 24) {
                     // Welcome Header
                     WelcomeHeaderCard()
                         .transition(.asymmetric(insertion: .scale.combined(with: .opacity), removal: .opacity))
@@ -48,52 +52,12 @@ struct DashboardView: View {
                     RecentActivityCard()
                         .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
                         .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.5), value: UUID())
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 100) // Extra padding for tab bar
-            }
-            .background(
-                ZStack {
-                    // Base gradient
-                    LinearGradient(
-                        colors: [
-                            TISColors.background,
-                            TISColors.background.opacity(0.95),
-                            TISColors.primary.opacity(0.05)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    
-                    // Animated gradient overlay
-                    LinearGradient(
-                        colors: [
-                            TISColors.primary.opacity(0.1),
-                            Color.clear,
-                            TISColors.accent.opacity(0.05)
-                        ],
-                        startPoint: .topTrailing,
-                        endPoint: .bottomLeading
-                    )
-                    .opacity(0.6)
-                    
-                    // Subtle pattern overlay
-                    GeometryReader { geometry in
-                        Circle()
-                            .fill(TISColors.primary.opacity(0.03))
-                            .frame(width: 200, height: 200)
-                            .position(x: geometry.size.width * 0.8, y: geometry.size.height * 0.2)
-                            .blur(radius: 20)
-                        
-                        Circle()
-                            .fill(TISColors.accent.opacity(0.03))
-                            .frame(width: 150, height: 150)
-                            .position(x: geometry.size.width * 0.2, y: geometry.size.height * 0.8)
-                            .blur(radius: 15)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                    .padding(.bottom, 100) // Extra padding for tab bar
                 }
-            )
+            }
             .navigationTitle("Dashboard")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -125,53 +89,100 @@ struct WelcomeHeaderCard: View {
     @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var currentTime = Date()
     @State private var greeting = ""
+    @State private var animateElements = false
     
     let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        TISCard {
-            VStack(spacing: 16) {
+        ZStack {
+            // Glass morphism background
+            RoundedRectangle(cornerRadius: 24)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.2), Color.clear],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+                .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 10)
+            
+            VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(greeting)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(TISColors.primaryText)
+                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [Color.primary, Color.primary.opacity(0.8)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .scaleEffect(animateElements ? 1.0 : 0.95)
+                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: animateElements)
                         
                         Text(localizationManager.localizedString(for: "dashboard.welcome"))
-                            .font(.subheadline)
-                            .foregroundColor(TISColors.secondaryText)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.secondary)
                     }
                     
                     Spacer()
                     
-                    VStack(alignment: .trailing, spacing: 4) {
+                    VStack(alignment: .trailing, spacing: 6) {
                         Text(currentTime, style: .time)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(TISColors.primary)
+                            .font(.system(size: 20, weight: .bold, design: .monospaced))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [Color.blue, Color.purple],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .scaleEffect(animateElements ? 1.05 : 1.0)
+                            .animation(.easeInOut(duration: 0.3), value: animateElements)
                         
                         Text(currentTime, style: .date)
-                            .font(.caption)
-                            .foregroundColor(TISColors.secondaryText)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.secondary)
                     }
                 }
                 
-                // Motivational quote or tip
-                HStack {
-                    Image(systemName: "lightbulb.fill")
-                        .foregroundColor(TISColors.warning)
-                        .font(.caption)
+                // Enhanced motivational tip with icon
+                HStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.orange, Color.yellow],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 32, height: 32)
+                        
+                        Image(systemName: "lightbulb.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 14, weight: .bold))
+                    }
+                    .scaleEffect(animateElements ? 1.1 : 1.0)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: animateElements)
                     
                     Text("💡 Tip: Start tracking as soon as you begin work for accurate records!")
-                        .font(.caption)
-                        .foregroundColor(TISColors.secondaryText)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
                     
                     Spacer()
                 }
-                .padding(.top, 8)
+                .padding(.top, 4)
             }
+        }
+            .padding(24)
         }
         .onReceive(timer) { _ in
             currentTime = Date()
@@ -179,6 +190,9 @@ struct WelcomeHeaderCard: View {
         }
         .onAppear {
             updateGreeting()
+            withAnimation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2)) {
+                animateElements = true
+            }
         }
     }
     
