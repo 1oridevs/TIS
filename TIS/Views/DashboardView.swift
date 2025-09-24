@@ -94,94 +94,49 @@ struct WelcomeHeaderCard: View {
     let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        ZStack {
-            // Glass morphism background
-            RoundedRectangle(cornerRadius: 24)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 24)
-                        .stroke(
-                            LinearGradient(
-                                colors: [Color.white.opacity(0.2), Color.clear],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1
-                        )
-                )
-                .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 10)
-            
-            VStack(alignment: .leading, spacing: 20) {
+        TISCard {
+            VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(greeting)
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [Color.primary, Color.primary.opacity(0.8)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .scaleEffect(animateElements ? 1.0 : 0.95)
-                            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: animateElements)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(TISColors.primaryText)
                         
                         Text(localizationManager.localizedString(for: "dashboard.welcome"))
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
                     }
                     
                     Spacer()
                     
-                    VStack(alignment: .trailing, spacing: 6) {
+                    VStack(alignment: .trailing, spacing: 4) {
                         Text(currentTime, style: .time)
-                            .font(.system(size: 20, weight: .bold, design: .monospaced))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [Color.blue, Color.purple],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .scaleEffect(animateElements ? 1.05 : 1.0)
-                            .animation(.easeInOut(duration: 0.3), value: animateElements)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(TISColors.primary)
                         
                         Text(currentTime, style: .date)
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .font(.caption)
+                            .foregroundColor(TISColors.secondaryText)
                     }
                 }
                 
-                // Enhanced motivational tip with icon
-                HStack(spacing: 12) {
-                    ZStack {
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [Color.orange, Color.yellow],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 32, height: 32)
-                        
-                        Image(systemName: "lightbulb.fill")
-                            .foregroundColor(.white)
-                            .font(.system(size: 14, weight: .bold))
-                    }
-                    .scaleEffect(animateElements ? 1.1 : 1.0)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: animateElements)
+                // Motivational quote or tip
+                HStack {
+                    Image(systemName: "lightbulb.fill")
+                        .foregroundColor(TISColors.warning)
+                        .font(.caption)
                     
                     Text("💡 Tip: Start tracking as soon as you begin work for accurate records!")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.secondary)
+                        .font(.caption)
+                        .foregroundColor(TISColors.secondaryText)
                         .multilineTextAlignment(.leading)
                     
                     Spacer()
                 }
-                .padding(.top, 4)
+                .padding(.top, 8)
             }
-            .padding(24)
         }
         .onReceive(timer) { _ in
             currentTime = Date()
@@ -189,9 +144,6 @@ struct WelcomeHeaderCard: View {
         }
         .onAppear {
             updateGreeting()
-            withAnimation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2)) {
-                animateElements = true
-            }
         }
     }
     
