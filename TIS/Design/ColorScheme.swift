@@ -91,24 +91,8 @@ struct TISColors {
     )
 }
 
-struct TISShadows {
-    static let small = Shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-    static let medium = Shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
-    static let large = Shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
-}
-
-struct Shadow {
-    let color: Color
-    let radius: CGFloat
-    let x: CGFloat
-    let y: CGFloat
-}
-
+// MARK: - View Extensions
 extension View {
-    func tisShadow(_ shadow: Shadow) -> some View {
-        self.shadow(color: shadow.color, radius: shadow.radius, x: shadow.x, y: shadow.y)
-    }
-    
     func tisCardStyle() -> some View {
         self
             .background(TISColors.cardGradient)
@@ -117,7 +101,7 @@ extension View {
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
             )
-            .tisShadow(TISShadows.medium)
+            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
     }
     
     func tisButtonStyle(color: Color = TISColors.primary) -> some View {
@@ -127,7 +111,7 @@ extension View {
             .padding(.vertical, 12)
             .background(color)
             .cornerRadius(16)
-            .tisShadow(TISShadows.small)
+            .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
     
     func tisGradientButtonStyle(gradient: LinearGradient = TISColors.primaryGradient) -> some View {
@@ -137,7 +121,7 @@ extension View {
             .padding(.vertical, 12)
             .background(gradient)
             .cornerRadius(16)
-            .tisShadow(TISShadows.medium)
+            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
     }
     
     func tisGlassEffect() -> some View {

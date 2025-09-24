@@ -1,6 +1,7 @@
 import SwiftUI
 import Foundation
 
+@MainActor
 class LocalizationManager: ObservableObject {
     static let shared = LocalizationManager()
     
@@ -99,6 +100,7 @@ class LocalizationManager: ObservableObject {
     func setCurrency(_ currency: Currency) {
         currentCurrency = currency
         savePreferences()
+        objectWillChange.send()
     }
     
     // MARK: - Persistence
@@ -124,9 +126,17 @@ class LocalizationManager: ObservableObject {
     #if canImport(UIKit)
         let isRTL = currentLanguage.isRTL
         let attribute: UISemanticContentAttribute = isRTL ? .forceRightToLeft : .forceLeftToRight
-        UIView.appearance().semanticContentAttribute = attribute
-        UINavigationBar.appearance().semanticContentAttribute = attribute
-        UITabBar.appearance().semanticContentAttribute = attribute
+        if Thread.isMainThread {
+            UIView.appearance().semanticContentAttribute = attribute
+            UINavigationBar.appearance().semanticContentAttribute = attribute
+            UITabBar.appearance().semanticContentAttribute = attribute
+        } else {
+            DispatchQueue.main.async {
+                UIView.appearance().semanticContentAttribute = attribute
+                UINavigationBar.appearance().semanticContentAttribute = attribute
+                UITabBar.appearance().semanticContentAttribute = attribute
+            }
+        }
     #endif
     }
     
@@ -640,3 +650,4 @@ extension View {
         LocalizationManager.shared.localizedString(for: key)
     }
 }
+

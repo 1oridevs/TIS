@@ -56,7 +56,7 @@ struct ToastView: View {
                             .stroke(type.color.opacity(0.3), lineWidth: 1)
                     )
             )
-            .tisShadow(TISShadows.medium)
+            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
             .padding(.horizontal, 20)
             .padding(.bottom, 100) // Above tab bar
         }

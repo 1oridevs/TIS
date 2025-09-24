@@ -99,7 +99,7 @@ struct AddJobView: View {
                                     .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     
                     // Bonuses Card
                     VStack(alignment: .leading, spacing: 20) {
@@ -202,7 +202,7 @@ struct AddJobView: View {
                                     .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     
                     // Preview Card
                     if !jobName.isEmpty && !hourlyRate.isEmpty {
@@ -269,7 +269,7 @@ struct AddJobView: View {
                                         .stroke(TISColors.success.opacity(0.3), lineWidth: 1)
                                 )
                         )
-                        .tisShadow(TISShadows.medium)
+                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     }
                     
                     // Bottom padding

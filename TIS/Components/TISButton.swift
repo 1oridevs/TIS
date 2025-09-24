@@ -42,7 +42,7 @@ struct TISButton: View {
                 gradient != nil ? AnyView(gradient!) : AnyView(color)
             )
             .cornerRadius(16)
-            .tisShadow(TISShadows.small)
+            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
         }
         .buttonStyle(PlainButtonStyle())
     }

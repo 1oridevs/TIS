@@ -131,7 +131,7 @@ struct AddManualShiftView: View {
                                     .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     
                     // Time Selection Card
                     VStack(alignment: .leading, spacing: 16) {
@@ -207,7 +207,7 @@ struct AddManualShiftView: View {
                                     .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     
                     // Additional Details Card
                     VStack(alignment: .leading, spacing: 16) {
@@ -263,7 +263,7 @@ struct AddManualShiftView: View {
                                     .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     
                     // Earnings Preview Card
                     if let job = selectedJob {
@@ -332,7 +332,7 @@ struct AddManualShiftView: View {
                                         .stroke(TISColors.success.opacity(0.3), lineWidth: 1)
                                 )
                         )
-                        .tisShadow(TISShadows.medium)
+                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     }
                     
                     // Bottom padding

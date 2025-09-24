@@ -170,7 +170,7 @@ struct CurrentStatusCard: View {
     @State private var glowAnimation = false
     
     var body: some View {
-        TISCard(shadow: TISShadows.medium) {
+        TISCard {
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     ZStack {
@@ -319,7 +319,7 @@ struct QuickActionsCard: View {
     @State private var showJobSelection = false
     
     var body: some View {
-        TISCard(shadow: TISShadows.medium) {
+        TISCard {
             VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     ZStack {
@@ -431,7 +431,7 @@ struct QuickActionsCard: View {
                                     .padding(.vertical, 16)
                                     .background(TISColors.success)
                                     .cornerRadius(12)
-                                    .tisShadow(TISShadows.small)
+                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                                 }
                                 .buttonStyle(PlainButtonStyle())
                             }

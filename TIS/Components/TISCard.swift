@@ -4,18 +4,15 @@ struct TISCard<Content: View>: View {
     let content: Content
     let padding: CGFloat
     let cornerRadius: CGFloat
-    let shadow: Shadow
     
     init(
         padding: CGFloat = 16,
         cornerRadius: CGFloat = 12,
-        shadow: Shadow = TISShadows.small,
         @ViewBuilder content: () -> Content
     ) {
         self.content = content()
         self.padding = padding
         self.cornerRadius = cornerRadius
-        self.shadow = shadow
     }
     
     var body: some View {
@@ -23,10 +20,9 @@ struct TISCard<Content: View>: View {
             .padding(padding)
             .background(TISColors.cardBackground)
             .cornerRadius(cornerRadius)
-            .tisShadow(shadow)
+            .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
-
 
 struct TISStatCard: View {
     let title: String

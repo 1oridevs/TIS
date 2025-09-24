@@ -189,7 +189,7 @@ struct TimeTrackingView: View {
                         .stroke(TISColors.cardBorder.opacity(0.3), lineWidth: 1)
                 )
         )
-        .tisShadow(TISShadows.large)
+        .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 6)
     }
     
     @ViewBuilder
@@ -457,7 +457,7 @@ struct TimeTrackingView: View {
                                     .stroke(.white.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                 }
                 .scaleEffect(1.0)
                 .animation(.easeInOut(duration: 0.3), value: timeTracker.isTracking)
@@ -502,7 +502,7 @@ struct TimeTrackingView: View {
                                     .stroke(.white.opacity(0.3), lineWidth: 1)
                             )
                     )
-                    .tisShadow(TISShadows.medium)
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                 }
                 .disabled(selectedJob == nil || timeTracker.isTracking)
                 .opacity((selectedJob == nil || timeTracker.isTracking) ? 0.6 : 1.0)
@@ -555,7 +555,7 @@ struct TimeTrackingView: View {
                                     .stroke(TISColors.primary.opacity(0.3), lineWidth: 2)
                             )
                     )
-                    .tisShadow(TISShadows.small)
+                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                 }
                 .buttonStyle(PlainButtonStyle())
             }
