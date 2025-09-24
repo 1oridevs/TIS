@@ -181,7 +181,6 @@ struct WelcomeHeaderCard: View {
                 }
                 .padding(.top, 4)
             }
-        }
             .padding(24)
         }
         .onReceive(timer) { _ in
