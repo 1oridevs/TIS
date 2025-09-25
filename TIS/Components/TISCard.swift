@@ -5,6 +5,8 @@ struct TISCard<Content: View>: View {
     let padding: CGFloat
     let cornerRadius: CGFloat
     
+    @State private var isVisible = false
+    
     init(
         padding: CGFloat = 16,
         cornerRadius: CGFloat = 12,
@@ -21,6 +23,13 @@ struct TISCard<Content: View>: View {
             .background(TISColors.cardBackground)
             .cornerRadius(cornerRadius)
             .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            .opacity(isVisible ? 1 : 0)
+            .scaleEffect(isVisible ? 1 : 0.95)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    isVisible = true
+                }
+            }
     }
 }
 
@@ -30,6 +39,9 @@ struct TISStatCard: View {
     let icon: String
     let color: Color
     let trend: String?
+    
+    @State private var isVisible = false
+    @State private var iconRotation: Double = 0
     
     init(
         title: String,
@@ -52,6 +64,12 @@ struct TISStatCard: View {
                     Image(systemName: icon)
                         .font(.title2)
                         .foregroundColor(color)
+                        .rotationEffect(.degrees(iconRotation))
+                        .onAppear {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2)) {
+                                iconRotation = 360
+                            }
+                        }
                     
                     Spacer()
                     
@@ -64,6 +82,8 @@ struct TISStatCard: View {
                             .background(color.opacity(0.1))
                             .foregroundColor(color)
                             .cornerRadius(8)
+                            .scaleEffect(isVisible ? 1 : 0.8)
+                            .opacity(isVisible ? 1 : 0)
                     }
                 }
                 
@@ -72,11 +92,21 @@ struct TISStatCard: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(TISColors.primaryText)
+                        .scaleEffect(isVisible ? 1 : 0.9)
+                        .opacity(isVisible ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.3).delay(0.3), value: isVisible)
                     
                     Text(title)
                         .font(.caption)
                         .foregroundColor(TISColors.secondaryText)
+                        .opacity(isVisible ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.3).delay(0.4), value: isVisible)
                 }
+            }
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                isVisible = true
             }
         }
         .accessibilityElement(children: .combine)
@@ -89,6 +119,8 @@ struct TISProgressBar: View {
     let progress: Double
     let color: Color
     let height: CGFloat
+    
+    @State private var animatedProgress: Double = 0
     
     init(
         progress: Double,
@@ -110,15 +142,25 @@ struct TISProgressBar: View {
                 
                 Rectangle()
                     .fill(color)
-                    .frame(width: geometry.size.width * min(max(progress, 0), 1), height: height)
+                    .frame(width: geometry.size.width * min(max(animatedProgress, 0), 1), height: height)
                     .cornerRadius(height / 2)
-                    .animation(.easeInOut(duration: 0.3), value: progress)
+                    .animation(.easeInOut(duration: 0.8), value: animatedProgress)
             }
         }
         .frame(height: height)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.8).delay(0.2)) {
+                animatedProgress = progress
+            }
+        }
+        .onChange(of: progress) { newValue in
+            withAnimation(.easeInOut(duration: 0.5)) {
+                animatedProgress = newValue
+            }
+        }
         .accessibilityElement()
         .accessibilityLabel("Progress bar")
-        .accessibilityValue("\(Int(progress * 100))% complete")
+        .accessibilityValue("\(Int(animatedProgress * 100))% complete")
         .accessibilityAddTraits(.updatesFrequently)
     }
 }

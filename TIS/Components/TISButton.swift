@@ -9,6 +9,9 @@ struct TISButton: View {
     let accessibilityLabel: String?
     let accessibilityHint: String?
     
+    @State private var isPressed = false
+    @State private var scale: CGFloat = 1.0
+    
     init(_ title: String, icon: String? = nil, color: Color = TISColors.primary, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
@@ -30,11 +33,30 @@ struct TISButton: View {
     }
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            // Haptic feedback
+            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+            impactFeedback.impactOccurred()
+            
+            // Scale animation
+            withAnimation(.easeInOut(duration: 0.2)) {
+                scale = 0.95
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    scale = 1.0
+                }
+            }
+            
+            action()
+        }) {
             HStack(spacing: 8) {
                 if let icon = icon {
                     Image(systemName: icon)
                         .font(.title3)
+                        .scaleEffect(isPressed ? 0.9 : 1.0)
+                        .animation(.easeInOut(duration: 0.2), value: isPressed)
                 }
                 
                 Text(title)
@@ -49,8 +71,14 @@ struct TISButton: View {
             )
             .cornerRadius(16)
             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+            .scaleEffect(scale)
         }
         .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isPressed = pressing
+            }
+        }, perform: {})
         .accessibilityLabel(accessibilityLabel ?? title)
         .accessibilityHint(accessibilityHint ?? "")
         .accessibilityAddTraits(.isButton)
@@ -64,6 +92,9 @@ struct TISSecondaryButton: View {
     let accessibilityLabel: String?
     let accessibilityHint: String?
     
+    @State private var isPressed = false
+    @State private var scale: CGFloat = 1.0
+    
     init(_ title: String, icon: String? = nil, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
@@ -73,11 +104,30 @@ struct TISSecondaryButton: View {
     }
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            // Haptic feedback
+            let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+            impactFeedback.impactOccurred()
+            
+            // Scale animation
+            withAnimation(.easeInOut(duration: 0.2)) {
+                scale = 0.95
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    scale = 1.0
+                }
+            }
+            
+            action()
+        }) {
             HStack(spacing: 8) {
                 if let icon = icon {
                     Image(systemName: icon)
                         .font(.title3)
+                        .scaleEffect(isPressed ? 0.9 : 1.0)
+                        .animation(.easeInOut(duration: 0.2), value: isPressed)
                 }
                 
                 Text(title)
@@ -93,8 +143,14 @@ struct TISSecondaryButton: View {
                     .stroke(TISColors.primary, lineWidth: 2)
             )
             .cornerRadius(16)
+            .scaleEffect(scale)
         }
         .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isPressed = pressing
+            }
+        }, perform: {})
         .accessibilityLabel(accessibilityLabel ?? title)
         .accessibilityHint(accessibilityHint ?? "")
         .accessibilityAddTraits(.isButton)
@@ -109,6 +165,9 @@ struct TISIconButton: View {
     let accessibilityLabel: String?
     let accessibilityHint: String?
     
+    @State private var isPressed = false
+    @State private var scale: CGFloat = 1.0
+    
     init(icon: String, color: Color = TISColors.primary, size: CGFloat = 20, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.icon = icon
         self.color = color
@@ -119,15 +178,40 @@ struct TISIconButton: View {
     }
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            // Haptic feedback
+            let impactFeedback = UIImpactFeedbackGenerator(style: .light)
+            impactFeedback.impactOccurred()
+            
+            // Scale animation
+            withAnimation(.easeInOut(duration: 0.2)) {
+                scale = 0.9
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    scale = 1.0
+                }
+            }
+            
+            action()
+        }) {
             Image(systemName: icon)
                 .font(.system(size: size))
                 .foregroundColor(color)
                 .frame(width: 44, height: 44)
                 .background(color.opacity(0.1))
                 .cornerRadius(22)
+                .scaleEffect(scale)
+                .rotationEffect(.degrees(isPressed ? 5 : 0))
+                .animation(.easeInOut(duration: 0.2), value: isPressed)
         }
         .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isPressed = pressing
+            }
+        }, perform: {})
         .accessibilityLabel(accessibilityLabel ?? icon)
         .accessibilityHint(accessibilityHint ?? "")
         .accessibilityAddTraits(.isButton)
