@@ -239,7 +239,7 @@ struct AddJobView: View {
                                     
                                     Spacer()
                                     
-                                    Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f/hour", Double(hourlyRate) ?? 0))
+                                    Text("\(localizationManager.formatCurrency(Double(hourlyRate) ?? 0))/hour")
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                         .foregroundColor(TISColors.success)

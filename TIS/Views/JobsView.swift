@@ -128,7 +128,7 @@ struct JobDetailRowView: View {
                     Text(job.name ?? "Unknown Job")
                         .font(.headline)
                     
-                    Text(String(format: "%@%.2f/hour", localizationManager.currentCurrency.symbol, job.hourlyRate))
+                    Text("\(localizationManager.formatCurrency(job.hourlyRate))/hour")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -150,7 +150,7 @@ struct JobDetailRowView: View {
                 
                 StatisticView(
                     title: localizationManager.localizedString(for: "jobs.total_earnings"),
-                    value: String(format: "%@%.2f", localizationManager.currentCurrency.symbol, calculateTotalEarnings(for: job))
+                    value: localizationManager.formatCurrency(calculateTotalEarnings(for: job))
                 )
                 
                 StatisticView(
@@ -172,7 +172,7 @@ struct JobDetailRowView: View {
                             Text(bonus.name ?? "Unknown Bonus")
                                 .font(.caption)
                             Spacer()
-                            Text(String(format: "%@%.2f", localizationManager.currentCurrency.symbol, bonus.amount))
+                            Text(localizationManager.formatCurrency(bonus.amount))
                                 .font(.caption)
                                 .fontWeight(.medium)
                         }

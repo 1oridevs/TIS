@@ -94,7 +94,7 @@ struct AddManualShiftView: View {
                                         .foregroundColor(selectedJob == nil ? TISColors.secondaryText : TISColors.primaryText)
                                     
                                     if let job = selectedJob {
-                                        Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f/hour", job.hourlyRate))
+                                        Text("\(localizationManager.formatCurrency(job.hourlyRate))/hour")
                                             .font(.subheadline)
                                             .foregroundColor(TISColors.success)
                                     } else {
@@ -288,7 +288,7 @@ struct AddManualShiftView: View {
                                     
                                     Spacer()
                                     
-                                    Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f", durationHours * job.hourlyRate))
+                                    Text(localizationManager.formatCurrency(durationHours * job.hourlyRate))
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                 }
@@ -300,7 +300,7 @@ struct AddManualShiftView: View {
                                         
                                         Spacer()
                                         
-                                        Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f", bonusAmount))
+                                        Text(localizationManager.formatCurrency(bonusAmount))
                                             .font(.subheadline)
                                             .fontWeight(.semibold)
                                             .foregroundColor(TISColors.success)
@@ -316,7 +316,7 @@ struct AddManualShiftView: View {
                                     
                                     Spacer()
                                     
-                                    Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f", (durationHours * job.hourlyRate) + bonusAmount))
+                                    Text(localizationManager.formatCurrency((durationHours * job.hourlyRate) + bonusAmount))
                                         .font(.headline)
                                         .fontWeight(.bold)
                                         .foregroundColor(TISColors.success)
@@ -450,7 +450,7 @@ struct JobPickerView: View {
                                     .font(.headline)
                                     .foregroundColor(.primary)
                                 
-                                Text(String(format: "\(localizationManager.currentCurrency.symbol)%.2f/hour", job.hourlyRate))
+                                Text("\(localizationManager.formatCurrency(job.hourlyRate))/hour")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
