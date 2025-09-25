@@ -1,98 +1,18 @@
 import SwiftUI
-import CoreData
 
-struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var timeTracker = TimeTracker()
-    @StateObject private var localizationManager = LocalizationManager.shared
-    @State private var selectedTab = 0
-    @State private var showingOnboarding = false
-    
-    var body: some View {
-        Group {
-            if showingOnboarding {
-                OnboardingFlow {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        showingOnboarding = false
-                    }
-                }
-            } else {
-                TabView(selection: $selectedTab) {
-            DashboardView()
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text(localizationManager.localizedString(for: "nav.dashboard"))
-                }
-                .tag(0)
-            
-            TimeTrackingView()
-                .tabItem {
-                    Image(systemName: "clock.fill")
-                    Text(localizationManager.localizedString(for: "nav.time_tracking"))
-                }
-                .tag(1)
-            
-            JobsView()
-                .tabItem {
-                    Image(systemName: "briefcase.fill")
-                    Text(localizationManager.localizedString(for: "nav.jobs"))
-                }
-                .tag(2)
-            
-            HistoryView()
-                .tabItem {
-                    Image(systemName: "chart.bar.fill")
-                    Text(localizationManager.localizedString(for: "nav.history"))
-                }
-                .tag(3)
-            
-            AnalyticsView()
-                .tabItem {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                    Text(localizationManager.localizedString(for: "nav.analytics"))
-                }
-                .tag(4)
-            
-            SettingsView()
-                .tabItem {
-                    Image(systemName: "gear")
-                    Text(localizationManager.localizedString(for: "nav.settings"))
-                }
-                .tag(5)
-                }
-                .environmentObject(timeTracker)
-                .environmentObject(localizationManager)
-                .accentColor(.blue)
-                .environment(\.layoutDirection, localizationManager.currentLanguage.isRTL ? .rightToLeft : .leftToRight)
-            }
-        }
-        .onAppear {
-            // Check if user has completed onboarding
-            if !UserDefaults.standard.bool(forKey: "hasCompletedOnboarding") {
-                showingOnboarding = true
-            }
-        }
-        .onChange(of: showingOnboarding) { newValue in
-            if !newValue {
-                // User completed onboarding, show main app
-                UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-            }
-        }
-    }
-}
+// MARK: - Simple Onboarding View
 
-// MARK: - Onboarding Flow
-
-struct OnboardingFlow: View {
-    let onComplete: () -> Void
+struct SimpleOnboardingView: View {
     @State private var currentPage = 0
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    let onComplete: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
             // Page content
             TabView(selection: $currentPage) {
                 // Page 1: Welcome
-                OnboardingPageView(
+                OnboardingPage(
                     title: "Welcome to TIS",
                     description: "Track your time, calculate your earnings, and never miss a paycheck again.",
                     icon: "clock.fill",
@@ -102,7 +22,7 @@ struct OnboardingFlow: View {
                 .tag(0)
                 
                 // Page 2: Add Jobs
-                OnboardingPageView(
+                OnboardingPage(
                     title: "Add Your Jobs",
                     description: "Start by adding your jobs with hourly rates. You can track multiple jobs and switch between them easily.",
                     icon: "briefcase.fill",
@@ -112,7 +32,7 @@ struct OnboardingFlow: View {
                 .tag(1)
                 
                 // Page 3: Track Time
-                OnboardingPageView(
+                OnboardingPage(
                     title: "Track Your Time",
                     description: "Start and stop tracking with a single tap. The app automatically calculates your earnings.",
                     icon: "play.fill",
@@ -122,7 +42,7 @@ struct OnboardingFlow: View {
                 .tag(2)
                 
                 // Page 4: View Progress
-                OnboardingPageView(
+                OnboardingPage(
                     title: "View Your Progress",
                     description: "See your daily, weekly, and monthly earnings at a glance. Track your progress towards your goals.",
                     icon: "chart.bar.fill",
@@ -132,7 +52,7 @@ struct OnboardingFlow: View {
                 .tag(3)
                 
                 // Page 5: Get Started
-                OnboardingPageView(
+                OnboardingPage(
                     title: "You're All Set!",
                     description: "Start tracking your time and watch your earnings grow. Your financial future starts now!",
                     icon: "checkmark.circle.fill",
@@ -207,9 +127,9 @@ struct OnboardingFlow: View {
     }
 }
 
-// MARK: - Onboarding Page View
+// MARK: - Onboarding Page
 
-struct OnboardingPageView: View {
+struct OnboardingPage: View {
     let title: String
     let description: String
     let icon: String
@@ -300,7 +220,11 @@ struct OnboardingPageView: View {
     }
 }
 
+// MARK: - Preview
+
 #Preview {
-    ContentView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    SimpleOnboardingView {
+        print("Onboarding completed")
+    }
+    .environmentObject(LocalizationManager.shared)
 }

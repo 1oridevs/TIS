@@ -390,10 +390,15 @@ class LocalizationManager: ObservableObject {
         
         // Add Job validation messages
         "jobs.enter_job_name_warning": "Please enter a job name",
-        "jobs.enter_hourly_rate_warning": "Please enter an hourly rate", 
+        "jobs.enter_hourly_rate_warning": "Please enter an hourly rate",
         "jobs.enter_valid_hourly_rate_warning": "Please enter a valid hourly rate",
         "jobs.job_added_success": "Job '%@' added successfully!",
         "jobs.failed_to_save_job": "Failed to save job: %@",
+        
+        // Onboarding
+        "onboarding.previous": "Previous",
+        "onboarding.next": "Next",
+        "onboarding.get_started": "Get Started",
     ]
     
     // MARK: - Hebrew Strings
@@ -638,6 +643,11 @@ class LocalizationManager: ObservableObject {
         "jobs.enter_valid_hourly_rate_warning": "אנא הכנס שכר שעתי תקין",
         "jobs.job_added_success": "העבודה '%@' נוספה בהצלחה!",
         "jobs.failed_to_save_job": "נכשל בשמירת העבודה: %@",
+        
+        // Onboarding
+        "onboarding.previous": "הקודם",
+        "onboarding.next": "הבא",
+        "onboarding.get_started": "בואו נתחיל",
         
         // Job labels
         "jobs.job_label": "עבודה:",
