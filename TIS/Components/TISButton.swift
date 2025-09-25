@@ -6,20 +6,26 @@ struct TISButton: View {
     let color: Color
     let gradient: LinearGradient?
     let action: () -> Void
+    let accessibilityLabel: String?
+    let accessibilityHint: String?
     
-    init(_ title: String, icon: String? = nil, color: Color = TISColors.primary, action: @escaping () -> Void) {
+    init(_ title: String, icon: String? = nil, color: Color = TISColors.primary, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
         self.color = color
         self.gradient = nil
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.action = action
     }
     
-    init(_ title: String, icon: String? = nil, gradient: LinearGradient, action: @escaping () -> Void) {
+    init(_ title: String, icon: String? = nil, gradient: LinearGradient, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
         self.color = TISColors.primary
         self.gradient = gradient
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.action = action
     }
     
@@ -45,6 +51,9 @@ struct TISButton: View {
             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
         }
         .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel(accessibilityLabel ?? title)
+        .accessibilityHint(accessibilityHint ?? "")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -52,10 +61,14 @@ struct TISSecondaryButton: View {
     let title: String
     let icon: String?
     let action: () -> Void
+    let accessibilityLabel: String?
+    let accessibilityHint: String?
     
-    init(_ title: String, icon: String? = nil, action: @escaping () -> Void) {
+    init(_ title: String, icon: String? = nil, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.icon = icon
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.action = action
     }
     
@@ -82,6 +95,9 @@ struct TISSecondaryButton: View {
             .cornerRadius(16)
         }
         .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel(accessibilityLabel ?? title)
+        .accessibilityHint(accessibilityHint ?? "")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -90,11 +106,15 @@ struct TISIconButton: View {
     let color: Color
     let size: CGFloat
     let action: () -> Void
+    let accessibilityLabel: String?
+    let accessibilityHint: String?
     
-    init(icon: String, color: Color = TISColors.primary, size: CGFloat = 20, action: @escaping () -> Void) {
+    init(icon: String, color: Color = TISColors.primary, size: CGFloat = 20, accessibilityLabel: String? = nil, accessibilityHint: String? = nil, action: @escaping () -> Void) {
         self.icon = icon
         self.color = color
         self.size = size
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityHint = accessibilityHint
         self.action = action
     }
     
@@ -108,6 +128,9 @@ struct TISIconButton: View {
                 .cornerRadius(22)
         }
         .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel(accessibilityLabel ?? icon)
+        .accessibilityHint(accessibilityHint ?? "")
+        .accessibilityAddTraits(.isButton)
     }
 }
 

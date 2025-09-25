@@ -79,6 +79,9 @@ struct TISStatCard: View {
                 }
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
+        .accessibilityAddTraits(.isStaticText)
     }
 }
 
@@ -113,6 +116,10 @@ struct TISProgressBar: View {
             }
         }
         .frame(height: height)
+        .accessibilityElement()
+        .accessibilityLabel("Progress bar")
+        .accessibilityValue("\(Int(progress * 100))% complete")
+        .accessibilityAddTraits(.updatesFrequently)
     }
 }
 
