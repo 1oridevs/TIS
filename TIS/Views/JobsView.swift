@@ -29,47 +29,58 @@ struct JobsView: View {
                 .ignoresSafeArea()
                 
                 if jobs.isEmpty {
-                    // Enhanced empty state
+                    // Beautiful empty state
                     VStack(spacing: 24) {
                         ZStack {
                             Circle()
                                 .fill(TISColors.primary.opacity(0.1))
                                 .frame(width: 120, height: 120)
+                                .scaleEffect(1.0)
+                                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: UUID())
                             
                             Image(systemName: "briefcase.fill")
-                                .font(.system(size: 50))
+                                .font(.system(size: 50, weight: .light))
                                 .foregroundColor(TISColors.primary)
+                                .scaleEffect(1.0)
+                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: UUID())
                         }
                         
                         VStack(spacing: 12) {
-                            Text(localizationManager.localizedString(for: "jobs.no_jobs"))
+                            Text("No Jobs Yet")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
+                                .multilineTextAlignment(.center)
                             
-                            Text(localizationManager.localizedString(for: "jobs.add_first_job"))
+                            Text("Add your first job to start tracking your time and earnings.")
                                 .font(.body)
                                 .foregroundColor(TISColors.secondaryText)
                                 .multilineTextAlignment(.center)
-                                .padding(.horizontal, 40)
+                                .lineLimit(nil)
                         }
                         
                         Button(action: { showingAddJob = true }) {
                             HStack {
-                                Image(systemName: "plus.circle.fill")
-                                Text(localizationManager.localizedString(for: "jobs.add_job"))
+                                Text("Add Job")
+                                Image(systemName: "arrow.right")
                             }
                             .font(.headline)
                             .foregroundColor(.white)
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
-                            .background(TISColors.primaryGradient)
-                            .cornerRadius(25)
-                            .shadow(color: TISColors.primary.opacity(0.3), radius: 8, x: 0, y: 4)
+                            .background(
+                                LinearGradient(
+                                    colors: [TISColors.primary, TISColors.primary.opacity(0.8)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .cornerRadius(12)
+                            .shadow(color: TISColors.primary.opacity(0.3), radius: 4, x: 0, y: 2)
                         }
-                        .scaleEffect(1.0)
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: UUID())
                     }
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 40)
                 } else {
                     List {
                         ForEach(jobs, id: \.id) { job in

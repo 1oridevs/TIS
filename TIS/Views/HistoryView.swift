@@ -179,28 +179,38 @@ struct HistoryView: View {
     @ViewBuilder
     private func ShiftsListView() -> some View {
         if filteredShifts.isEmpty {
-            VStack(spacing: 16) {
-                Image(systemName: "clock")
-                    .font(.system(size: 48))
-                    .foregroundColor(.gray)
-                    .shimmer()
+            // Beautiful empty state
+            VStack(spacing: 24) {
+                ZStack {
+                    Circle()
+                        .fill(TISColors.warning.opacity(0.1))
+                        .frame(width: 120, height: 120)
+                        .scaleEffect(1.0)
+                        .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: UUID())
+                    
+                    Image(systemName: "chart.bar.fill")
+                        .font(.system(size: 50, weight: .light))
+                        .foregroundColor(TISColors.warning)
+                        .scaleEffect(1.0)
+                        .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: UUID())
+                }
                 
-                Text("No shifts found")
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                    .shimmer()
-                
-                Text("Start tracking your time to see your history here")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .shimmer()
+                VStack(spacing: 12) {
+                    Text("No History Yet")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(TISColors.primaryText)
+                        .multilineTextAlignment(.center)
+                    
+                    Text("Your shift history will appear here once you start tracking time.")
+                        .font(.body)
+                        .foregroundColor(TISColors.secondaryText)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(nil)
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("No shifts found")
-            .accessibilityHint("Start tracking your time to see your history here")
+            .padding(.horizontal, 32)
+            .padding(.vertical, 40)
         } else {
             List {
                 ForEach(filteredShifts, id: \.id) { shift in

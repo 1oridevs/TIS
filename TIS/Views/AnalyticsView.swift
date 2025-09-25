@@ -445,16 +445,26 @@ struct EarningsChartView: View {
                 }
                 
                 if chartData.isEmpty {
-                    VStack(spacing: 12) {
-                        Image(systemName: "chart.line.downtrend.xyaxis")
-                            .font(.system(size: 40))
-                            .foregroundColor(TISColors.secondaryText)
-                            .shimmer()
+                    // Beautiful empty state for chart
+                    VStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(TISColors.primary.opacity(0.1))
+                                .frame(width: 80, height: 80)
+                                .scaleEffect(1.0)
+                                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: UUID())
+                            
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                                .font(.system(size: 30, weight: .light))
+                                .foregroundColor(TISColors.primary)
+                                .scaleEffect(1.0)
+                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: UUID())
+                        }
                         
-                        Text("No data available")
+                        Text("No Data to Analyze")
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
-                            .shimmer()
+                            .multilineTextAlignment(.center)
                     }
                     .frame(height: 200)
                 } else {
@@ -910,11 +920,29 @@ struct JobFilterSection: View {
                 }
                 
                 if jobs.isEmpty {
-                    Text("No jobs available")
-                        .font(.subheadline)
-                        .foregroundColor(TISColors.secondaryText)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.vertical, 20)
+                    // Beautiful empty state for jobs
+                    VStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(TISColors.primary.opacity(0.1))
+                                .frame(width: 60, height: 60)
+                                .scaleEffect(1.0)
+                                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: UUID())
+                            
+                            Image(systemName: "briefcase.fill")
+                                .font(.system(size: 25, weight: .light))
+                                .foregroundColor(TISColors.primary)
+                                .scaleEffect(1.0)
+                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: UUID())
+                        }
+                        
+                        Text("No jobs available")
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.vertical, 20)
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
