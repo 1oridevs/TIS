@@ -9,6 +9,7 @@ struct JobsView: View {
         animation: .default)
     private var jobs: FetchedResults<Job>
     
+    
     @State private var showingAddJob = false
     @State private var jobToEdit: Job?
     
@@ -207,7 +208,7 @@ struct JobDetailRowView: View {
     private func calculateShiftEarnings(for shift: Shift, job: Job) -> Double {
         let duration = calculateDurationInHours(for: shift)
         let baseEarnings = duration * job.hourlyRate
-        let bonusAmount = shift.bonusAmount
+        let bonusAmount = shift.bonusAmount 
         return baseEarnings + bonusAmount
     }
 }

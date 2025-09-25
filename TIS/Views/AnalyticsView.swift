@@ -11,6 +11,7 @@ struct AnalyticsView: View {
         animation: .default)
     private var shifts: FetchedResults<Shift>
     
+    
     @State private var selectedPeriod = "This Month"
     @State private var selectedJob: Job?
     @State private var showingInsights = false
