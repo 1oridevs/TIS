@@ -171,6 +171,14 @@ TIS/
 - [ ] **Push notifications** for shift reminders
 - [ ] **Data validation** improvements
 
+### 🔍 **Search & Filter Features - COMPLETED**
+- ✅ **Comprehensive Search** - Search through jobs, shifts, and notes with real-time results
+- ✅ **Advanced Filtering** - Filter by date range, job, shift type, earnings, and duration
+- ✅ **Smart Sorting** - Sort by date, earnings, duration, or job with ascending/descending options
+- ✅ **Enhanced Export** - Multiple export formats (CSV, PDF, JSON, Excel) with professional formatting
+- ✅ **Export Scoping** - Export by date range, specific jobs, or time periods
+- ✅ **Search Scopes** - Focus search on jobs, shifts, notes, or all data
+
 ### 📋 Planned Features
 - [ ] **Apple Watch companion app**
 - [ ] **iCloud sync** across devices

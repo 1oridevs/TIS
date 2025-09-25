@@ -31,9 +31,9 @@
 - ✅ **Widget support** - 3 new widget types (Time Tracking, Earnings, Jobs) with comprehensive functionality
 - ✅ **Enhanced accessibility** - VoiceOver, Dynamic Type, and comprehensive accessibility labels
 - ✅ **Performance optimization** - Reduced memory usage and improved loading times
-- [ ] **Export improvements** - Better PDF formatting and more export options
-- [ ] **Search functionality** - Search through jobs and shifts
-- [ ] **Filtering and sorting** - Filter shifts by date, job, type, etc.
+- ✅ **Export improvements** - Enhanced PDF formatting with professional tables and multiple export formats (CSV, JSON, Excel)
+- ✅ **Search functionality** - Comprehensive search through jobs, shifts, and notes with real-time results
+- ✅ **Filtering and sorting** - Advanced filtering by date range, job, shift type, earnings, and duration with smart sorting
 
 ### Data Management
 - [ ] **Data backup** - iCloud sync or local backup options
