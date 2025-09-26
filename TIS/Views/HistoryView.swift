@@ -204,7 +204,7 @@ struct HistoryView: View {
         HStack(spacing: 16) {
             SummaryCard(
                 title: "Total Earnings",
-                value: String(format: "$%.2f", totalEarnings),
+                value: localizationManager.formatCurrency(totalEarnings),
                 icon: "dollarsign.circle.fill",
                 color: .green
             )

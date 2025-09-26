@@ -104,6 +104,15 @@ struct SettingsView: View {
                         }
                         
                         SettingsRowView(
+                            icon: "square.and.arrow.down",
+                            title: "Import Data",
+                            subtitle: "Import from other apps",
+                            color: .blue
+                        ) {
+                            showingDataImport = true
+                        }
+                        
+                        SettingsRowView(
                             icon: "trash.circle",
                             title: "Clear All Data",
                             subtitle: "Delete all data permanently",
@@ -257,6 +266,9 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showingBulkOperations) {
                 Text("Bulk Operations - Coming Soon")
+            }
+            .sheet(isPresented: $showingDataImport) {
+                Text("Data Import - Coming Soon")
             }
         .sheet(isPresented: $showingAbout) {
             AboutView()
