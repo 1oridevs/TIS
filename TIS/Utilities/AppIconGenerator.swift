@@ -1,257 +1,91 @@
 import SwiftUI
 import UIKit
 
-// MARK: - App Icon Generator
-
 struct AppIconGenerator {
-    
-    // MARK: - Icon Sizes
-    static let iconSizes: [(name: String, size: CGFloat)] = [
-        ("appicon-1024", 1024),
-        ("appicon-180", 180),
-        ("appicon-167", 167),
-        ("appicon-152", 152),
-        ("appicon-120", 120),
-        ("appicon-76", 76),
-        ("appicon-40", 40),
-        ("appicon-29", 29),
-        ("appicon-20", 20)
-    ]
-    
-    // MARK: - Generate Icons
-    
-    static func generateAllIcons() {
-        for iconSize in iconSizes {
-            generateIcon(size: iconSize.size, filename: iconSize.name)
-        }
-    }
-    
-    static func generateIcon(size: CGFloat, filename: String) {
-        let iconView = TISAppIconView()
-        let renderer = ImageRenderer(content: iconView)
-        renderer.scale = 1.0
+    static func generateAppIcon(size: CGSize) -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(size: size)
         
-        if let uiImage = renderer.uiImage {
-            saveImage(uiImage, filename: filename)
-        }
-    }
-    
-    static func saveImage(_ image: UIImage, filename: String) {
-        guard let data = image.pngData() else { return }
-        
-        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let url = documentsPath.appendingPathComponent("\(filename).png")
-        
-        try? data.write(to: url)
-        print("Generated \(filename).png at \(url.path)")
-    }
-}
-
-// MARK: - TIS App Icon View
-
-struct TISAppIconView: View {
-    var body: some View {
-        ZStack {
+        return renderer.image { context in
+            let rect = CGRect(origin: .zero, size: size)
+            let cgContext = context.cgContext
+            
             // Background gradient
-            LinearGradient(
-                colors: [
-                    TISColors.primary,
-                    TISColors.primary.opacity(0.8)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+            let colors = [UIColor.systemBlue.cgColor, UIColor.systemIndigo.cgColor]
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: nil)!
+            
+            cgContext.drawLinearGradient(
+                gradient,
+                start: CGPoint(x: 0, y: 0),
+                end: CGPoint(x: size.width, y: size.height),
+                options: []
+            )
+            
+            // Clock icon
+            let clockSize = min(size.width, size.height) * 0.6
+            let clockRect = CGRect(
+                x: (size.width - clockSize) / 2,
+                y: (size.height - clockSize) / 2,
+                width: clockSize,
+                height: clockSize
             )
             
             // Clock face
-            ClockFaceView()
-            
-            // Currency symbol overlay
-            CurrencySymbolView()
-        }
-        .frame(width: 1024, height: 1024)
-        .clipShape(RoundedRectangle(cornerRadius: 180))
-    }
-}
-
-// MARK: - Clock Face View
-
-struct ClockFaceView: View {
-    var body: some View {
-        ZStack {
-            // Outer circle
-            Circle()
-                .stroke(Color.white.opacity(0.3), lineWidth: 8)
-                .frame(width: 600, height: 600)
-            
-            // Inner circle
-            Circle()
-                .fill(Color.white.opacity(0.1))
-                .frame(width: 500, height: 500)
+            cgContext.setFillColor(UIColor.white.cgColor)
+            cgContext.fillEllipse(in: clockRect)
             
             // Clock hands
-            VStack(spacing: 0) {
-                // Hour hand
-                Rectangle()
-                    .fill(Color.white)
-                    .frame(width: 8, height: 120)
-                    .cornerRadius(4)
-                
-                Spacer()
-                    .frame(height: 20)
-                
-                // Minute hand
-                Rectangle()
-                    .fill(Color.white.opacity(0.8))
-                    .frame(width: 6, height: 160)
-                    .cornerRadius(3)
-            }
-            .rotationEffect(.degrees(45)) // 3 o'clock position
+            let center = CGPoint(x: clockRect.midX, y: clockRect.midY)
+            let handLength = clockSize * 0.3
+            
+            // Hour hand
+            cgContext.setStrokeColor(UIColor.systemBlue.cgColor)
+            cgContext.setLineWidth(clockSize * 0.08)
+            cgContext.move(to: center)
+            cgContext.addLine(to: CGPoint(x: center.x, y: center.y - handLength * 0.6))
+            cgContext.strokePath()
+            
+            // Minute hand
+            cgContext.setStrokeColor(UIColor.systemBlue.cgColor)
+            cgContext.setLineWidth(clockSize * 0.06)
+            cgContext.move(to: center)
+            cgContext.addLine(to: CGPoint(x: center.x + handLength * 0.8, y: center.y))
+            cgContext.strokePath()
             
             // Center dot
-            Circle()
-                .fill(Color.white)
-                .frame(width: 20, height: 20)
+            cgContext.setFillColor(UIColor.systemBlue.cgColor)
+            let dotSize = clockSize * 0.08
+            cgContext.fillEllipse(in: CGRect(
+                x: center.x - dotSize / 2,
+                y: center.y - dotSize / 2,
+                width: dotSize,
+                height: dotSize
+            ))
         }
     }
-}
-
-// MARK: - Currency Symbol View
-
-struct CurrencySymbolView: View {
-    var body: some View {
-        VStack {
-            Spacer()
-            
-            HStack {
-                Spacer()
-                
-                // Dollar sign
-                Text("$")
-                    .font(.system(size: 200, weight: .bold, design: .rounded))
-                    .foregroundColor(TISColors.success)
-                    .shadow(color: .black.opacity(0.3), radius: 4, x: 2, y: 2)
-                
-                Spacer()
-            }
-            
-            Spacer()
-        }
-        .offset(x: 50, y: 50) // Position in bottom right
-    }
-}
-
-// MARK: - Alternative Icon Designs
-
-struct TISAppIconAlternative1: View {
-    var body: some View {
-        ZStack {
-            // Background
-            LinearGradient(
-                colors: [
-                    TISColors.success,
-                    TISColors.success.opacity(0.8)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            
-            // Stopwatch design
-            StopwatchView()
-        }
-        .frame(width: 1024, height: 1024)
-        .clipShape(RoundedRectangle(cornerRadius: 180))
-    }
-}
-
-struct StopwatchView: View {
-    var body: some View {
-        ZStack {
-            // Stopwatch body
-            RoundedRectangle(cornerRadius: 100)
-                .fill(Color.white.opacity(0.2))
-                .frame(width: 400, height: 500)
-            
-            // Digital display
-            VStack {
-                Text("12:34")
-                    .font(.system(size: 120, weight: .bold, design: .monospaced))
-                    .foregroundColor(.white)
-                
-                Text("$45.67")
-                    .font(.system(size: 60, weight: .semibold, design: .rounded))
-                    .foregroundColor(TISColors.warning)
+    
+    static func generateAllAppIcons() {
+        let sizes: [(String, CGSize)] = [
+            ("appicon-20.png", CGSize(width: 20, height: 20)),
+            ("appicon-29.png", CGSize(width: 29, height: 29)),
+            ("appicon-40.png", CGSize(width: 40, height: 40)),
+            ("appicon-58.png", CGSize(width: 58, height: 58)),
+            ("appicon-60.png", CGSize(width: 60, height: 60)),
+            ("appicon-76.png", CGSize(width: 76, height: 76)),
+            ("appicon-80.png", CGSize(width: 80, height: 80)),
+            ("appicon-87.png", CGSize(width: 87, height: 87)),
+            ("appicon-120.png", CGSize(width: 120, height: 120)),
+            ("appicon-152.png", CGSize(width: 152, height: 152)),
+            ("appicon-167.png", CGSize(width: 167, height: 167)),
+            ("appicon-180.png", CGSize(width: 180, height: 180)),
+            ("appicon-1024.png", CGSize(width: 1024, height: 1024))
+        ]
+        
+        for (filename, size) in sizes {
+            if let image = generateAppIcon(size: size) {
+                // In a real app, you would save this to the appropriate location
+                print("Generated \(filename) with size \(size)")
             }
         }
     }
-}
-
-struct TISAppIconAlternative2: View {
-    var body: some View {
-        ZStack {
-            // Background
-            LinearGradient(
-                colors: [
-                    TISColors.warning,
-                    TISColors.warning.opacity(0.8)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            
-            // Minimal clock
-            MinimalClockView()
-        }
-        .frame(width: 1024, height: 1024)
-        .clipShape(RoundedRectangle(cornerRadius: 180))
-    }
-}
-
-struct MinimalClockView: View {
-    var body: some View {
-        ZStack {
-            // Simple clock face
-            Circle()
-                .stroke(Color.white, lineWidth: 12)
-                .frame(width: 600, height: 600)
-            
-            // Simple hands
-            VStack {
-                Rectangle()
-                    .fill(Color.white)
-                    .frame(width: 6, height: 200)
-                    .cornerRadius(3)
-                
-                Spacer()
-                    .frame(height: 40)
-                
-                Rectangle()
-                    .fill(Color.white.opacity(0.7))
-                    .frame(width: 4, height: 250)
-                    .cornerRadius(2)
-            }
-            .rotationEffect(.degrees(30))
-            
-            // Center
-            Circle()
-                .fill(Color.white)
-                .frame(width: 24, height: 24)
-        }
-    }
-}
-
-// MARK: - Preview
-
-#Preview("Main Icon") {
-    TISAppIconView()
-        .frame(width: 200, height: 200)
-}
-
-#Preview("Alternative 1") {
-    TISAppIconAlternative1()
-        .frame(width: 200, height: 200)
-}
-
-#Preview("Alternative 2") {
-    TISAppIconAlternative2()
-        .frame(width: 200, height: 200)
 }

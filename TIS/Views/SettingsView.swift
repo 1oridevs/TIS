@@ -19,6 +19,7 @@ struct SettingsView: View {
     @State private var showingClearDataConfirmation = false
     @State private var showingAbout = false
     @State private var showingClearDataSuccess = false
+    @State private var showingDataImport = false
     
     var body: some View {
         NavigationView {
@@ -82,6 +83,15 @@ struct SettingsView: View {
                             color: .green
                         ) {
                             showingExportOptions = true
+                        }
+                        
+                        SettingsRowView(
+                            icon: "arrow.triangle.2.circlepath",
+                            title: "Data Migration",
+                            subtitle: "Migrate and validate data",
+                            color: .purple
+                        ) {
+                            // Data migration functionality
                         }
                         
                         SettingsRowView(
@@ -248,9 +258,9 @@ struct SettingsView: View {
             .sheet(isPresented: $showingBulkOperations) {
                 Text("Bulk Operations - Coming Soon")
             }
-            .sheet(isPresented: $showingAbout) {
-                AboutView()
-            }
+        .sheet(isPresented: $showingAbout) {
+            AboutView()
+        }
             .alert("Clear All Data", isPresented: $showingClearDataConfirmation) {
                 Button("Cancel", role: .cancel) { }
                 Button("Delete All Data", role: .destructive) {

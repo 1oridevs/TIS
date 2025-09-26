@@ -1,79 +1,101 @@
 #!/usr/bin/env python3
 """
-TIS App Icon Generator
-Generates app icons for all required sizes using a simple design.
+Generate TIS app icons using Python PIL
 """
 
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-def create_app_icon(size, filename):
-    """Create an app icon with the specified size."""
-    # Create a new image with a blue background
-    img = Image.new('RGBA', (size, size), (0, 100, 200, 255))
+def create_gradient_background(size, color1=(59, 130, 246), color2=(99, 102, 241)):
+    """Create a gradient background"""
+    img = Image.new('RGB', size, color1)
     draw = ImageDraw.Draw(img)
     
-    # Create a white circle in the center
-    margin = size // 8
-    circle_bbox = [margin, margin, size - margin, size - margin]
-    draw.ellipse(circle_bbox, fill=(255, 255, 255, 255))
+    # Simple gradient effect
+    for y in range(size[1]):
+        ratio = y / size[1]
+        r = int(color1[0] * (1 - ratio) + color2[0] * ratio)
+        g = int(color1[1] * (1 - ratio) + color2[1] * ratio)
+        b = int(color1[2] * (1 - ratio) + color2[2] * ratio)
+        draw.line([(0, y), (size[0], y)], fill=(r, g, b))
     
-    # Add a clock icon in the center
-    clock_size = size // 3
-    clock_x = size // 2 - clock_size // 2
-    clock_y = size // 2 - clock_size // 2
-    
-    # Draw clock face
-    clock_bbox = [clock_x, clock_y, clock_x + clock_size, clock_y + clock_size]
-    draw.ellipse(clock_bbox, outline=(0, 100, 200, 255), width=3)
-    
-    # Draw clock hands
-    center_x = size // 2
-    center_y = size // 2
-    hand_length = clock_size // 3
-    
-    # Hour hand
-    draw.line([center_x, center_y, center_x, center_y - hand_length], 
-              fill=(0, 100, 200, 255), width=3)
-    
-    # Minute hand
-    draw.line([center_x, center_y, center_x + hand_length, center_y], 
-              fill=(0, 100, 200, 255), width=2)
-    
-    # Save the image
-    img.save(filename, 'PNG')
-    print(f"Generated {filename} ({size}x{size})")
+    return img
 
-def main():
-    """Generate all required app icon sizes."""
-    # Create the AppIcon.appiconset directory
-    icon_dir = "TIS/Assets.xcassets/AppIcon.appiconset"
-    os.makedirs(icon_dir, exist_ok=True)
+def draw_clock_icon(img, size):
+    """Draw a clock icon on the image"""
+    draw = ImageDraw.Draw(img)
+    center = (size[0] // 2, size[1] // 2)
+    clock_radius = min(size) * 0.3
     
-    # Define all required sizes
-    sizes = [
-        (20, "appicon-20.png"),
-        (29, "appicon-29.png"),
-        (40, "appicon-40.png"),
-        (58, "appicon-58.png"),
-        (60, "appicon-60.png"),
-        (76, "appicon-76.png"),
-        (80, "appicon-80.png"),
-        (87, "appicon-87.png"),
-        (120, "appicon-120.png"),
-        (152, "appicon-152.png"),
-        (167, "appicon-167.png"),
-        (180, "appicon-180.png"),
-        (1024, "appicon-1024.png")
+    # Clock face
+    clock_rect = [
+        center[0] - clock_radius,
+        center[1] - clock_radius,
+        center[0] + clock_radius,
+        center[1] + clock_radius
     ]
     
-    # Generate all icons
-    for size, filename in sizes:
-        filepath = os.path.join(icon_dir, filename)
-        create_app_icon(size, filepath)
+    # Draw clock face
+    draw.ellipse(clock_rect, fill=(255, 255, 255, 230), outline=(255, 255, 255, 255), width=max(1, size[0] // 40))
     
-    print("\n✅ All app icons generated successfully!")
-    print("📱 Icons are ready for use in the TIS app.")
+    # Clock hands
+    hand_length = clock_radius * 0.7
+    hand_width = max(1, size[0] // 20)
+    
+    # Hour hand (pointing to 3 o'clock)
+    hour_end = (center[0] + hand_length * 0.6, center[1])
+    draw.line([center, hour_end], fill=(59, 130, 246), width=hand_width)
+    
+    # Minute hand (pointing to 12 o'clock)
+    minute_end = (center[0], center[1] - hand_length)
+    draw.line([center, minute_end], fill=(99, 102, 241), width=hand_width-1)
+    
+    # Center dot
+    dot_radius = max(1, size[0] // 30)
+    draw.ellipse([
+        center[0] - dot_radius,
+        center[1] - dot_radius,
+        center[0] + dot_radius,
+        center[1] + dot_radius
+    ], fill=(59, 130, 246))
+
+def generate_app_icon(size, output_path):
+    """Generate an app icon of the specified size"""
+    img = create_gradient_background(size)
+    draw_clock_icon(img, size)
+    
+    # Save the image
+    img.save(output_path, 'PNG', optimize=True)
+    print(f"Generated {output_path} ({size[0]}x{size[1]})")
+
+def main():
+    """Generate all required app icon sizes"""
+    # Define all required sizes
+    sizes = [
+        ("appicon-20", 20),
+        ("appicon-29", 29),
+        ("appicon-40", 40),
+        ("appicon-58", 58),
+        ("appicon-60", 60),
+        ("appicon-76", 76),
+        ("appicon-80", 80),
+        ("appicon-87", 87),
+        ("appicon-120", 120),
+        ("appicon-152", 152),
+        ("appicon-167", 167),
+        ("appicon-180", 180),
+        ("appicon-1024", 1024)
+    ]
+    
+    # Output directory
+    output_dir = "TIS/Assets.xcassets/AppIcon.appiconset"
+    
+    # Generate each size
+    for name, size in sizes:
+        output_path = os.path.join(output_dir, f"{name}.png")
+        generate_app_icon((size, size), output_path)
+    
+    print("All app icons generated successfully!")
 
 if __name__ == "__main__":
     main()
