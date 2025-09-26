@@ -166,7 +166,9 @@ TIS/
 
 ### 🚧 In Progress
 - [x] **Job editing functionality** - EditJobView completed with full localization
-- [x] **Shift editing** - EditShiftView implemented with edit buttons in HistoryView
+- [x] **Shift editing** - EditShiftView implemented with edit buttons in HistoryView (requires Xcode project update)
+- [x] **Localization improvements** - Added comprehensive localization keys for HistoryView
+- [x] **Onboarding assets** - Created missing illustration assets for onboarding flow
 - [ ] **Enhanced analytics charts** - More detailed visualizations
 - [ ] **Push notifications** for shift reminders
 - [ ] **Data validation** improvements
