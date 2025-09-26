@@ -42,7 +42,7 @@ A modern, user-friendly iOS app for tracking work hours and calculating earnings
 
 ### 📱 Core Features
 - **Offline-first** data storage with Core Data
-- **Data export** for record keeping
+- **Data export** for record keeping (CSV, PDF, JSON, Excel, PNG, JPEG)
 - **Notification reminders** for shifts
 - **Settings customization**
 - **Universal iOS support** (iPhone and iPad)
@@ -147,7 +147,7 @@ TIS/
 - [x] **Job management** (add, view, delete)
 - [x] **Manual shift entry** for past work sessions
 - [x] **Analytics dashboard** with earnings breakdown
-- [x] **Data export** (CSV and PDF)
+- [x] **Data export** (CSV, PDF, JSON, Excel, PNG, JPEG)
 - [x] **Modern UI** with custom components
 - [x] **Toast notification system**
 - [x] **Settings and preferences**

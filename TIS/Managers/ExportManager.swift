@@ -15,6 +15,8 @@ class ExportManager: ObservableObject {
         case pdf
         case json
         case excel
+        case png
+        case jpeg
     }
     
     enum ExportScope {
@@ -255,6 +257,8 @@ class ExportManager: ObservableObject {
             return exportShiftsAsJSON(filteredShifts)
         case .excel:
             return exportShiftsAsExcel(filteredShifts)
+        case .png, .jpeg:
+            return exportShiftsAsImage(filteredShifts, format: format)
         }
     }
     
@@ -334,6 +338,91 @@ class ExportManager: ObservableObject {
                 special: 0,
                 bonus: bonusAmount
             )
+        }
+    }
+    
+    // MARK: - Image Export
+    
+    func exportShiftsAsImage(_ shifts: [Shift], format: ExportFormat = .png) -> URL? {
+        let fileName = "TIS_Export_\(Date().formatted(.dateTime.year().month().day()))"
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileExtension = format == .png ? "png" : "jpg"
+        let fileURL = documentsPath.appendingPathComponent("\(fileName).\(fileExtension)")
+        
+        // Create image content
+        let imageContent = createImageContent(for: shifts)
+        
+        // Convert to image data
+        guard let imageData = createImageData(from: imageContent, format: format) else {
+            return nil
+        }
+        
+        do {
+            try imageData.write(to: fileURL)
+            return fileURL
+        } catch {
+            print("Error writing image file: \(error)")
+            return nil
+        }
+    }
+    
+    private func createImageContent(for shifts: [Shift]) -> String {
+        var content = "TIS - Time is Money Export\n"
+        content += "Generated: \(Date().formatted(.dateTime.year().month().day().hour().minute()))\n"
+        content += "=" * 50 + "\n\n"
+        
+        // Summary
+        let totalEarnings = shifts.reduce(0) { $0 + calculateTotalEarnings(for: $1) }
+        let totalHours = shifts.reduce(0) { $0 + calculateDurationInHours(for: $1) }
+        
+        content += "SUMMARY\n"
+        content += "-" * 20 + "\n"
+        content += "Total Shifts: \(shifts.count)\n"
+        content += "Total Hours: \(String(format: "%.2f", totalHours))\n"
+        content += "Total Earnings: $\(String(format: "%.2f", totalEarnings))\n\n"
+        
+        // Individual shifts
+        content += "SHIFT DETAILS\n"
+        content += "-" * 20 + "\n"
+        
+        for (index, shift) in shifts.enumerated() {
+            content += "Shift \(index + 1):\n"
+            content += "  Job: \(shift.job?.name ?? "Unknown")\n"
+            content += "  Date: \(shift.startTime?.formatted(.dateTime.year().month().day()) ?? "N/A")\n"
+            content += "  Time: \(shift.startTime?.formatted(.dateTime.hour().minute()) ?? "N/A") - \(shift.endTime?.formatted(.dateTime.hour().minute()) ?? "N/A")\n"
+            content += "  Duration: \(String(format: "%.2f", calculateDurationInHours(for: shift))) hours\n"
+            content += "  Type: \(shift.shiftType ?? "Regular")\n"
+            content += "  Earnings: $\(String(format: "%.2f", calculateTotalEarnings(for: shift)))\n"
+            if let notes = shift.notes, !notes.isEmpty {
+                content += "  Notes: \(notes)\n"
+            }
+            content += "\n"
+        }
+        
+        return content
+    }
+    
+    private func createImageData(from content: String, format: ExportFormat) -> Data? {
+        let size = CGSize(width: 800, height: 1000)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        
+        return renderer.jpegData(withCompressionQuality: format == .png ? 1.0 : 0.8) { context in
+            let cgContext = context.cgContext
+            
+            // Set background
+            cgContext.setFillColor(UIColor.systemBackground.cgColor)
+            cgContext.fill(CGRect(origin: .zero, size: size))
+            
+            // Set text attributes
+            let font = UIFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: UIColor.label
+            ]
+            
+            // Draw text
+            let textRect = CGRect(x: 20, y: 20, width: size.width - 40, height: size.height - 40)
+            content.draw(in: textRect, withAttributes: attributes)
         }
     }
 }

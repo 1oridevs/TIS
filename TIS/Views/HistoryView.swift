@@ -513,6 +513,24 @@ struct ExportOptionsView: View {
                     ) {
                         exportAsPDF()
                     }
+                    
+                    ExportOptionButton(
+                        title: "Export as PNG",
+                        description: "Image format for sharing on social media",
+                        icon: "photo.fill",
+                        color: .purple
+                    ) {
+                        exportAsImage(format: .png)
+                    }
+                    
+                    ExportOptionButton(
+                        title: "Export as JPEG",
+                        description: "Compressed image format for easy sharing",
+                        icon: "photo",
+                        color: .orange
+                    ) {
+                        exportAsImage(format: .jpeg)
+                    }
                 }
                 
                 Spacer()
@@ -554,6 +572,17 @@ struct ExportOptionsView: View {
     private func exportAsPDF() {
         guard let fileURL = exportManager.exportShiftsAsPDF(shifts) else {
             alertMessage = "Failed to export PDF file"
+            showingAlert = true
+            return
+        }
+        
+        fileToShare = fileURL
+        showingShareSheet = true
+    }
+    
+    private func exportAsImage(format: ExportManager.ExportFormat) {
+        guard let fileURL = exportManager.exportShiftsAsImage(shifts, format: format) else {
+            alertMessage = "Failed to export image file"
             showingAlert = true
             return
         }
