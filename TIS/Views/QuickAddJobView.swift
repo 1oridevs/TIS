@@ -1,15 +1,7 @@
 import SwiftUI
 import CoreData
 
-// MARK: - BonusInput
-
-struct BonusInput: Identifiable {
-    let id = UUID()
-    var name: String
-    var amount: String
-}
-
-struct AddJobView: View {
+struct QuickAddJobView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var localizationManager: LocalizationManager
@@ -29,7 +21,7 @@ struct AddJobView: View {
                         .font(.system(size: 40))
                         .foregroundColor(TISColors.primary)
                     
-                    Text("Add New Job")
+                    Text("Quick Add Job")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(TISColors.primaryText)
@@ -57,10 +49,9 @@ struct AddJobView: View {
                             .foregroundColor(TISColors.primaryText)
                         
                         HStack {
-                            Text(localizationManager.currentCurrency.symbol)
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                                .foregroundColor(TISColors.primary)
+                            Text(localizationManager.currentCurrency.rawValue)
+                                .font(.body)
+                                .foregroundColor(TISColors.secondaryText)
                             
                             TextField("0.00", text: $hourlyRate)
                                 .keyboardType(.decimalPad)
@@ -154,6 +145,6 @@ struct AddJobView: View {
 }
 
 #Preview {
-    AddJobView()
+    QuickAddJobView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

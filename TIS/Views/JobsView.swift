@@ -36,13 +36,11 @@ struct JobsView: View {
                                 .fill(TISColors.primary.opacity(0.1))
                                 .frame(width: 120, height: 120)
                                 .scaleEffect(1.0)
-                                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: UUID())
                             
                             Image(systemName: "briefcase.fill")
                                 .font(.system(size: 50, weight: .light))
                                 .foregroundColor(TISColors.primary)
                                 .scaleEffect(1.0)
-                                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: UUID())
                         }
                         
                         VStack(spacing: 12) {
@@ -59,7 +57,10 @@ struct JobsView: View {
                                 .lineLimit(nil)
                         }
                         
-                        Button(action: { showingAddJob = true }) {
+                        Button(action: { 
+                            print("Add Job button tapped")
+                            showingAddJob = true 
+                        }) {
                             HStack {
                                 Text("Add Job")
                                 Image(systemName: "arrow.right")
@@ -78,6 +79,7 @@ struct JobsView: View {
                             .cornerRadius(12)
                             .shadow(color: TISColors.primary.opacity(0.3), radius: 4, x: 0, y: 2)
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
                     .padding(.horizontal, 32)
                     .padding(.vertical, 40)
@@ -95,6 +97,37 @@ struct JobsView: View {
                     }
                     .listStyle(PlainListStyle())
                     .background(Color.clear)
+                }
+                
+                // Floating Action Button
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: { 
+                            print("FAB Add Job button tapped")
+                            showingAddJob = true 
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(.white)
+                                .frame(width: 56, height: 56)
+                                .background(
+                                    Circle()
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [TISColors.primary, TISColors.primary.opacity(0.8)],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                        .shadow(color: TISColors.primary.opacity(0.4), radius: 8, x: 0, y: 4)
+                                )
+                        }
+                        .scaleEffect(1.0)
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 20)
                 }
             }
             .navigationTitle(localizationManager.localizedString(for: "jobs.title"))
