@@ -15,8 +15,13 @@ struct AnalyticsView: View {
     @State private var selectedJob: Job?
     @State private var showingInsights = false
     @State private var isAnimating = false
+    @State private var showingExportOptions = false
+    @State private var showingDetailedReport = false
+    @State private var selectedChartType = "Earnings"
+    @State private var showingFilters = false
     
     let periods = ["This Week", "This Month", "Last 3 Months", "This Year", "All Time"]
+    let chartTypes = ["Earnings", "Hours", "Shifts", "Productivity"]
     
     var filteredShifts: [Shift] {
         let now = Date()
@@ -68,6 +73,61 @@ struct AnalyticsView: View {
         calculateEarningsBreakdown(for: filteredShifts)
     }
     
+    var analyticsInsights: [AnalyticsInsight] {
+        let shifts = filteredShifts
+        var insights: [AnalyticsInsight] = []
+        
+        if !shifts.isEmpty {
+            let totalEarnings = calculateTotalEarnings(for: shifts)
+            let totalHours = calculateTotalHours(for: shifts)
+            let averageHourlyRate = totalHours > 0 ? totalEarnings / totalHours : 0
+            
+            // Best earning day
+            let bestDay = shifts.max { calculateTotalEarnings(for: [$0]) < calculateTotalEarnings(for: [$1]) }
+            if let bestDay = bestDay, let startTime = bestDay.startTime {
+                insights.append(AnalyticsInsight(
+                    title: "Best Earning Day",
+                    value: localizationManager.formatCurrency(calculateTotalEarnings(for: [bestDay])),
+                    subtitle: startTime.formatted(.dateTime.weekday().month().day()),
+                    icon: "star.fill",
+                    color: .green
+                ))
+            }
+            
+            // Average daily earnings
+            let days = Set(shifts.compactMap { $0.startTime?.formatted(.dateTime.year().month().day()) }).count
+            if days > 0 {
+                insights.append(AnalyticsInsight(
+                    title: "Average Daily Earnings",
+                    value: localizationManager.formatCurrency(totalEarnings / Double(days)),
+                    subtitle: "Based on \(days) days",
+                    icon: "chart.line.uptrend.xyaxis",
+                    color: .blue
+                ))
+            }
+            
+            // Total hours worked
+            insights.append(AnalyticsInsight(
+                title: "Total Hours",
+                value: String(format: "%.1f", totalHours),
+                subtitle: "Hours worked",
+                icon: "clock.fill",
+                color: .orange
+            ))
+            
+            // Average hourly rate
+            insights.append(AnalyticsInsight(
+                title: "Average Rate",
+                value: localizationManager.formatCurrency(averageHourlyRate),
+                subtitle: "Per hour",
+                icon: "dollarsign.circle.fill",
+                color: .purple
+            ))
+        }
+        
+        return insights
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -89,8 +149,16 @@ struct AnalyticsView: View {
                         earningsByType: earningsByType
                     )
                     
+                    // Chart Type Selector
+                    ChartTypeSelector(selectedType: $selectedChartType, chartTypes: chartTypes)
+                    
                     // Earnings Chart
                     EarningsChartView(shifts: filteredShifts, period: selectedPeriod)
+                    
+                    // Analytics Insights
+                    if !analyticsInsights.isEmpty {
+                        AnalyticsInsightsSection(insights: analyticsInsights)
+                    }
                     
                     // Hours Chart
                     HoursChartView(shifts: filteredShifts, period: selectedPeriod)
@@ -143,9 +211,21 @@ struct AnalyticsView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingInsights.toggle() }) {
-                        Image(systemName: "lightbulb.fill")
-                            .foregroundColor(TISColors.primary)
+                    HStack {
+                        Button(action: { showingFilters = true }) {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                                .foregroundColor(TISColors.primary)
+                        }
+                        
+                        Button(action: { showingExportOptions = true }) {
+                            Image(systemName: "square.and.arrow.up")
+                                .foregroundColor(TISColors.primary)
+                        }
+                        
+                        Button(action: { showingInsights.toggle() }) {
+                            Image(systemName: "lightbulb.fill")
+                                .foregroundColor(TISColors.primary)
+                        }
                     }
                 }
             }
@@ -154,6 +234,19 @@ struct AnalyticsView: View {
             withAnimation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2)) {
                 isAnimating = true
             }
+        }
+        .sheet(isPresented: $showingExportOptions) {
+            ExportOptionsView(shifts: Array(filteredShifts))
+        }
+        .sheet(isPresented: $showingFilters) {
+            AnalyticsFiltersView(
+                selectedPeriod: $selectedPeriod,
+                selectedJob: $selectedJob,
+                periods: periods
+            )
+        }
+        .sheet(isPresented: $showingDetailedReport) {
+            DetailedReportView(shifts: Array(filteredShifts))
         }
     }
     
@@ -991,4 +1084,317 @@ struct ChartDataPoint: Identifiable {
 #Preview {
     AnalyticsView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+}
+
+// MARK: - AnalyticsInsight
+
+struct AnalyticsInsight: Identifiable {
+    let id = UUID()
+    let title: String
+    let value: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+}
+
+// MARK: - AnalyticsInsightsSection
+
+struct AnalyticsInsightsSection: View {
+    let insights: [AnalyticsInsight]
+    
+    var body: some View {
+        TISCard {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Image(systemName: "lightbulb.fill")
+                        .font(.title2)
+                        .foregroundColor(TISColors.warning)
+                    
+                    Text("Analytics Insights")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(TISColors.primaryText)
+                    
+                    Spacer()
+                }
+                
+                LazyVGrid(columns: [
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ], spacing: 12) {
+                    ForEach(insights) { insight in
+                        InsightCard(insight: insight)
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct InsightCard: View {
+    let insight: AnalyticsInsight
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: insight.icon)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(insight.color)
+                
+                Spacer()
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(insight.title)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundColor(.secondary)
+                
+                Text(insight.value)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                
+                Text(insight.subtitle)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(insight.color.opacity(0.1))
+        )
+    }
+}
+
+// MARK: - ChartTypeSelector
+
+struct ChartTypeSelector: View {
+    @Binding var selectedType: String
+    let chartTypes: [String]
+    
+    var body: some View {
+        TISCard {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Chart Type")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(TISColors.primaryText)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(chartTypes, id: \.self) { type in
+                            Button(action: { selectedType = type }) {
+                                Text(type)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(selectedType == type ? .white : TISColors.primary)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        selectedType == type ? 
+                                        TISColors.primary : 
+                                        TISColors.primary.opacity(0.1)
+                                    )
+                                    .cornerRadius(20)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 4)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - AnalyticsFiltersView
+
+struct AnalyticsFiltersView: View {
+    @Binding var selectedPeriod: String
+    @Binding var selectedJob: Job?
+    let periods: [String]
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            List {
+                Section("Time Period") {
+                    ForEach(periods, id: \.self) { period in
+                        Button(action: { selectedPeriod = period }) {
+                            HStack {
+                                Text(period)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                if selectedPeriod == period {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(TISColors.primary)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Filters")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - DetailedReportView
+
+struct DetailedReportView: View {
+    let shifts: [Shift]
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let baseEarnings = calculateBaseEarnings(for: shift)
+        let bonusEarnings = shift.bonusAmount
+        return baseEarnings + bonusEarnings
+    }
+    
+    private func calculateBaseEarnings(for shift: Shift) -> Double {
+        guard let job = shift.job,
+              let startTime = shift.startTime,
+              let endTime = shift.endTime else { return 0 }
+        
+        let duration = endTime.timeIntervalSince(startTime) / 3600 // hours
+        let hourlyRate = job.hourlyRate
+        
+        return duration * hourlyRate
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime,
+              let endTime = shift.endTime else { return 0 }
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    // Summary
+                    TISCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Summary")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                            
+                            let totalEarnings = shifts.reduce(0.0) { total, shift in
+                                total + calculateTotalEarnings(for: shift)
+                            }
+                            let totalHours = shifts.reduce(0.0) { total, shift in
+                                total + calculateDurationInHours(for: shift)
+                            }
+                            
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("Total Earnings")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    Text(localizationManager.formatCurrency(totalEarnings))
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                }
+                                
+                                Spacer()
+                                
+                                VStack(alignment: .trailing) {
+                                    Text("Total Hours")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    Text(String(format: "%.1f", totalHours))
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Shifts List
+                    ForEach(shifts, id: \.id) { shift in
+                        ShiftReportRow(shift: shift)
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("Detailed Report")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ShiftReportRow: View {
+    let shift: Shift
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    
+    var body: some View {
+        TISCard {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(shift.job?.name ?? "Unknown Job")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    if let startTime = shift.startTime, let endTime = shift.endTime {
+                        Text("\(startTime.formatted(.dateTime.hour().minute())) - \(endTime.formatted(.dateTime.hour().minute()))")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(localizationManager.formatCurrency(calculateTotalEarnings(for: shift)))
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(TISColors.primary)
+                    
+                    Text(String(format: "%.1f hrs", calculateDurationInHours(for: shift)))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+    
+    private func calculateTotalEarnings(for shift: Shift) -> Double {
+        let baseEarnings = calculateBaseEarnings(for: shift)
+        let bonusEarnings = shift.bonusAmount
+        return baseEarnings + bonusEarnings
+    }
+    
+    private func calculateBaseEarnings(for shift: Shift) -> Double {
+        guard let job = shift.job,
+              let startTime = shift.startTime,
+              let endTime = shift.endTime else { return 0 }
+        
+        let duration = endTime.timeIntervalSince(startTime) / 3600 // hours
+        let hourlyRate = job.hourlyRate
+        
+        return duration * hourlyRate
+    }
+    
+    private func calculateDurationInHours(for shift: Shift) -> Double {
+        guard let startTime = shift.startTime,
+              let endTime = shift.endTime else { return 0 }
+        return endTime.timeIntervalSince(startTime) / 3600
+    }
 }

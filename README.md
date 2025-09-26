@@ -254,6 +254,7 @@ If you have any questions or need help, please:
 ## Goals
 
 The goals for this project is pretty simple. for me, (Ori) I wanted to get more experience with working on swift project as well as open sourcing. As a user, I felt the hardness when trying to calculate how much money i made this month/week and writing hours to the clock to actually get paid and know exactly my rights and exactly how much should I expect the paycheck to be. Well, guess what? you don't need to guess anymore. You just add your job to the system, add your hourly rate and boom. You are ready to go. Plug and play type shi.
+
 ---
 
 **Made with ❤️ for time-conscious professionals**
