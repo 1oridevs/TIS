@@ -46,19 +46,12 @@ struct ContentView: View {
                 }
                 .tag(3)
             
-            AnalyticsView()
-                .tabItem {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                    Text(localizationManager.localizedString(for: "nav.analytics"))
-                }
-                .tag(4)
-            
             SettingsView()
                 .tabItem {
                     Image(systemName: "gear")
                     Text(localizationManager.localizedString(for: "nav.settings"))
                 }
-                .tag(5)
+                .tag(4)
                 }
                 .environmentObject(timeTracker)
                 .environmentObject(localizationManager)

@@ -12,6 +12,8 @@ struct HistoryView: View {
     
     @State private var selectedPeriod = "All"
     @State private var showingExportOptions = false
+    @State private var showingAnalytics = false
+    @State private var selectedJob: Job?
     
     let periods = ["All", "Today", "This Week", "This Month", "Last 30 Days"]
     
@@ -56,6 +58,67 @@ struct HistoryView: View {
         filteredShifts.reduce(0.0) { total, shift in
             total + calculateDurationInHours(for: shift)
         }
+    }
+    
+    var analyticsInsights: [AnalyticsInsight] {
+        let shifts = filteredShifts
+        var insights: [AnalyticsInsight] = []
+        
+        if !shifts.isEmpty {
+            let totalEarnings = shifts.reduce(0.0) { total, shift in
+                total + calculateTotalEarnings(for: shift)
+            }
+            let totalHours = shifts.reduce(0.0) { total, shift in
+                total + calculateDurationInHours(for: shift)
+            }
+            let averageHourlyRate = totalHours > 0 ? totalEarnings / totalHours : 0
+            
+            // Best earning day
+            let bestDay = shifts.max { shift1, shift2 in
+                calculateTotalEarnings(for: shift1) < calculateTotalEarnings(for: shift2)
+            }
+            if let bestDay = bestDay, let startTime = bestDay.startTime {
+                insights.append(AnalyticsInsight(
+                    title: "Best Earning Day",
+                    value: localizationManager.formatCurrency(calculateTotalEarnings(for: bestDay)),
+                    subtitle: startTime.formatted(.dateTime.weekday().month().day()),
+                    icon: "star.fill",
+                    color: .green
+                ))
+            }
+            
+            // Average daily earnings
+            let days = Set(shifts.compactMap { $0.startTime?.formatted(.dateTime.year().month().day()) }).count
+            if days > 0 {
+                insights.append(AnalyticsInsight(
+                    title: "Average Daily Earnings",
+                    value: localizationManager.formatCurrency(totalEarnings / Double(days)),
+                    subtitle: "Based on \(days) days",
+                    icon: "chart.line.uptrend.xyaxis",
+                    color: .blue
+                ))
+            }
+            
+            // Total hours worked
+            insights.append(AnalyticsInsight(
+                title: "Total Hours",
+                value: String(format: "%.1f", totalHours),
+                subtitle: "Hours worked",
+                icon: "clock.fill",
+                color: .orange
+            ))
+            
+            // Average hourly rate
+            insights.append(AnalyticsInsight(
+                title: "Average Rate",
+                value: localizationManager.formatCurrency(averageHourlyRate),
+                subtitle: "Per hour",
+                icon: "dollarsign.circle.fill",
+                color: .purple
+            ))
+        }
+        
+        return insights
     }
     
     // MARK: - Helper Functions
@@ -116,14 +179,23 @@ struct HistoryView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingExportOptions = true }) {
-                        Image(systemName: "square.and.arrow.up")
+                    HStack {
+                        Button(action: { showingAnalytics = true }) {
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                        }
+                        
+                        Button(action: { showingExportOptions = true }) {
+                            Image(systemName: "square.and.arrow.up")
+                        }
                     }
                 }
             }
         }
         .sheet(isPresented: $showingExportOptions) {
             ExportOptionsView(shifts: filteredShifts)
+        }
+        .sheet(isPresented: $showingAnalytics) {
+            AnalyticsInsightsView(insights: analyticsInsights)
         }
     }
     
@@ -515,4 +587,104 @@ struct ExportOptionButton: View {
 #Preview {
     HistoryView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+}
+
+// MARK: - AnalyticsInsight
+
+struct AnalyticsInsight: Identifiable {
+    let id = UUID()
+    let title: String
+    let value: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+}
+
+// MARK: - AnalyticsInsightsView
+
+struct AnalyticsInsightsView: View {
+    let insights: [AnalyticsInsight]
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    if insights.isEmpty {
+                        VStack(spacing: 16) {
+                            Image(systemName: "chart.bar.xaxis")
+                                .font(.system(size: 50))
+                                .foregroundColor(.secondary)
+                            
+                            Text("No Analytics Data")
+                                .font(.headline)
+                                .foregroundColor(.secondary)
+                            
+                            Text("Analytics will appear here once you have some shift data.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.top, 50)
+                    } else {
+                        LazyVGrid(columns: [
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ], spacing: 12) {
+                            ForEach(insights) { insight in
+                                InsightCard(insight: insight)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            }
+            .navigationTitle("Analytics Insights")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct InsightCard: View {
+    let insight: AnalyticsInsight
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: insight.icon)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(insight.color)
+                
+                Spacer()
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(insight.title)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundColor(.secondary)
+                
+                Text(insight.value)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                
+                Text(insight.subtitle)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(insight.color.opacity(0.1))
+        )
+    }
 }
