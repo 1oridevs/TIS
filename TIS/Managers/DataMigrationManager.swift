@@ -1,222 +1,248 @@
-import SwiftUI
-import CoreData
 import Foundation
+import CoreData
 
 class DataMigrationManager: ObservableObject {
-    static let shared = DataMigrationManager()
-    
-    @Published var migrationStatus: MigrationStatus = .notStarted
+    @Published var isMigrating = false
     @Published var migrationProgress: Double = 0.0
-    @Published var migrationMessage: String = ""
+    @Published var currentStatus = ""
+    
+    private let persistentContainer: NSPersistentContainer
+    
+    init(container: NSPersistentContainer) {
+        self.persistentContainer = container
+    }
+    
+    // MARK: - Migration Status
     
     enum MigrationStatus {
-        case notStarted
+        case notNeeded
+        case required
         case inProgress
         case completed
-        case failed(String)
+        case failed(Error)
     }
     
-    private init() {}
+    // MARK: - Check Migration Status
     
-    // MARK: - Data Migration
-    
-    func migrateDataIfNeeded(context: NSManagedObjectContext) async {
-        let currentVersion = getCurrentDataVersion()
-        let targetVersion = getTargetDataVersion()
-        
-        guard currentVersion < targetVersion else {
-            migrationStatus = .completed
-            return
-        }
-        
-        await performMigration(from: currentVersion, to: targetVersion, context: context)
-    }
-    
-    private func getCurrentDataVersion() -> Int {
-        return UserDefaults.standard.integer(forKey: "dataVersion")
-    }
-    
-    private func getTargetDataVersion() -> Int {
-        return 1 // Current version
-    }
-    
-    private func performMigration(from: Int, to: Int, context: NSManagedObjectContext) async {
-        await MainActor.run {
-            migrationStatus = .inProgress
-            migrationMessage = "Migrating data..."
+    func checkMigrationStatus() -> MigrationStatus {
+        guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
+            return .notNeeded
         }
         
         do {
-            // Version 0 to 1 migration
-            if from < 1 {
-                try await migrateToVersion1(context: context)
+            let metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: nil)
+            let currentModel = persistentContainer.managedObjectModel
+            
+            if !currentModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) {
+                return .required
             }
             
-            // Update version
-            UserDefaults.standard.set(to, forKey: "dataVersion")
+            return .notNeeded
+        } catch {
+            return .failed(error)
+        }
+    }
+    
+    // MARK: - Perform Migration
+    
+    func performMigration() async -> MigrationStatus {
+        await MainActor.run {
+            isMigrating = true
+            migrationProgress = 0.0
+            currentStatus = "Checking migration requirements..."
+        }
+        
+        guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
+            await MainActor.run {
+                isMigrating = false
+            }
+            return .notNeeded
+        }
+        
+        do {
+            await MainActor.run {
+                currentStatus = "Preparing for migration..."
+                migrationProgress = 0.1
+            }
+            
+            // Get the current model
+            let currentModel = persistentContainer.managedObjectModel
+            
+            // Get the source model
+            let sourceModel = try getSourceModel(for: storeURL)
             
             await MainActor.run {
-                migrationStatus = .completed
-                migrationMessage = "Migration completed successfully"
+                currentStatus = "Creating migration mapping..."
+                migrationProgress = 0.2
             }
+            
+            // Create migration mapping
+            let mappingModel = try createMappingModel(from: sourceModel, to: currentModel)
+            
+            await MainActor.run {
+                currentStatus = "Performing migration..."
+                migrationProgress = 0.3
+            }
+            
+            // Perform the migration
+            try await performLightweightMigration(from: sourceModel, to: currentModel, at: storeURL)
+            
+            await MainActor.run {
+                currentStatus = "Migration completed successfully!"
+                migrationProgress = 1.0
+                isMigrating = false
+            }
+            
+            return .completed
+            
         } catch {
             await MainActor.run {
-                migrationStatus = .failed(error.localizedDescription)
-                migrationMessage = "Migration failed: \(error.localizedDescription)"
+                currentStatus = "Migration failed: \(error.localizedDescription)"
+                isMigrating = false
             }
+            return .failed(error)
         }
     }
     
-    private func migrateToVersion1(context: NSManagedObjectContext) async throws {
-        // Add any new fields or data transformations here
-        // For now, this is a placeholder for future migrations
+    // MARK: - Helper Methods
+    
+    private func getSourceModel(for storeURL: URL) throws -> NSManagedObjectModel {
+        let metadata = try NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL, options: nil)
         
-        await MainActor.run {
-            migrationProgress = 0.5
-            migrationMessage = "Updating data structure..."
+        // Try to find the source model
+        if let sourceModel = NSManagedObjectModel.mergedModel(from: [Bundle.main], forStoreMetadata: metadata) {
+            return sourceModel
         }
         
-        // Simulate migration work
-        try await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+        // If no source model found, create a basic one
+        return createBasicModel()
+    }
+    
+    private func createBasicModel() -> NSManagedObjectModel {
+        let model = NSManagedObjectModel()
         
+        // Add basic entities that might exist in older versions
+        let jobEntity = NSEntityDescription()
+        jobEntity.name = "Job"
+        jobEntity.managedObjectClassName = "Job"
+        
+        let jobIdAttribute = NSAttributeDescription()
+        jobIdAttribute.name = "id"
+        jobIdAttribute.attributeType = .UUIDAttributeType
+        jobIdAttribute.isOptional = false
+        
+        let jobNameAttribute = NSAttributeDescription()
+        jobNameAttribute.name = "name"
+        jobNameAttribute.attributeType = .stringAttributeType
+        jobNameAttribute.isOptional = true
+        
+        jobEntity.properties = [jobIdAttribute, jobNameAttribute]
+        model.entities = [jobEntity]
+        
+        return model
+    }
+    
+    private func createMappingModel(from sourceModel: NSManagedObjectModel, to destinationModel: NSManagedObjectModel) throws -> NSMappingModel {
+        // Try to find an existing mapping model
+        if let mappingModel = NSMappingModel(from: [Bundle.main], forSourceModel: sourceModel, destinationModel: destinationModel) {
+            return mappingModel
+        }
+        
+        // Create a lightweight migration mapping
+        return try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
+    }
+    
+    private func performLightweightMigration(from sourceModel: NSManagedObjectModel, to destinationModel: NSManagedObjectModel, at storeURL: URL) async throws {
+        // Create a temporary coordinator for migration
+        let migrationCoordinator = NSPersistentStoreCoordinator(managedObjectModel: sourceModel)
+        
+        // Add the source store
+        let sourceStore = try migrationCoordinator.addPersistentStore(
+            ofType: NSSQLiteStoreType,
+            configurationName: nil,
+            at: storeURL,
+            options: [
+                NSMigratePersistentStoresAutomaticallyOption: true,
+                NSInferMappingModelAutomaticallyOption: true
+            ]
+        )
+        
+        // Create migration manager
+        let migrationManager = NSMigrationManager(sourceModel: sourceModel, destinationModel: destinationModel)
+        
+        // Create destination store URL
+        let destinationURL = storeURL.appendingPathExtension("migrated")
+        
+        // Perform migration
+        try migrationManager.migrateStore(
+            from: sourceStore.url!,
+            sourceType: NSSQLiteStoreType,
+            options: nil,
+            with: NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel),
+            toDestinationURL: destinationURL,
+            destinationType: NSSQLiteStoreType,
+            destinationOptions: nil
+        )
+        
+        // Replace the original store with the migrated one
+        try FileManager.default.removeItem(at: storeURL)
+        try FileManager.default.moveItem(at: destinationURL, to: storeURL)
+        
+        // Update progress
         await MainActor.run {
-            migrationProgress = 1.0
-            migrationMessage = "Migration completed"
+            migrationProgress = 0.9
         }
     }
     
-    // MARK: - Data Validation
+    // MARK: - Backup Before Migration
     
-    func validateDataIntegrity(context: NSManagedObjectContext) -> [String] {
-        var issues: [String] = []
-        
-        // Check for orphaned shifts
-        let shiftRequest: NSFetchRequest<Shift> = Shift.fetchRequest()
-        shiftRequest.predicate = NSPredicate(format: "job == nil")
-        
-        do {
-            let orphanedShifts = try context.fetch(shiftRequest)
-            if !orphanedShifts.isEmpty {
-                issues.append("Found \(orphanedShifts.count) shifts without jobs")
-            }
-        } catch {
-            issues.append("Error checking orphaned shifts: \(error.localizedDescription)")
+    func createBackupBeforeMigration() async throws -> URL {
+        guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
+            throw MigrationError.noStoreURL
         }
         
-        // Check for invalid time ranges
-        let allShiftsRequest: NSFetchRequest<Shift> = Shift.fetchRequest()
+        let backupURL = storeURL.appendingPathExtension("backup")
         
-        do {
-            let allShifts = try context.fetch(allShiftsRequest)
-            for shift in allShifts {
-                if let startTime = shift.startTime, let endTime = shift.endTime {
-                    if startTime >= endTime {
-                        issues.append("Shift \(shift.id?.uuidString ?? "unknown") has invalid time range")
-                    }
-                }
-            }
-        } catch {
-            issues.append("Error checking time ranges: \(error.localizedDescription)")
-        }
+        try FileManager.default.copyItem(at: storeURL, to: backupURL)
         
-        return issues
+        return backupURL
     }
     
-    // MARK: - Data Cleanup
+    // MARK: - Restore From Backup
     
-    func cleanupOrphanedData(context: NSManagedObjectContext) async throws {
-        await MainActor.run {
-            migrationStatus = .inProgress
-            migrationMessage = "Cleaning up orphaned data..."
+    func restoreFromBackup(_ backupURL: URL) async throws {
+        guard let storeURL = persistentContainer.persistentStoreDescriptions.first?.url else {
+            throw MigrationError.noStoreURL
         }
         
-        // Remove orphaned shifts
-        let orphanedShiftsRequest: NSFetchRequest<Shift> = Shift.fetchRequest()
-        orphanedShiftsRequest.predicate = NSPredicate(format: "job == nil")
-        
-        let orphanedShifts = try context.fetch(orphanedShiftsRequest)
-        for shift in orphanedShifts {
-            context.delete(shift)
+        // Remove current store
+        if FileManager.default.fileExists(atPath: storeURL.path) {
+            try FileManager.default.removeItem(at: storeURL)
         }
         
-        // Remove invalid shifts
-        let allShiftsRequest: NSFetchRequest<Shift> = Shift.fetchRequest()
-        let allShifts = try context.fetch(allShiftsRequest)
-        
-        for shift in allShifts {
-            if let startTime = shift.startTime, let endTime = shift.endTime {
-                if startTime >= endTime {
-                    context.delete(shift)
-                }
-            }
-        }
-        
-        try context.save()
-        
-        await MainActor.run {
-            migrationStatus = .completed
-            migrationMessage = "Cleanup completed successfully"
-        }
-    }
-    
-    // MARK: - Data Export for Migration
-    
-    func exportDataForMigration(context: NSManagedObjectContext) -> Data? {
-        let exportData = MigrationExportData()
-        
-        // Export jobs
-        let jobsRequest: NSFetchRequest<Job> = Job.fetchRequest()
-        if let jobs = try? context.fetch(jobsRequest) {
-            exportData.jobs = jobs.map { job in
-                JobExportData(
-                    id: job.id?.uuidString ?? "",
-                    name: job.name ?? "",
-                    hourlyRate: job.hourlyRate,
-                    createdAt: job.createdAt ?? Date()
-                )
-            }
-        }
-        
-        // Export shifts
-        let shiftsRequest: NSFetchRequest<Shift> = Shift.fetchRequest()
-        if let shifts = try? context.fetch(shiftsRequest) {
-            exportData.shifts = shifts.map { shift in
-                ShiftExportData(
-                    id: shift.id?.uuidString ?? "",
-                    startTime: shift.startTime,
-                    endTime: shift.endTime,
-                    jobId: shift.job?.id?.uuidString,
-                    bonusAmount: shift.bonusAmount,
-                    notes: shift.notes,
-                    isActive: shift.isActive
-                )
-            }
-        }
-        
-        return try? JSONEncoder().encode(exportData)
+        // Restore from backup
+        try FileManager.default.copyItem(at: backupURL, to: storeURL)
     }
 }
 
-// MARK: - Export Data Models
+// MARK: - Migration Errors
 
-struct MigrationExportData: Codable {
-    var jobs: [JobExportData] = []
-    var shifts: [ShiftExportData] = []
-}
-
-struct JobExportData: Codable {
-    let id: String
-    let name: String
-    let hourlyRate: Double
-    let createdAt: Date
-}
-
-struct ShiftExportData: Codable {
-    let id: String
-    let startTime: Date?
-    let endTime: Date?
-    let jobId: String?
-    let bonusAmount: Double
-    let notes: String?
-    let isActive: Bool
+enum MigrationError: LocalizedError {
+    case noStoreURL
+    case migrationFailed(String)
+    case backupFailed(String)
+    case restoreFailed(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .noStoreURL:
+            return "No store URL found"
+        case .migrationFailed(let message):
+            return "Migration failed: \(message)"
+        case .backupFailed(let message):
+            return "Backup failed: \(message)"
+        case .restoreFailed(let message):
+            return "Restore failed: \(message)"
+        }
+    }
 }

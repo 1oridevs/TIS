@@ -6,39 +6,15 @@ struct DataImportView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var localizationManager: LocalizationManager
     
-    @State private var selectedImportType: ImportType = .csv
+    @StateObject private var importManager: DataImportManager
+    @State private var selectedImportType: DataImportManager.ImportType = .csv
     @State private var showingFilePicker = false
-    @State private var isImporting = false
-    @State private var importResult: ImportResult?
+    @State private var importResult: DataImportManager.ImportResult?
     @State private var showingResult = false
     @State private var selectedFileURL: URL?
     
-    enum ImportType: String, CaseIterable {
-        case csv = "CSV"
-        case json = "JSON"
-        case toggl = "Toggl"
-        
-        var description: String {
-            switch self {
-            case .csv:
-                return "Import from CSV file with jobs and shifts"
-            case .json:
-                return "Import from JSON backup file"
-            case .toggl:
-                return "Import from Toggl time tracking export"
-            }
-        }
-        
-        var icon: String {
-            switch self {
-            case .csv:
-                return "tablecells"
-            case .json:
-                return "doc.text"
-            case .toggl:
-                return "clock.arrow.circlepath"
-            }
-        }
+    init() {
+        self._importManager = StateObject(wrappedValue: DataImportManager(context: PersistenceController.shared.container.viewContext))
     }
     
     var body: some View {
@@ -80,20 +56,41 @@ struct DataImportView: View {
                 }
                 .padding(.horizontal, 24)
                 
+                // Progress Section
+                if importManager.isImporting {
+                    VStack(spacing: 12) {
+                        Text(importManager.currentStatus)
+                            .font(.subheadline)
+                            .foregroundColor(TISColors.secondaryText)
+                            .multilineTextAlignment(.center)
+                        
+                        ProgressView(value: importManager.importProgress)
+                            .progressViewStyle(LinearProgressViewStyle(tint: TISColors.primary))
+                            .scaleEffect(x: 1, y: 2, anchor: .center)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(TISColors.primary.opacity(0.05))
+                    )
+                    .padding(.horizontal, 20)
+                }
+                
                 Spacer()
                 
                 // Import Button
                 VStack(spacing: 12) {
                     Button(action: startImport) {
                         HStack {
-                            if isImporting {
+                            if importManager.isImporting {
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                     .scaleEffect(0.8)
                             } else {
                                 Image(systemName: "square.and.arrow.down")
                             }
-                            Text(isImporting ? "Importing..." : "Select File to Import")
+                            Text(importManager.isImporting ? "Importing..." : "Select File to Import")
                         }
                         .font(.headline)
                         .foregroundColor(.white)
@@ -109,8 +106,8 @@ struct DataImportView: View {
                         .cornerRadius(12)
                         .shadow(color: TISColors.primary.opacity(0.3), radius: 4, x: 0, y: 2)
                     }
-                    .disabled(isImporting)
-                    .opacity(isImporting ? 0.6 : 1.0)
+                    .disabled(importManager.isImporting)
+                    .opacity(importManager.isImporting ? 0.6 : 1.0)
                     
                     Button("Cancel") {
                         dismiss()
@@ -157,40 +154,19 @@ struct DataImportView: View {
     private func performImport() {
         guard let fileURL = selectedFileURL else { return }
         
-        isImporting = true
-        
         Task {
-            do {
-                let data = try Data(contentsOf: fileURL)
-                let result: ImportResult
-                
-                switch selectedImportType {
-                case .csv:
-                    result = try await DataImportManager.shared.importFromCSV(data, context: viewContext)
-                case .json:
-                    result = try await DataImportManager.shared.importFromJSON(data, context: viewContext)
-                case .toggl:
-                    result = try await DataImportManager.shared.importFromToggl(data, context: viewContext)
-                }
-                
-                await MainActor.run {
-                    importResult = result
-                    showingResult = true
-                    isImporting = false
-                }
-            } catch {
-                await MainActor.run {
-                    importResult = ImportResult(importedJobs: 0, importedShifts: 0, errors: [error.localizedDescription])
-                    showingResult = true
-                    isImporting = false
-                }
+            let result = await importManager.importData(from: fileURL, type: selectedImportType)
+            
+            await MainActor.run {
+                importResult = result
+                showingResult = true
             }
         }
     }
 }
 
 struct ImportTypeCard: View {
-    let type: DataImportView.ImportType
+    let type: DataImportManager.ImportType
     let isSelected: Bool
     let onTap: () -> Void
     
