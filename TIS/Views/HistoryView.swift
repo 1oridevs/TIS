@@ -14,6 +14,7 @@ struct HistoryView: View {
     @State private var showingExportOptions = false
     @State private var showingAnalytics = false
     @State private var selectedJob: Job?
+    @State private var shiftToEdit: Shift?
     
     let periods = ["All", "Today", "This Week", "This Month", "Last 30 Days"]
     
@@ -197,6 +198,9 @@ struct HistoryView: View {
         .sheet(isPresented: $showingAnalytics) {
             AnalyticsInsightsView(insights: analyticsInsights)
         }
+        .sheet(item: $shiftToEdit) { shift in
+            EditShiftView(shift: shift)
+        }
     }
     
     @ViewBuilder
@@ -286,7 +290,9 @@ struct HistoryView: View {
         } else {
             List {
                 ForEach(filteredShifts, id: \.id) { shift in
-                    ShiftDetailRowView(shift: shift)
+                    ShiftDetailRowView(shift: shift, onEdit: {
+                        shiftToEdit = shift
+                    })
                 }
             }
             .listStyle(.plain)
@@ -324,6 +330,7 @@ struct SummaryCard: View {
 
 struct ShiftDetailRowView: View {
     let shift: Shift
+    let onEdit: (() -> Void)?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -406,6 +413,23 @@ struct ShiftDetailRowView: View {
                     }
                 }
                 .padding(.top, 4)
+            }
+            
+            // Edit button
+            if let onEdit = onEdit {
+                HStack {
+                    Spacer()
+                    Button(action: onEdit) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "pencil")
+                                .font(.caption)
+                            Text("Edit")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
+                .padding(.top, 8)
             }
         }
         .padding(.vertical, 4)
