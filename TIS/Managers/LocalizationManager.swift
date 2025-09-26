@@ -357,7 +357,6 @@ class LocalizationManager: ObservableObject {
         "common.discard": "Discard",
         "common.undo": "Undo",
         "common.redo": "Redo",
-        "common.done": "Done",
         
         // Manual Shift
         "shifts.add_manual_shift": "Add Manual Shift",
@@ -645,7 +644,6 @@ class LocalizationManager: ObservableObject {
         "common.discard": "התעלם",
         "common.undo": "בטל",
         "common.redo": "חזור על",
-        "common.done": "סיום",
         
         // Manual Shift
         "shifts.add_manual_shift": "הוסף משמרת ידנית",
