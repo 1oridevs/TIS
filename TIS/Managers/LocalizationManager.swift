@@ -399,6 +399,22 @@ class LocalizationManager: ObservableObject {
         "onboarding.previous": "Previous",
         "onboarding.next": "Next",
         "onboarding.get_started": "Get Started",
+        
+        // Earnings Goals
+        "earnings_goals.title": "Earnings Goals",
+        "earnings_goals.subtitle": "Set and track your financial targets",
+        "earnings_goals.overview": "Goals Overview",
+        "earnings_goals.today_progress": "Today's Progress",
+        "earnings_goals.this_week": "This Week",
+        "earnings_goals.this_month": "This Month",
+        "earnings_goals.progress": "Progress",
+        "earnings_goals.goal_achieved": "Goal Achieved! 🎉",
+        "earnings_goals.summary": "Progress Summary",
+        "earnings_goals.completed": "Goals Completed",
+        "earnings_goals.total_earnings": "Total Earnings",
+        "earnings_goals.average_daily": "Average Daily",
+        "earnings_goals.motivation": "Motivation",
+        "earnings_goals.edit_goal": "Edit Goal",
     ]
     
     // MARK: - Hebrew Strings
@@ -648,6 +664,22 @@ class LocalizationManager: ObservableObject {
         "onboarding.previous": "הקודם",
         "onboarding.next": "הבא",
         "onboarding.get_started": "בואו נתחיל",
+        
+        // Earnings Goals
+        "earnings_goals.title": "יעדי רווחים",
+        "earnings_goals.subtitle": "הגדר ועקוב אחר המטרות הפיננסיות שלך",
+        "earnings_goals.overview": "סקירת יעדים",
+        "earnings_goals.today_progress": "התקדמות היום",
+        "earnings_goals.this_week": "השבוע",
+        "earnings_goals.this_month": "החודש",
+        "earnings_goals.progress": "התקדמות",
+        "earnings_goals.goal_achieved": "יעד הושג! 🎉",
+        "earnings_goals.summary": "סיכום התקדמות",
+        "earnings_goals.completed": "יעדים שהושלמו",
+        "earnings_goals.total_earnings": "סה״כ רווחים",
+        "earnings_goals.average_daily": "ממוצע יומי",
+        "earnings_goals.motivation": "מוטיבציה",
+        "earnings_goals.edit_goal": "ערוך יעד",
         
         // Job labels
         "jobs.job_label": "עבודה:",

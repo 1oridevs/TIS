@@ -302,7 +302,7 @@ struct AddJobIllustration: View {
                     .font(.headline)
                     .foregroundColor(TISColors.primaryText)
                 
-                Text("$25/hour")
+                Text("25/hour")
                     .font(.subheadline)
                     .foregroundColor(TISColors.success)
             }
@@ -356,7 +356,7 @@ struct ProgressIllustration: View {
                 }
             }
             
-            Text("$1,250")
+            Text("1,250")
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(TISColors.success)

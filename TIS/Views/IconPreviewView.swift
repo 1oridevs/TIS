@@ -399,7 +399,7 @@ struct StopwatchView: View {
                     .font(.system(size: size * 0.12, weight: .bold, design: .monospaced))
                     .foregroundColor(.white)
                 
-                Text("$45.67")
+                Text("45.67")
                     .font(.system(size: size * 0.06, weight: .semibold, design: .rounded))
                     .foregroundColor(TISColors.warning)
             }

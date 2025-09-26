@@ -639,6 +639,7 @@ struct RecentActivityCard: View {
 
 struct ShiftRowView: View {
     let shift: Shift
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         HStack {
@@ -657,7 +658,7 @@ struct ShiftRowView: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 4) {
-                Text(String(format: "$%.2f", calculateTotalEarnings(for: shift)))
+                Text(localizationManager.formatCurrency(calculateTotalEarnings(for: shift)))
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 

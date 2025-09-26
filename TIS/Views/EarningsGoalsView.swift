@@ -5,6 +5,7 @@ struct EarningsGoalsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var timeTracker: TimeTracker
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     @State private var dailyGoal: Double = 200.0
     @State private var weeklyGoal: Double = 1000.0
@@ -55,12 +56,12 @@ struct EarningsGoalsView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text("Earnings Goals")
+                            Text(localizationManager.localizedString(for: "earnings_goals.title"))
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
                             
-                            Text("Set and track your financial targets")
+                            Text(localizationManager.localizedString(for: "earnings_goals.subtitle"))
                                 .font(.subheadline)
                                 .foregroundColor(TISColors.secondaryText)
                                 .multilineTextAlignment(.center)
@@ -230,7 +231,7 @@ struct GoalsOverviewCard: View {
                         .font(.title2)
                         .foregroundColor(TISColors.primary)
                     
-                    Text("Goals Overview")
+                    Text(localizationManager.localizedString(for: "earnings_goals.overview"))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
@@ -241,11 +242,11 @@ struct GoalsOverviewCard: View {
                 VStack(spacing: 12) {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Today's Progress")
+                            Text(localizationManager.localizedString(for: "earnings_goals.today_progress"))
                                 .font(.subheadline)
                                 .foregroundColor(TISColors.secondaryText)
                             
-                            Text("$0.00 / $200.00")
+                            Text("0.00 / 200.00")
                                 .font(.title3)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
@@ -260,11 +261,11 @@ struct GoalsOverviewCard: View {
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("This Week")
+                            Text(localizationManager.localizedString(for: "earnings_goals.this_week"))
                                 .font(.subheadline)
                                 .foregroundColor(TISColors.secondaryText)
                             
-                            Text("$0.00 / $1,000.00")
+                            Text("0.00 / 1,000.00")
                                 .font(.title3)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
@@ -279,11 +280,11 @@ struct GoalsOverviewCard: View {
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("This Month")
+                            Text(localizationManager.localizedString(for: "earnings_goals.this_month"))
                                 .font(.subheadline)
                                 .foregroundColor(TISColors.secondaryText)
                             
-                            Text("$0.00 / $4,000.00")
+                            Text("0.00 / 4,000.00")
                                 .font(.title3)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
@@ -352,7 +353,7 @@ struct GoalCard: View {
                 
                 VStack(spacing: 8) {
                     HStack {
-                        Text("Progress")
+                        Text(localizationManager.localizedString(for: "earnings_goals.progress"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
                         
@@ -373,7 +374,7 @@ struct GoalCard: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(TISColors.success)
                             
-                            Text("Goal Achieved! 🎉")
+                            Text(localizationManager.localizedString(for: "earnings_goals.goal_achieved"))
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.success)
@@ -423,7 +424,7 @@ struct ProgressSummaryCard: View {
                         .font(.title2)
                         .foregroundColor(TISColors.primary)
                     
-                    Text("Progress Summary")
+                    Text(localizationManager.localizedString(for: "earnings_goals.summary"))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
@@ -433,7 +434,7 @@ struct ProgressSummaryCard: View {
                 
                 VStack(spacing: 12) {
                     HStack {
-                        Text("Goals Completed")
+                        Text(localizationManager.localizedString(for: "earnings_goals.completed"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
                         
@@ -446,26 +447,26 @@ struct ProgressSummaryCard: View {
                     }
                     
                     HStack {
-                        Text("Total Earnings")
+                        Text(localizationManager.localizedString(for: "earnings_goals.total_earnings"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
                         
                         Spacer()
                         
-                        Text("$0.00")
+                        Text("0.00")
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(TISColors.success)
                     }
                     
                     HStack {
-                        Text("Average Daily")
+                        Text(localizationManager.localizedString(for: "earnings_goals.average_daily"))
                             .font(.subheadline)
                             .foregroundColor(TISColors.secondaryText)
                         
                         Spacer()
                         
-                        Text("$0.00")
+                        Text("0.00")
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(TISColors.primary)
@@ -496,7 +497,7 @@ struct MotivationalMessageCard: View {
                         .font(.title2)
                         .foregroundColor(TISColors.primary)
                     
-                    Text("Motivation")
+                    Text(localizationManager.localizedString(for: "earnings_goals.motivation"))
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
