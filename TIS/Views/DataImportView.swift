@@ -50,12 +50,12 @@ struct DataImportView: View {
                         .font(.system(size: 40))
                         .foregroundColor(TISColors.primary)
                     
-                    Text("Import Data")
+                    Text(localizationManager.localizedString(for: "import.title"))
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(TISColors.primaryText)
                     
-                    Text("Import your existing time tracking data from other apps")
+                    Text(localizationManager.localizedString(for: "import.subtitle"))
                         .font(.subheadline)
                         .foregroundColor(TISColors.secondaryText)
                         .multilineTextAlignment(.center)
@@ -65,7 +65,7 @@ struct DataImportView: View {
                 
                 // Import Type Selection
                 VStack(spacing: 16) {
-                    Text("Select Import Type")
+                    Text(localizationManager.localizedString(for: "import.select_type"))
                         .font(.headline)
                         .foregroundColor(TISColors.primaryText)
                         .frame(maxWidth: .infinity, alignment: .leading)

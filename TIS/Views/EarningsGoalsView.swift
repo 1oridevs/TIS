@@ -95,11 +95,11 @@ struct EarningsGoalsView: View {
                 .padding(.bottom, 100)
             }
             .background(TISColors.background)
-            .navigationTitle("Goals")
+            .navigationTitle(localizationManager.localizedString(for: "earnings_goals.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Done") {
+                    Button(localizationManager.localizedString(for: "common.done")) {
                         dismiss()
                     }
                 }
@@ -222,6 +222,7 @@ struct EarningsGoalsView: View {
 
 struct GoalsOverviewCard: View {
     @EnvironmentObject private var timeTracker: TimeTracker
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         TISCard {
@@ -304,6 +305,7 @@ struct GoalCard: View {
     let type: EarningsGoalsView.GoalType
     let currentEarnings: Double
     let goalAmount: Double
+    @EnvironmentObject private var localizationManager: LocalizationManager
     let onEdit: () -> Void
     
     private var progress: Double {
@@ -416,6 +418,8 @@ struct CircularProgressView: View {
 }
 
 struct ProgressSummaryCard: View {
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    
     var body: some View {
         TISCard {
             VStack(spacing: 16) {
@@ -478,6 +482,7 @@ struct ProgressSummaryCard: View {
 }
 
 struct MotivationalMessageCard: View {
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @State private var currentMessage = ""
     @State private var messageIndex = 0
     
@@ -530,6 +535,7 @@ struct MotivationalMessageCard: View {
 
 struct GoalEditorView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     let goalType: EarningsGoalsView.GoalType
     let currentGoal: Double
     let onSave: (Double) -> Void
@@ -556,7 +562,7 @@ struct GoalEditorView: View {
                         }
                         
                         VStack(spacing: 8) {
-                            Text("Edit \(goalType.rawValue) Goal")
+                            Text("\(localizationManager.localizedString(for: "common.edit")) \(goalType.rawValue) \(localizationManager.localizedString(for: "earnings_goals.title"))")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(TISColors.primaryText)
@@ -572,7 +578,7 @@ struct GoalEditorView: View {
                     // Goal Input
                     VStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Goal Amount")
+                            Text(localizationManager.localizedString(for: "earnings_goals.goal_amount"))
                                 .font(.headline)
                                 .fontWeight(.semibold)
                                 .foregroundColor(TISColors.primaryText)
@@ -593,7 +599,7 @@ struct GoalEditorView: View {
                         
                         // Quick Set Buttons
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Quick Set")
+                            Text(localizationManager.localizedString(for: "earnings_goals.quick_set"))
                                 .font(.subheadline)
                                 .fontWeight(.medium)
                                 .foregroundColor(TISColors.secondaryText)
@@ -622,7 +628,7 @@ struct GoalEditorView: View {
                     }
                     
                     // Save Button
-                    TISButton("Save Goal", icon: "checkmark.circle.fill", color: goalType.color) {
+                    TISButton(localizationManager.localizedString(for: "earnings_goals.save_goal"), icon: "checkmark.circle.fill", color: goalType.color) {
                         if let amount = Double(goalAmount) {
                             onSave(amount)
                             dismiss()
@@ -634,11 +640,11 @@ struct GoalEditorView: View {
                 .padding(.bottom, 100)
             }
             .background(TISColors.background)
-            .navigationTitle("Edit Goal")
+            .navigationTitle(localizationManager.localizedString(for: "earnings_goals.edit_goal"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(localizationManager.localizedString(for: "common.cancel")) {
                         dismiss()
                     }
                 }
