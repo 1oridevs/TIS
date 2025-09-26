@@ -10,57 +10,224 @@
       "filename" : "appicon-180.png",
       "idiom" : "iphone",
       "platform" : "ios",
-      "size" : "60x60",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "appicon-120.png",
-      "idiom" : "iphone",
-      "platform" : "ios",
-      "size" : "60x60",
-      "scale" : "2x"
+      "scale" : "3x",
+      "size" : "60x60"
     },
     {
       "filename" : "appicon-167.png",
       "idiom" : "ipad",
       "platform" : "ios",
-      "size" : "83.5x83.5",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "83.5x83.5"
     },
     {
       "filename" : "appicon-152.png",
       "idiom" : "ipad",
       "platform" : "ios",
-      "size" : "76x76",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "76x76"
+    },
+    {
+      "filename" : "appicon-120.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "60x60"
+    },
+    {
+      "filename" : "appicon-87.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-80.png",
+      "idiom" : "ipad",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "40x40"
     },
     {
       "filename" : "appicon-76.png",
       "idiom" : "ipad",
       "platform" : "ios",
-      "size" : "76x76",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "76x76"
+    },
+    {
+      "filename" : "appicon-60.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-58.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "29x29"
     },
     {
       "filename" : "appicon-40.png",
-      "idiom" : "iphone",
+      "idiom" : "ipad",
       "platform" : "ios",
-      "size" : "20x20",
-      "scale" : "2x"
+      "scale" : "1x",
+      "size" : "40x40"
     },
     {
       "filename" : "appicon-29.png",
-      "idiom" : "iphone",
+      "idiom" : "ipad",
       "platform" : "ios",
-      "size" : "29x29",
-      "scale" : "1x"
+      "scale" : "2x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-20.png",
+      "idiom" : "ipad",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "20x20"
     },
     {
       "filename" : "appicon-20.png",
       "idiom" : "iphone",
       "platform" : "ios",
-      "size" : "20x20",
-      "scale" : "1x"
+      "scale" : "2x",
+      "size" : "20x20"
+    },
+    {
+      "filename" : "appicon-20.png",
+      "idiom" : "ipad",
+      "platform" : "ios",
+      "scale" : "1x",
+      "size" : "20x20"
+    },
+    {
+      "filename" : "appicon-20.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "20x20"
+    },
+    {
+      "filename" : "appicon-29.png",
+      "idiom" : "ipad",
+      "platform" : "ios",
+      "scale" : "1x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-29.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-40.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "40x40"
+    },
+    {
+      "filename" : "appicon-40.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "40x40"
+    },
+    {
+      "filename" : "appicon-60.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "60x60"
+    },
+    {
+      "filename" : "appicon-58.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-87.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-80.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "40x40"
+    },
+    {
+      "filename" : "appicon-120.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "60x60"
+    },
+    {
+      "filename" : "appicon-180.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "3x",
+      "size" : "60x60"
+    },
+    {
+      "filename" : "appicon-20.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "20x20"
+    },
+    {
+      "filename" : "appicon-29.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "29x29"
+    },
+    {
+      "filename" : "appicon-40.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "40x40"
+    },
+    {
+      "filename" : "appicon-60.png",
+      "idiom" : "iphone",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "60x60"
+    },
+    {
+      "filename" : "appicon-76.png",
+      "idiom" : "ipad",
+      "platform" : "ios",
+      "scale" : "1x",
+      "size" : "76x76"
+    },
+    {
+      "filename" : "appicon-83.5.png",
+      "idiom" : "ipad",
+      "platform" : "ios",
+      "scale" : "2x",
+      "size" : "83.5x83.5"
+    },
+    {
+      "filename" : "appicon-1024.png",
+      "idiom" : "ios-marketing",
+      "platform" : "ios",
+      "size" : "1024x1024"
     }
   ],
   "info" : {
