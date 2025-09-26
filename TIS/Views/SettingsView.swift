@@ -18,6 +18,7 @@ struct SettingsView: View {
     @State private var showingBulkOperations = false
     @State private var showingClearDataConfirmation = false
     @State private var showingAbout = false
+    @State private var showingClearDataSuccess = false
     
     var body: some View {
         NavigationView {
@@ -258,23 +259,69 @@ struct SettingsView: View {
             } message: {
                 Text("This will permanently delete all your shifts, jobs, and settings. This action cannot be undone.")
             }
+            .alert("Data Cleared Successfully", isPresented: $showingClearDataSuccess) {
+                Button("OK") { }
+            } message: {
+                Text("All your data has been permanently deleted. The app will now show empty states.")
+            }
         }
     }
     
     private func clearAllData() {
-        // Clear all Core Data entities
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Shift")
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        let jobFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Job")
-        let jobDeleteRequest = NSBatchDeleteRequest(fetchRequest: jobFetchRequest)
-        
         do {
-            try viewContext.execute(deleteRequest)
-            try viewContext.execute(jobDeleteRequest)
+            // Clear all Shifts
+            let shiftFetchRequest: NSFetchRequest<NSFetchRequestResult> = Shift.fetchRequest()
+            let shiftDeleteRequest = NSBatchDeleteRequest(fetchRequest: shiftFetchRequest)
+            shiftDeleteRequest.resultType = .resultTypeObjectIDs
+            let shiftResult = try viewContext.execute(shiftDeleteRequest) as? NSBatchDeleteResult
+            let shiftObjectIDs = shiftResult?.result as? [NSManagedObjectID] ?? []
+            
+            // Clear all Jobs
+            let jobFetchRequest: NSFetchRequest<NSFetchRequestResult> = Job.fetchRequest()
+            let jobDeleteRequest = NSBatchDeleteRequest(fetchRequest: jobFetchRequest)
+            jobDeleteRequest.resultType = .resultTypeObjectIDs
+            let jobResult = try viewContext.execute(jobDeleteRequest) as? NSBatchDeleteResult
+            let jobObjectIDs = jobResult?.result as? [NSManagedObjectID] ?? []
+            
+            // Clear all Bonuses
+            let bonusFetchRequest: NSFetchRequest<NSFetchRequestResult> = Bonus.fetchRequest()
+            let bonusDeleteRequest = NSBatchDeleteRequest(fetchRequest: bonusFetchRequest)
+            bonusDeleteRequest.resultType = .resultTypeObjectIDs
+            let bonusResult = try viewContext.execute(bonusDeleteRequest) as? NSBatchDeleteResult
+            let bonusObjectIDs = bonusResult?.result as? [NSManagedObjectID] ?? []
+            
+            // Clear all Achievements
+            let achievementFetchRequest: NSFetchRequest<NSFetchRequestResult> = Achievement.fetchRequest()
+            let achievementDeleteRequest = NSBatchDeleteRequest(fetchRequest: achievementFetchRequest)
+            achievementDeleteRequest.resultType = .resultTypeObjectIDs
+            let achievementResult = try viewContext.execute(achievementDeleteRequest) as? NSBatchDeleteResult
+            let achievementObjectIDs = achievementResult?.result as? [NSManagedObjectID] ?? []
+            
+            // Merge changes to update the context
+            let changes = [NSDeletedObjectsKey: shiftObjectIDs + jobObjectIDs + bonusObjectIDs + achievementObjectIDs]
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [viewContext])
+            
+            // Save the context
             try viewContext.save()
+            
+            // Reset UserDefaults for earnings goals and other settings
+            UserDefaults.standard.removeObject(forKey: "earningsGoal")
+            UserDefaults.standard.removeObject(forKey: "dailyEarningsGoal")
+            UserDefaults.standard.removeObject(forKey: "weeklyEarningsGoal")
+            UserDefaults.standard.removeObject(forKey: "monthlyEarningsGoal")
+            UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
+            UserDefaults.standard.removeObject(forKey: "achievementsUnlocked")
+            UserDefaults.standard.removeObject(forKey: "totalEarnings")
+            UserDefaults.standard.removeObject(forKey: "totalHours")
+            UserDefaults.standard.removeObject(forKey: "totalShifts")
+            UserDefaults.standard.removeObject(forKey: "lastBackupDate")
+            UserDefaults.standard.removeObject(forKey: "backupCount")
+            
+            print("✅ All data cleared successfully")
+            showingClearDataSuccess = true
+            
         } catch {
-            print("Error clearing data: \(error)")
+            print("❌ Error clearing data: \(error)")
         }
     }
     
