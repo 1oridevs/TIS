@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+import Charts
 
 struct HistoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -199,7 +200,7 @@ struct HistoryView: View {
             AnalyticsInsightsView(insights: analyticsInsights)
         }
         .sheet(item: $shiftToEdit) { shift in
-            EditShiftView(shift: shift)
+            SimpleEditShiftView(shift: shift)
         }
     }
     
@@ -654,15 +655,36 @@ struct AnalyticsInsightsView: View {
                         }
                         .padding(.top, 50)
                     } else {
-                        LazyVGrid(columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
-                        ], spacing: 12) {
-                            ForEach(insights) { insight in
-                                InsightCard(insight: insight)
+                        VStack(spacing: 20) {
+                            // Enhanced Analytics Cards
+                            LazyVGrid(columns: [
+                                GridItem(.flexible()),
+                                GridItem(.flexible())
+                            ], spacing: 12) {
+                                ForEach(insights) { insight in
+                                    InsightCard(insight: insight)
+                                }
+                            }
+                            .padding(.horizontal)
+                            
+                            // Enhanced Charts Section
+                            VStack(spacing: 16) {
+                                Text("Detailed Analytics")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal)
+                                
+                                // Earnings Trend Chart
+                                EarningsTrendChart(insights: insights)
+                                
+                                // Hours Worked Chart
+                                HoursWorkedChart(insights: insights)
+                                
+                                // Job Performance Chart
+                                JobPerformanceChart(insights: insights)
                             }
                         }
-                        .padding()
                     }
                 }
             }
@@ -713,5 +735,287 @@ struct InsightCard: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(insight.color.opacity(0.1))
         )
+    }
+}
+
+// MARK: - SimpleEditShiftView
+
+struct SimpleEditShiftView: View {
+    let shift: Shift
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
+    
+    @State private var notes: String
+    @State private var bonusAmount: Double
+    @State private var showingToast = false
+    @State private var toastMessage = ""
+    @State private var isSaving = false
+    
+    init(shift: Shift) {
+        self.shift = shift
+        self._notes = State(initialValue: shift.notes ?? "")
+        self._bonusAmount = State(initialValue: shift.bonusAmount)
+    }
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                // Header
+                VStack(spacing: 8) {
+                    Text(localizationManager.localizedString(for: "shifts.edit_shift"))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    Text(localizationManager.localizedString(for: "shifts.edit_shift_subtitle"))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.top, 20)
+                
+                // Edit Form
+                VStack(spacing: 16) {
+                    // Notes Section
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Notes")
+                            .font(.headline)
+                            .foregroundColor(TISColors.primaryText)
+                        
+                        TextField(localizationManager.localizedString(for: "shifts.notes_placeholder"), text: $notes, axis: .vertical)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .lineLimit(3...6)
+                    }
+                    
+                    // Bonus Amount Section
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Bonus Amount")
+                            .font(.headline)
+                            .foregroundColor(TISColors.primaryText)
+                        
+                        HStack {
+                            Text(localizationManager.currentCurrency.symbol)
+                                .font(.title2)
+                                .foregroundColor(TISColors.primary)
+                            
+                            TextField("0.00", value: $bonusAmount, format: .currency(code: localizationManager.currentCurrency.rawValue))
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .keyboardType(.decimalPad)
+                        }
+                    }
+                    
+                    // Shift Info (Read-only)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Shift Information")
+                            .font(.headline)
+                            .foregroundColor(TISColors.primaryText)
+                        
+                        VStack(spacing: 8) {
+                            HStack {
+                                Text("Job:")
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(shift.job?.name ?? "Unknown")
+                                    .fontWeight(.medium)
+                            }
+                            
+                            HStack {
+                                Text("Start:")
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(shift.startTime ?? Date(), style: .date)
+                                    .fontWeight(.medium)
+                            }
+                            
+                            HStack {
+                                Text("End:")
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(shift.endTime ?? Date(), style: .date)
+                                    .fontWeight(.medium)
+                            }
+                            
+                            HStack {
+                                Text("Type:")
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                Text(shift.shiftType ?? "Regular")
+                                    .fontWeight(.medium)
+                            }
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(.systemGray6))
+                        )
+                    }
+                }
+                .padding(.horizontal, 20)
+                
+                Spacer()
+                
+                // Save Button
+                Button(action: saveChanges) {
+                    HStack {
+                        if isSaving {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(0.8)
+                        } else {
+                            Image(systemName: "checkmark")
+                        }
+                        Text(isSaving ? localizationManager.localizedString(for: "common.saving") : localizationManager.localizedString(for: "common.save"))
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        LinearGradient(
+                            colors: [TISColors.primary, TISColors.primary.opacity(0.8)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .cornerRadius(12)
+                    .shadow(color: TISColors.primary.opacity(0.3), radius: 4, x: 0, y: 2)
+                }
+                .disabled(isSaving)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 30)
+            }
+            .navigationBarHidden(true)
+        }
+        .toast(isShowing: $showingToast, message: toastMessage, type: .success)
+    }
+    
+    private func saveChanges() {
+        isSaving = true
+        
+        // Update shift properties
+        shift.notes = notes.isEmpty ? nil : notes
+        shift.bonusAmount = bonusAmount
+        
+        do {
+            try viewContext.save()
+            toastMessage = localizationManager.localizedString(for: "shifts.shift_updated_success")
+            showingToast = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                dismiss()
+            }
+        } catch {
+            toastMessage = "Failed to save changes: \(error.localizedDescription)"
+            showingToast = true
+        }
+        
+        isSaving = false
+    }
+}
+
+// MARK: - Enhanced Analytics Charts
+
+struct EarningsTrendChart: View {
+    let insights: [AnalyticsInsight]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Earnings Trend")
+                .font(.headline)
+                .foregroundColor(TISColors.primaryText)
+            
+            Chart {
+                ForEach(insights.indices, id: \.self) { index in
+                    LineMark(
+                        x: .value("Period", index),
+                        y: .value("Earnings", Double(insights[index].value.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")) ?? 0)
+                    )
+                    .foregroundStyle(TISColors.primary)
+                    .lineStyle(StrokeStyle(lineWidth: 3))
+                    
+                    AreaMark(
+                        x: .value("Period", index),
+                        y: .value("Earnings", Double(insights[index].value.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")) ?? 0)
+                    )
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [TISColors.primary.opacity(0.3), TISColors.primary.opacity(0.1)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                }
+            }
+            .frame(height: 200)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            )
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct HoursWorkedChart: View {
+    let insights: [AnalyticsInsight]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Hours Worked")
+                .font(.headline)
+                .foregroundColor(TISColors.primaryText)
+            
+            Chart {
+                ForEach(insights.indices, id: \.self) { index in
+                    BarMark(
+                        x: .value("Period", index),
+                        y: .value("Hours", Double(insights[index].value.replacingOccurrences(of: "h", with: "")) ?? 0)
+                    )
+                    .foregroundStyle(TISColors.accent)
+                    .cornerRadius(4)
+                }
+            }
+            .frame(height: 200)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            )
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct JobPerformanceChart: View {
+    let insights: [AnalyticsInsight]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Job Performance")
+                .font(.headline)
+                .foregroundColor(TISColors.primaryText)
+            
+            Chart {
+                ForEach(insights.indices, id: \.self) { index in
+                    SectorMark(
+                        angle: .value("Value", Double(insights[index].value.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")) ?? 0),
+                        innerRadius: .ratio(0.3),
+                        angularInset: 2
+                    )
+                    .foregroundStyle(TISColors.primary)
+                    .opacity(0.8)
+                }
+            }
+            .frame(height: 200)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            )
+        }
+        .padding(.horizontal)
     }
 }

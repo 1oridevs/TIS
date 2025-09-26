@@ -1,10 +1,5 @@
 {
   "images" : [
-    {
-      "filename" : "welcome-illustration.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    }
   ],
   "info" : {
     "author" : "xcode",
