@@ -272,13 +272,13 @@ struct HistoryView: View {
                 }
                 
                 VStack(spacing: 12) {
-                    Text("No History Yet")
+                    Text(localizationManager.localizedString(for: "history.no_history"))
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(TISColors.primaryText)
                         .multilineTextAlignment(.center)
                     
-                    Text("Your shift history will appear here once you start tracking time.")
+                    Text(localizationManager.localizedString(for: "history.no_history_subtitle"))
                         .font(.body)
                         .foregroundColor(TISColors.secondaryText)
                         .multilineTextAlignment(.center)
@@ -331,6 +331,7 @@ struct SummaryCard: View {
 struct ShiftDetailRowView: View {
     let shift: Shift
     let onEdit: (() -> Void)?
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -367,13 +368,13 @@ struct ShiftDetailRowView: View {
             // Time details
             HStack {
                 if let startTime = shift.startTime {
-                    Text("Start: \(startTime, style: .time)")
+                    Text("\(localizationManager.localizedString(for: "history.start_time")): \(startTime, style: .time)")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 
                 if let endTime = shift.endTime {
-                    Text("End: \(endTime, style: .time)")
+                    Text("\(localizationManager.localizedString(for: "history.end_time")): \(endTime, style: .time)")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -396,7 +397,7 @@ struct ShiftDetailRowView: View {
             // Bonuses
             if let bonuses = shift.bonuses?.allObjects as? [Bonus], !bonuses.isEmpty {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Bonuses:")
+                    Text(localizationManager.localizedString(for: "history.bonuses"))
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundColor(.secondary)
@@ -423,7 +424,7 @@ struct ShiftDetailRowView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "pencil")
                                 .font(.caption)
-                            Text("Edit")
+                            Text(localizationManager.localizedString(for: "history.edit"))
                                 .font(.caption)
                         }
                         .foregroundColor(.blue)
@@ -474,6 +475,7 @@ struct ShiftDetailRowView: View {
 struct ExportOptionsView: View {
     let shifts: [Shift]
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     @StateObject private var exportManager = ExportManager.shared
     @State private var showingShareSheet = false
     @State private var fileToShare: URL?
@@ -483,11 +485,11 @@ struct ExportOptionsView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                Text("Export Options")
+                Text(localizationManager.localizedString(for: "history.export_options"))
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("Choose how you want to export your shift data")
+                Text(localizationManager.localizedString(for: "history.export_subtitle"))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -629,6 +631,7 @@ struct AnalyticsInsight: Identifiable {
 struct AnalyticsInsightsView: View {
     let insights: [AnalyticsInsight]
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var localizationManager: LocalizationManager
     
     var body: some View {
         NavigationView {
@@ -640,7 +643,7 @@ struct AnalyticsInsightsView: View {
                                 .font(.system(size: 50))
                                 .foregroundColor(.secondary)
                             
-                            Text("No Analytics Data")
+                            Text(localizationManager.localizedString(for: "history.no_analytics"))
                                 .font(.headline)
                                 .foregroundColor(.secondary)
                             

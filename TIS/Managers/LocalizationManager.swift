@@ -431,6 +431,17 @@ class LocalizationManager: ObservableObject {
         "shifts.notes_placeholder": "Add notes about this shift...",
         "common.saving": "Saving...",
         "shifts.shift_updated_success": "Shift updated successfully!",
+        
+        // History View
+        "history.no_history": "No History Yet",
+        "history.no_history_subtitle": "Your shift history will appear here once you start tracking time.",
+        "history.start_time": "Start",
+        "history.end_time": "End",
+        "history.bonuses": "Bonuses",
+        "history.edit": "Edit",
+        "history.export_options": "Export Options",
+        "history.export_subtitle": "Choose how you want to export your shift data",
+        "history.no_analytics": "No Analytics Data",
     ]
     
     // MARK: - Hebrew Strings
@@ -725,7 +736,18 @@ class LocalizationManager: ObservableObject {
         "jobs.job_updated_success": "העבודה '%@' עודכנה בהצלחה!",
         "jobs.failed_to_update_job": "נכשל בעדכון העבודה: %@",
         "jobs.no_bonuses_added": "לא נוספו בונוסים",
-        "jobs.add_bonuses_tip": "הקש על + כדי להוסיף אפשרויות בונוס"
+        "jobs.add_bonuses_tip": "הקש על + כדי להוסיף אפשרויות בונוס",
+        
+        // History View
+        "history.no_history": "אין היסטוריה עדיין",
+        "history.no_history_subtitle": "היסטוריית המשמרות שלך תופיע כאן ברגע שתתחיל לעקוב אחר זמן",
+        "history.start_time": "התחלה",
+        "history.end_time": "סיום",
+        "history.bonuses": "בונוסים",
+        "history.edit": "ערוך",
+        "history.export_options": "אפשרויות ייצוא",
+        "history.export_subtitle": "בחר איך אתה רוצה לייצא את נתוני המשמרות שלך",
+        "history.no_analytics": "אין נתוני אנליטיקה"
     ]
 }
 

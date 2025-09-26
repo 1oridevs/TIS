@@ -166,7 +166,7 @@ TIS/
 
 ### 🚧 In Progress
 - [x] **Job editing functionality** - EditJobView completed with full localization
-- [ ] **Shift editing** - Allow users to edit past shifts
+- [x] **Shift editing** - EditShiftView implemented with edit buttons in HistoryView
 - [ ] **Enhanced analytics charts** - More detailed visualizations
 - [ ] **Push notifications** for shift reminders
 - [ ] **Data validation** improvements
